@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IdleLandsRedux.DataAccess
+namespace IdleLandsRedux.DataAccess.Mappings
 {
 	public class StatsObject
 	{

@@ -54,5 +54,7 @@
     <Compile Include="Mappings\Player.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Mappings\StatsObject.cs" />
+    <Compile Include="AutomappingConfiguration.cs" />
+    <Compile Include="CascadeConvention.cs" />
   </ItemGroup>
 </Project>

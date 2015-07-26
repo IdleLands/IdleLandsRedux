@@ -13,10 +13,12 @@ namespace IdleLandsRedux
 		}
 
 		[Test]
+		//Test to see if we can connect to the server specified in app.config
 		public void TestBootstrapper()
 		{
 			Bootstrapper bootstrapper = new Bootstrapper();
-			bootstrapper.CreateSession();
+			var session = bootstrapper.CreateSession();
+			Assert.That(session != null);
 		}
 	}
 }

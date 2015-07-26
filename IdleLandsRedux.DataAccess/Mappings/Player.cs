@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentNHibernate.Mapping;
 
-namespace IdleLandsRedux.DataAccess
+namespace IdleLandsRedux.DataAccess.Mappings
 {
 	public class Player
 	{
