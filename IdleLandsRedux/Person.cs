@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IdleLands2.NET
+namespace IdleLandsRedux
 {
-	public class Monster : ICalcDamageReduction, IActor
+	public sealed class Person : ICalcDamageReduction, IActor
 	{
 		public int id { get; set; }
 		public int str { get; set; }
@@ -14,13 +14,13 @@ namespace IdleLands2.NET
 		public int dex { get; set; }
 		public int dexPercent { get; set; }
 
-		public Monster()
+		public Person ()
 		{
 		}
 
 		public int DamageReduction()
 		{
-			return -25;
+			return 50;
 		}
 
 		public List<Tuple<IActor, int>> PhysicalAttackTargets(List<Tuple<IActor, int>> allEnemies)

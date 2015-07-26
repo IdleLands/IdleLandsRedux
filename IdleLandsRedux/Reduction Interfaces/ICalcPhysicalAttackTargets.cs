@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace IdleLands2.NET
+namespace IdleLandsRedux
 {
 	public interface ICalcPhysicalAttackTargets
 	{

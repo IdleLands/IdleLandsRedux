@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IdleLands2.NET
+namespace IdleLandsRedux
 {
 	public class personalityReduce
 	{

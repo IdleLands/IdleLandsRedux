@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace IdleLands2.NET
+namespace IdleLandsRedux
 {
 	[TestFixture]
-	public class tests
+	public class ReductionTests
 	{
-		public tests ()
+		public ReductionTests ()
 		{
 		}
 

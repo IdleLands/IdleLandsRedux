@@ -5,8 +5,8 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{FEA7C12F-27AF-4F82-9282-21773A6D2936}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>IdleLands2.NET</RootNamespace>
-    <AssemblyName>IdleLands2.NET</AssemblyName>
+    <RootNamespace>IdleLandsRedux</RootNamespace>
+    <AssemblyName>IdleLandsRedux</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -32,22 +32,37 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="personalityReduce.cs" />
-    <Compile Include="tests.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="Reduction Interfaces\ICalcDamageReduction.cs" />
     <Compile Include="Reduction Interfaces\ICalcPhysicalAttackTargets.cs" />
     <Compile Include="IActor.cs" />
+    <Compile Include="Tests\ReductionTests.cs" />
+    <Compile Include="Tests\DatabaseConnectionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Reduction Interfaces\" />
+    <Folder Include="Tests\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IdleLandsRedux.DataAccess\IdleLandsRedux.DataAccess.csproj">
+      <Project>{8FFC8695-7D01-47BB-8AE3-DB853C8FEF13}</Project>
+      <Name>IdleLandsRedux.DataAccess</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

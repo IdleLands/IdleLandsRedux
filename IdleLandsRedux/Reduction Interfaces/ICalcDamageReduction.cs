@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IdleLands2.NET
+namespace IdleLandsRedux
 {
 	public interface ICalcDamageReduction
 	{
