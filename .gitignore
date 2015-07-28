@@ -1,5 +1,4 @@
 bin
 obj
-app.config
 *.userprefs
 packages/

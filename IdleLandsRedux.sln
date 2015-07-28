@@ -5,16 +5,28 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux", "IdleLands
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.DataAccess", "IdleLandsRedux.DataAccess\IdleLandsRedux.DataAccess.csproj", "{8FFC8695-7D01-47BB-8AE3-DB853C8FEF13}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.WebService", "IdleLandsRedux.WebService\IdleLandsRedux.WebService.csproj", "{5792CEF9-CADD-4FD1-AC23-B7F52ADCAD6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.WebService.Test", "IdleLandsRedux.WebService.Test\IdleLandsRedux.WebService.Test.csproj", "{E2B08223-3FEA-4C9A-BE65-7941A195A1DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5792CEF9-CADD-4FD1-AC23-B7F52ADCAD6F}.Debug|x86.ActiveCfg = Debug|x86
+		{5792CEF9-CADD-4FD1-AC23-B7F52ADCAD6F}.Debug|x86.Build.0 = Debug|x86
+		{5792CEF9-CADD-4FD1-AC23-B7F52ADCAD6F}.Release|x86.ActiveCfg = Release|x86
+		{5792CEF9-CADD-4FD1-AC23-B7F52ADCAD6F}.Release|x86.Build.0 = Release|x86
 		{8FFC8695-7D01-47BB-8AE3-DB853C8FEF13}.Debug|x86.ActiveCfg = Debug|x86
 		{8FFC8695-7D01-47BB-8AE3-DB853C8FEF13}.Debug|x86.Build.0 = Debug|x86
 		{8FFC8695-7D01-47BB-8AE3-DB853C8FEF13}.Release|x86.ActiveCfg = Release|x86
 		{8FFC8695-7D01-47BB-8AE3-DB853C8FEF13}.Release|x86.Build.0 = Release|x86
+		{E2B08223-3FEA-4C9A-BE65-7941A195A1DB}.Debug|x86.ActiveCfg = Debug|x86
+		{E2B08223-3FEA-4C9A-BE65-7941A195A1DB}.Debug|x86.Build.0 = Debug|x86
+		{E2B08223-3FEA-4C9A-BE65-7941A195A1DB}.Release|x86.ActiveCfg = Release|x86
+		{E2B08223-3FEA-4C9A-BE65-7941A195A1DB}.Release|x86.Build.0 = Release|x86
 		{FEA7C12F-27AF-4F82-9282-21773A6D2936}.Debug|x86.ActiveCfg = Debug|x86
 		{FEA7C12F-27AF-4F82-9282-21773A6D2936}.Debug|x86.Build.0 = Debug|x86
 		{FEA7C12F-27AF-4F82-9282-21773A6D2936}.Release|x86.ActiveCfg = Release|x86

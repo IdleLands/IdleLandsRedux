@@ -34,7 +34,6 @@ namespace IdleLandsRedux.DataAccess
 
 			return Fluently.Configure()
 				.Database(
-					//PostgreSQLConfiguration.Standard.ConnectionString(c => c.Host(host).Port(port).Database(db).Username(user).Password(pass))
 					PostgreSQLConfiguration.PostgreSQL82
 					.ConnectionString(string.Format("Server={0};Port={1};Database={2};User Id={3};Password={4};SSL=true;SslMode=Require;", host, port, db, user, pass))
 				)
