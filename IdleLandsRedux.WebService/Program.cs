@@ -21,14 +21,9 @@ namespace IdleLandsRedux.WebService
 		{
 			log.Info("Starting WebService");
 
+			log4net.Config.XmlConfigurator.Configure();
+
 			var wssv = new WebSocketServer("ws://localhost:2345");
-
-			Type[] typelist = GetTypesInNamespace(Assembly.GetExecutingAssembly(), "IdleLandsRedux.WebService.Services");
-
-			for (int i = 0; i < typelist.Length; i++)
-			{
-				Console.WriteLine("Adding: " + typelist[i].Name);
-			}
 
 			wssv.AddWebSocketService<IdleLandsMainService>("/IdleLands");
 			wssv.Log.Level = LogLevel.Trace;

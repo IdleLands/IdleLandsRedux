@@ -51,10 +51,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mappings\ActivityQueue.cs" />
-    <Compile Include="Mappings\Player.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Mappings\StatsObject.cs" />
     <Compile Include="AutomappingConfiguration.cs" />
     <Compile Include="CascadeConvention.cs" />
+    <Compile Include="Mappings\Player.cs" />
+    <Compile Include="Mappings\LoggedInUser.cs" />
   </ItemGroup>
 </Project>

@@ -40,6 +40,18 @@
     <Reference Include="websocket-sharp">
       <HintPath>..\packages\WebSocketSharp.1.0.3-rc9\lib\websocket-sharp.dll</HintPath>
     </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>..\packages\Npgsql.2.2.5\lib\net45\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql">
+      <HintPath>..\packages\Npgsql.2.2.5\lib\net45\Npgsql.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -55,6 +67,7 @@
     <Compile Include="Services\LoginService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="API\ResponseMessage.cs" />
+    <Compile Include="Services\RegisterService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IdleLandsRedux.DataAccess\IdleLandsRedux.DataAccess.csproj">

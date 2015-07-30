@@ -10,17 +10,39 @@ using System.Configuration;
 
 namespace IdleLandsRedux.DataAccess
 {
-	public class Bootstrapper
+	public class Bootstrapper : IDisposable
 	{
-		private ISessionFactory sessionFactory { get; set; }
+		private static ISessionFactory sessionFactory { get; set; }
+		private bool disposed = false;
 
 		public Bootstrapper()
 		{
 			sessionFactory = CreateSessionFactory();
 		}
 
-		public ISession CreateSession()
+		public void Dispose()
+		{ 
+			Dispose(true);
+			GC.SuppressFinalize(this);           
+		}
+
+		protected virtual void Dispose(bool disposing)
 		{
+			if (disposed)
+				return;
+			
+			if(sessionFactory != null) {
+				sessionFactory.Close();
+				sessionFactory.Dispose();
+				sessionFactory = null;
+			}
+		}
+
+		public static ISession CreateSession()
+		{
+			if (sessionFactory == null)
+				throw new Exception("Initialize bootstrapper first!");
+
 			return sessionFactory.OpenSession();
 		}
 
@@ -32,6 +54,8 @@ namespace IdleLandsRedux.DataAccess
 			string user = ReadSetting("User");
 			string pass = ReadSetting("Password");
 
+			try
+			{
 			return Fluently.Configure()
 				.Database(
 					PostgreSQLConfiguration.PostgreSQL82
@@ -43,12 +67,23 @@ namespace IdleLandsRedux.DataAccess
 				)
 				.ExposeConfiguration(TreatConfiguration)
 				.BuildSessionFactory();
+			} catch (Exception e) { 
+				return null; //Usually a mapping exception.
+			}
 		}
 
 		private void TreatConfiguration(NHibernate.Cfg.Configuration configuration)
 		{
-			var update = new SchemaUpdate(configuration);
-			update.Execute(LogAutoMigration, true);
+			string updateOrTruncate = ReadSetting("UpdateOrTruncate");
+
+			if (updateOrTruncate.ToLower() == "update") {
+				var update = new SchemaUpdate(configuration);
+				update.Execute(LogAutoMigration, true);
+			} else if(updateOrTruncate.ToLower() == "truncate") {
+				var export = new SchemaExport(configuration);
+				export.Drop(false, true);
+				export.Create(false, true);
+			}
 		}
 
 		private static void LogAutoMigration(string sql)

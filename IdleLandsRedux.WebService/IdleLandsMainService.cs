@@ -6,6 +6,7 @@ using WebSocketSharp;
 using WebSocketSharp.Server;
 using IdleLandsRedux.WebService.API;
 using IdleLandsRedux.WebService.Services;
+using IdleLandsRedux.DataAccess;
 
 namespace IdleLandsRedux.WebService
 {
@@ -18,6 +19,8 @@ namespace IdleLandsRedux.WebService
 		{
 			_servicesDict = new Dictionary<string, IService>();
 			_servicesDict.Add("/login", new LoginService());
+			_servicesDict.Add("/register", new RegisterService());
+			new Bootstrapper();
 		}
 
 		protected override void OnMessage (MessageEventArgs e)
@@ -32,7 +35,15 @@ namespace IdleLandsRedux.WebService
 			if (msg == null || string.IsNullOrEmpty(msg.Path) || _servicesDict[msg.Path] == null)
 				return;
 
-			_servicesDict[msg.Path].HandleMessage(e.Data, (string message) => Send(message));
+			var session = Bootstrapper.CreateSession();
+			using (var transaction = session.BeginTransaction()) {
+				bool commitTransaction = true;
+				_servicesDict[msg.Path].HandleMessage(session, e.Data, (string message) => { log.Info("Sending message: " + message); Send(message); }, ref commitTransaction);
+				if (commitTransaction)
+					transaction.Commit();
+				else
+					transaction.Rollback();
+			}
 		}
 	}
 }

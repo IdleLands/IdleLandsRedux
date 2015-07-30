@@ -7,35 +7,30 @@ using IdleLandsRedux.DataAccess.Mappings;
 
 namespace IdleLandsRedux.WebService.Services
 {
-	public class LoginService : IService
+	public class RegisterService : IService
 	{
 		public void HandleMessage(ISession session, string message, Action<string> sendAction, ref bool commitTransaction)
 		{
-			var msg = JsonConvert.DeserializeObject<LoginMessage>(message);
+			var msg = JsonConvert.DeserializeObject<RegisterMessage>(message);
 			commitTransaction = true;
 
 			if (msg != null) {
 
-				var player = session.QueryOver<Player>().Where(x => x.Name == msg.Username && x.Password == msg.Password).SingleOrDefault();
-				if (player == null) {
+				var player = session.QueryOver<Player>().Where(x => x.Name == msg.Username).SingleOrDefault();
+
+				if (player != null) {
 					sendAction(JsonConvert.SerializeObject(new ResponseMessage {
 						Success = false,
-						Error = "Incorrect Username or Password"
+						Error = "Username already exists."
 					}));
-					return;
 				}
 
-				var loggedInUser = session.QueryOver<LoggedInUser>().Where(x => x.Player.Id == player.Id).SingleOrDefault();
+				// TODO check if password is bcrypt or some shit
 
-				if (loggedInUser != null) {
-					sendAction(JsonConvert.SerializeObject(new ResponseMessage {
-						Success = false,
-						Error = "Already logged in"
-					}));
-					return;
-				}
+				player = new Player { Name = msg.Username, Password = msg.Password };
+				session.Save(player);
 
-				loggedInUser = new LoggedInUser { Player = player, Token = Guid.NewGuid().ToString(), Expiration = DateTime.UtcNow.AddHours(1) };
+				var loggedInUser = new LoggedInUser { Player = player, Token = Guid.NewGuid().ToString(), Expiration = DateTime.UtcNow.AddHours(1) };
 				session.Save(loggedInUser);
 
 				sendAction(JsonConvert.SerializeObject(new ResponseMessage {
