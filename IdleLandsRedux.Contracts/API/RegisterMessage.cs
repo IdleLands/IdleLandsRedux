@@ -1,4 +1,4 @@
-﻿namespace IdleLandsRedux.WebService.API
+﻿namespace IdleLandsRedux.Contracts.API
 {
 	public class RegisterMessage : Message
 	{

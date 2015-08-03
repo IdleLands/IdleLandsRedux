@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace IdleLandsRedux.WebService
+﻿namespace IdleLandsRedux.Contracts.API
 {
 	public class ResponseMessage
 	{

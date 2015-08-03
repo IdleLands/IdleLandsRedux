@@ -1,7 +1,7 @@
 ﻿using System;
 using WebSocketSharp;
 using Newtonsoft.Json;
-using IdleLandsRedux.WebService.API;
+using IdleLandsRedux.Contracts.API;
 using IdleLandsRedux.DataAccess;
 using NUnit.Framework;
 

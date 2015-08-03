@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using IdleLandsRedux.DataAccess.Mappings;
 
 namespace IdleLandsRedux
 {
@@ -48,14 +49,10 @@ namespace IdleLandsRedux
 			return total + arg.DamageReduction();
 		};
 
-		public static Func<List<Tuple<IActor, int>>, ICalcPhysicalAttackTargets, List<Tuple<IActor, int>>> calcPhysicalAttackTargets = 
-		(List<Tuple<IActor, int>> allEnemies, ICalcPhysicalAttackTargets actor) => {
+		public static Func<List<Tuple<Character, int>>, ICalcPhysicalAttackTargets, List<Tuple<Character, int>>> calcPhysicalAttackTargets = 
+			(List<Tuple<Character, int>> allEnemies, ICalcPhysicalAttackTargets actor) => {
 			return actor.PhysicalAttackTargets(allEnemies);
 		};
-
-		public static void Main()
-		{
-		}
 	}
 }
 

@@ -32,13 +32,17 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="personalityReduce.cs" />
-    <Compile Include="Person.cs" />
-    <Compile Include="Monster.cs" />
     <Compile Include="Reduction Interfaces\ICalcDamageReduction.cs" />
     <Compile Include="Reduction Interfaces\ICalcPhysicalAttackTargets.cs" />
-    <Compile Include="IActor.cs" />
     <Compile Include="Tests\ReductionTests.cs" />
     <Compile Include="Tests\DatabaseConnectionTests.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Mappings\SpecificCharacter.cs" />
+    <Compile Include="Mappings\SpecificMonster.cs" />
+    <Compile Include="Battle.cs" />
+    <Compile Include="Mappings\SpecificPlayer.cs" />
+    <Compile Include="Scripts\ScriptHelper.cs" />
+    <Compile Include="Tests\Scripts\ScriptHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
@@ -59,6 +63,16 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
+    <Reference Include="NetMQ">
+      <HintPath>..\packages\NetMQ.3.3.0.11\lib\net40\NetMQ.dll</HintPath>
+    </Reference>
+    <Reference Include="Jint">
+      <HintPath>..\packages\Jint.2.5.0\lib\portable-net40+sl50+win+wpa81+wp80\Jint.dll</HintPath>
+    </Reference>
+    <Reference Include="Shouldly">
+      <HintPath>..\packages\Shouldly.2.5.0\lib\net40\Shouldly.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -67,11 +81,20 @@
   <ItemGroup>
     <Folder Include="Reduction Interfaces\" />
     <Folder Include="Tests\" />
+    <Folder Include="Mappings\" />
+    <Folder Include="Scripts\" />
+    <Folder Include="Scripts\Personalities\" />
+    <Folder Include="Tests\Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IdleLandsRedux.DataAccess\IdleLandsRedux.DataAccess.csproj">
       <Project>{8FFC8695-7D01-47BB-8AE3-DB853C8FEF13}</Project>
       <Name>IdleLandsRedux.DataAccess</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\Personalities\Brave.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

@@ -1,14 +1,8 @@
-﻿using System;
-using FluentNHibernate.Mapping;
-
-namespace IdleLandsRedux.DataAccess.Mappings
+﻿namespace IdleLandsRedux.DataAccess.Mappings
 {
-	public class Player
+	public class Player : Character
 	{
-		public virtual int Id { get; protected set; }
-		public virtual string Name { get; set; }
 		public virtual string Password { get; set; }
-		public virtual StatsObject Stats { get; set; }
 	}
 }
 

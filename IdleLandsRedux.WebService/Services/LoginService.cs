@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using NHibernate;
-using IdleLandsRedux.WebService.API;
+using IdleLandsRedux.Contracts.API;
 using IdleLandsRedux.DataAccess;
 using IdleLandsRedux.DataAccess.Mappings;
 
@@ -35,7 +35,12 @@ namespace IdleLandsRedux.WebService.Services
 					return;
 				}
 
-				loggedInUser = new LoggedInUser { Player = player, Token = Guid.NewGuid().ToString(), Expiration = DateTime.UtcNow.AddHours(1) };
+				loggedInUser = new LoggedInUser {
+					Player = player,
+					Token = Guid.NewGuid().ToString(),
+					Expiration = DateTime.UtcNow.AddMinutes(10),
+					LastAction = null
+				};
 				session.Save(loggedInUser);
 
 				sendAction(JsonConvert.SerializeObject(new ResponseMessage {

@@ -12,12 +12,15 @@ namespace IdleLandsRedux.DataAccess
 {
 	public class Bootstrapper : IDisposable
 	{
-		private static ISessionFactory sessionFactory { get; set; }
-		private bool disposed = false;
+		private static ISessionFactory _sessionFactory { get; set; }
+		private bool _disposed = false;
 
 		public Bootstrapper()
 		{
-			sessionFactory = CreateSessionFactory();
+			if (_sessionFactory != null)
+				throw new Exception("Do not instantiate twice!");
+			
+			_sessionFactory = CreateSessionFactory();
 		}
 
 		public void Dispose()
@@ -28,22 +31,22 @@ namespace IdleLandsRedux.DataAccess
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (disposed)
+			if (_disposed)
 				return;
 			
-			if(sessionFactory != null) {
-				sessionFactory.Close();
-				sessionFactory.Dispose();
-				sessionFactory = null;
+			if(_sessionFactory != null) {
+				_sessionFactory.Close();
+				_sessionFactory.Dispose();
+				_sessionFactory = null;
 			}
 		}
 
 		public static ISession CreateSession()
 		{
-			if (sessionFactory == null)
+			if (_sessionFactory == null)
 				throw new Exception("Initialize bootstrapper first!");
 
-			return sessionFactory.OpenSession();
+			return _sessionFactory.OpenSession();
 		}
 
 		private ISessionFactory CreateSessionFactory()
@@ -67,7 +70,8 @@ namespace IdleLandsRedux.DataAccess
 				)
 				.ExposeConfiguration(TreatConfiguration)
 				.BuildSessionFactory();
-			} catch (Exception e) { 
+			} catch (Exception e) {
+				Console.WriteLine(e.Message);
 				return null; //Usually a mapping exception.
 			}
 		}

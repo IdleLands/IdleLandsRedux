@@ -63,5 +63,9 @@
       <Project>{8FFC8695-7D01-47BB-8AE3-DB853C8FEF13}</Project>
       <Name>IdleLandsRedux.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IdleLandsRedux.Contracts\IdleLandsRedux.Contracts.csproj">
+      <Project>{D3A9AFD9-F3D0-488A-A9AB-40C1B75A3769}</Project>
+      <Name>IdleLandsRedux.Contracts</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
