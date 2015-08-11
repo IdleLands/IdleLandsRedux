@@ -18,7 +18,7 @@ namespace IdleLandsRedux.WebService.Test
 		[TestFixtureSetUp]
 		public void TestSetup()
 		{
-			_bootstrapper = new Bootstrapper();
+			_bootstrapper = new Bootstrapper(log4net.LogManager.GetLogger(typeof(RegisterTest)));
 			ws = new WebSocket("ws://localhost:2345/IdleLands");
 			ws.Log.Level = LogLevel.Trace;
 

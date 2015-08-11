@@ -1,7 +1,7 @@
 ﻿using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 
-namespace IdleLandsRedux.DataAccess
+namespace IdleLandsRedux.DataAccess.Conventions
 {
 	//http://ayende.com/blog/1890/nhibernate-cascades-the-different-between-all-all-delete-orphans-and-save-update
 	/// <summary>

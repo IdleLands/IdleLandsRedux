@@ -6,21 +6,37 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
-using System.Configuration;
+using IdleLandsRedux.Common;
+using IdleLandsRedux.DataAccess.Conventions;
+using log4net;
 
 namespace IdleLandsRedux.DataAccess
 {
 	public class Bootstrapper : IDisposable
 	{
-		private static ISessionFactory _sessionFactory { get; set; }
+		//One session factory for the entire process, one session per thread.
+		//See http://stackoverflow.com/questions/242961/nhibernate-session-and-multithreading
+		private static ISessionFactory _sessionFactory = null;
+		internal static ILog log { get; set; }
 		private bool _disposed = false;
 
-		public Bootstrapper()
+		public Bootstrapper(ILog _log)
 		{
-			if (_sessionFactory != null)
-				throw new Exception("Do not instantiate twice!");
+			if (_log == null)
+				throw new ArgumentNullException("log is null");
+
+			log = _log;
+
+			if (_sessionFactory != null) {
+				log.Error("Do not instantiate bootstrapper twice!");
+				throw new Exception("Do not instantiate bootstrapper twice!");
+			}
 			
 			_sessionFactory = CreateSessionFactory();
+			if (_sessionFactory == null) {
+				log.Error("Could not instantiate sessionFactory?");
+				throw new Exception("Could not instantiate sessionFactory?");
+			}
 		}
 
 		public void Dispose()
@@ -43,42 +59,51 @@ namespace IdleLandsRedux.DataAccess
 
 		public static ISession CreateSession()
 		{
-			if (_sessionFactory == null)
+			if (_sessionFactory == null) {
+				log.Error("Initialize bootstrapper first!");
 				throw new Exception("Initialize bootstrapper first!");
+			}
 
 			return _sessionFactory.OpenSession();
 		}
 
 		private ISessionFactory CreateSessionFactory()
 		{
-			string host = ReadSetting("Host");
-			int port = Int32.Parse(ReadSetting("Port"));
-			string db = ReadSetting("Database");
-			string user = ReadSetting("User");
-			string pass = ReadSetting("Password");
+			string host = ConfigReader.ReadSetting("Host");
+			int port = Int32.Parse(ConfigReader.ReadSetting("Port"));
+			string db = ConfigReader.ReadSetting("Database");
+			string user = ConfigReader.ReadSetting("User");
+			string pass = ConfigReader.ReadSetting("Password");
+
+			string connString = string.Format("Server={0};Port={1};Database={2};User Id={3};Password=;SSL=true;SslMode=Require;", host, port, db, user);
+			log.Info("nhibernate connecting to connstring \"" + connString + "\"");
+			connString = string.Format("Server={0};Port={1};Database={2};User Id={3};Password={4};SSL=true;SslMode=Require;", host, port, db, user, pass);
 
 			try
 			{
 			return Fluently.Configure()
 				.Database(
 					PostgreSQLConfiguration.PostgreSQL82
-					.ConnectionString(string.Format("Server={0};Port={1};Database={2};User Id={3};Password={4};SSL=true;SslMode=Require;", host, port, db, user, pass))
+						.ConnectionString(connString)
 				)
 				.Mappings(m =>
-					m.AutoMappings.Add(AutoMap.AssemblyOf<Mappings.Player>(new AutomappingConfiguration())
-						.Conventions.Add<CascadeConvention>())
+						m.AutoMappings.Add(AutoMap.AssemblyOf<Mappings.Player>(new AutomappingConfiguration()).IgnoreBase<Mappings.Character>()
+							.Conventions.Add<CascadeConvention>()
+							.Conventions.Add<TableNameConvention>())
+						
+						
 				)
 				.ExposeConfiguration(TreatConfiguration)
 				.BuildSessionFactory();
 			} catch (Exception e) {
-				Console.WriteLine(e.Message);
-				return null; //Usually a mapping exception.
+				log.Error(e.Message);
+				throw e;
 			}
 		}
 
 		private void TreatConfiguration(NHibernate.Cfg.Configuration configuration)
 		{
-			string updateOrTruncate = ReadSetting("UpdateOrTruncate");
+			string updateOrTruncate = ConfigReader.ReadSetting("UpdateOrTruncate");
 
 			if (updateOrTruncate.ToLower() == "update") {
 				var update = new SchemaUpdate(configuration);
@@ -101,24 +126,7 @@ namespace IdleLandsRedux.DataAccess
 			}
 		}
 
-		private string ReadSetting(string key)
-		{
-			try
-			{
-				var appSettings = ConfigurationManager.AppSettings;
-				if(appSettings[key] == null)
-				{
-					Console.WriteLine("Error reading app settings. Aborting program.");
-					throw new Exception("AppSettings in app.config not filled correctly.");
-				}
-				return appSettings[key];
-			}
-			catch (ConfigurationErrorsException cex)
-			{
-				Console.WriteLine("Error reading app settings. Aborting program.");
-				throw cex;
-			}
-		}
+
 	}
 }
 

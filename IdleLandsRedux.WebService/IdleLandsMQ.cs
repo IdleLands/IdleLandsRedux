@@ -1,6 +1,10 @@
 ﻿using System;
+using log4net;
 using NetMQ;
 using NetMQ.Sockets;
+using Newtonsoft.Json;
+using IdleLandsRedux.Contracts.MQ;
+using IdleLandsRedux.Common;
 
 namespace IdleLandsRedux.WebService
 {
@@ -9,12 +13,15 @@ namespace IdleLandsRedux.WebService
 		private NetMQContext _context { get; set;}
 		private PushSocket _serverSocket { get; set;}
 		private bool _disposed = false;
+		static readonly ILog log = LogManager.GetLogger(typeof(Program));
 
 		public IdleLandsMQ()
 		{
 			_context = NetMQContext.Create();
 			_serverSocket = _context.CreatePushSocket();
-			_serverSocket.Bind("tcp://localhost:8172");
+			var mqHost = ConfigReader.ReadSetting("MqHost");
+			_serverSocket.Bind("tcp://" + mqHost);
+			log.Info("Bound MQ push socket to " + mqHost);
 		}
 
 		public void Dispose()
@@ -39,9 +46,13 @@ namespace IdleLandsRedux.WebService
 			}
 		}
 
-		public void SendTask()
+		public bool SendTask<T>(T task) where T : Task
 		{
-			_serverSocket.Send("Hey!");
+			//Perhaps instead of sending it directly, queue it up and have a background thread try to send it.
+			//Because this might clog up the program. Or it might not.
+			var message = JsonConvert.SerializeObject(task);
+			log.Info("Sending \"" + message + "\"");
+			return _serverSocket.TrySendFrame(new TimeSpan(0, 0, 10), message);
 		}
 	}
 }

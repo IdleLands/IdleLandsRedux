@@ -42,22 +42,34 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mappings\" />
+    <Folder Include="Conventions\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Mappings\StatsObject.cs" />
     <Compile Include="AutomappingConfiguration.cs" />
-    <Compile Include="CascadeConvention.cs" />
     <Compile Include="Mappings\Player.cs" />
     <Compile Include="Mappings\LoggedInUser.cs" />
     <Compile Include="Mappings\Monster.cs" />
     <Compile Include="Mappings\Character.cs" />
     <Compile Include="Mappings\Item.cs" />
+    <Compile Include="Config\AssemblyInfo.cs" />
+    <Compile Include="Conventions\CascadeConvention.cs" />
+    <Compile Include="Conventions\TableNameConvention.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IdleLandsRedux.Common\IdleLandsRedux.Common.csproj">
+      <Project>{0ACEB47B-9486-4147-AE87-AFCF42E4AA07}</Project>
+      <Name>IdleLandsRedux.Common</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
