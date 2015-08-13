@@ -29,8 +29,8 @@ namespace IdleLandsRedux.WebService
 				var session = Bootstrapper.CreateSession();
 				using (var transaction = session.BeginTransaction()) {
 					DateTime now = DateTime.UtcNow;
-					Player player;
-					StatsObject statsObject;
+					Player player = null;
+					StatsObject statsObject = null;
 
 					try {
 						var users = session.QueryOver<LoggedInUser>()
