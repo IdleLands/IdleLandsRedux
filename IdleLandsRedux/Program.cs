@@ -17,7 +17,7 @@ namespace IdleLandsRedux
 	public class Program
 	{
 		private static readonly ILog log = LogManager.GetLogger(typeof(Program));
-		private bool stop { get; set; }
+		private volatile bool _stop = false;
 
 		private class ThreadParam
 		{
@@ -36,7 +36,7 @@ namespace IdleLandsRedux
 			log.Info("Starting IdleLands thread #" + threadParam.ThreadNumber);
 
 			threadParam.socket.Connect("tcp://" + threadParam.MqHost);
-			while (!stop) {
+			while (!_stop) {
 				string taskString = String.Empty;
 				if (threadParam.socket.TryReceiveFrameString(new TimeSpan(0, 0, 5), out taskString)) {
 					log.Info("Thread #" + threadParam.ThreadNumber + " received: \"" + taskString + "\"");
@@ -54,10 +54,10 @@ namespace IdleLandsRedux
 			var program = new Program();
 			new Bootstrapper(log);
 
-			program.stop = false;
+			program._stop = false;
 
 			Console.CancelKeyPress += (sender, e) => {
-				program.stop = true;
+				program._stop = true;
 				log.Info("Ctrl^C received, stopping program, please wait up to 10 seconds.");
 				e.Cancel = true;
 			};
@@ -75,7 +75,7 @@ namespace IdleLandsRedux
 				threads.Add(thread);
 			}
 
-			while (!program.stop) {
+			while (!program._stop) {
 				Thread.Sleep(1000);
 			}
 

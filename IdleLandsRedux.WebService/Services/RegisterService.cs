@@ -44,6 +44,8 @@ namespace IdleLandsRedux.WebService.Services
 				}));
 
 			} else {
+				commitTransaction = false;
+
 				sendAction(JsonConvert.SerializeObject(new ResponseMessage {
 					Success = false,
 					Error = "Incorrect message."

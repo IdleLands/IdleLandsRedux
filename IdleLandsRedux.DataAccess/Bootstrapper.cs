@@ -87,10 +87,14 @@ namespace IdleLandsRedux.DataAccess
 						.ConnectionString(connString)
 				)
 				.Mappings(m =>
-						m.AutoMappings.Add(AutoMap.AssemblyOf<Mappings.Player>(new AutomappingConfiguration()).IgnoreBase<Mappings.Character>()
+						m.AutoMappings
+						.Add(AutoMap.AssemblyOf<RestrictedNumber>(new AutomappingConfiguration())
 							.Conventions.Add<CascadeConvention>()
 							.Conventions.Add<TableNameConvention>())
-						
+						.Add(AutoMap.AssemblyOf<Mappings.Player>(new AutomappingConfiguration())
+							.IgnoreBase<Mappings.Character>()
+							.Conventions.Add<CascadeConvention>()
+							.Conventions.Add<TableNameConvention>())
 						
 				)
 				.ExposeConfiguration(TreatConfiguration)

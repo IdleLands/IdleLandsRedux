@@ -14,7 +14,7 @@ namespace IdleLandsRedux.WebService
 	public class Program
 	{
 		static readonly ILog log = LogManager.GetLogger(typeof(Program));
-		private static bool _stop = false;
+		private static volatile bool _stop = false;
 
 		private static Type[] GetTypesInNamespace(Assembly assembly, string nameSpace)
 		{
@@ -29,8 +29,8 @@ namespace IdleLandsRedux.WebService
 				var session = Bootstrapper.CreateSession();
 				using (var transaction = session.BeginTransaction()) {
 					DateTime now = DateTime.UtcNow;
-					Player player;
-					StatsObject statsObject;
+					Player player = null;
+					StatsObject statsObject = null;
 
 					try {
 						var users = session.QueryOver<LoggedInUser>()
@@ -83,15 +83,13 @@ namespace IdleLandsRedux.WebService
 
 			log.Info("WebService started");
 
-			bool stop = false;
-
 			Console.CancelKeyPress += (sender, e) => {
-				stop = true;
+				_stop = true;
 				log.Info("Ctrl^C received, stopping program.");
 				e.Cancel = true;
 			};
 
-			while (!stop) {
+			while (!_stop) {
 				System.Threading.Thread.Sleep(1000);
 			}
 

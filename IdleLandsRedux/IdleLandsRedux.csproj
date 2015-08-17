@@ -44,6 +44,9 @@
     <Compile Include="Scripts\ScriptHelper.cs" />
     <Compile Include="Tests\Scripts\ScriptHelperTests.cs" />
     <Compile Include="Config\AssemblyInfo.cs" />
+    <Compile Include="Managers\BattleManager.cs" />
+    <Compile Include="Managers\MessageManager.cs" />
+    <Compile Include="Tests\Managers\MessageManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
@@ -51,9 +54,6 @@
     </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate">
-      <HintPath>..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
@@ -80,10 +80,15 @@
     <Reference Include="Npgsql">
       <HintPath>..\packages\Npgsql.2.2.5\lib\net45\Npgsql.dll</HintPath>
     </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Config\app.config" />
+    <None Include="Scripts\Classes\Archer.js" />
+    <None Include="Scripts\Classes\BaseClass.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Reduction Interfaces\" />
@@ -93,6 +98,9 @@
     <Folder Include="Scripts\Personalities\" />
     <Folder Include="Tests\Scripts\" />
     <Folder Include="Config\" />
+    <Folder Include="Scripts\Classes\" />
+    <Folder Include="Tests\Managers\" />
+    <Folder Include="Managers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IdleLandsRedux.DataAccess\IdleLandsRedux.DataAccess.csproj">
