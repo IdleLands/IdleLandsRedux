@@ -95,6 +95,39 @@ namespace IdleLandsRedux
 
 			throw new ArgumentException("Expected " + typeof(T).FullName + " but got " + result.GetType().FullName);
 		}
+
+		public static Engine CreateScriptEngine()
+		{
+			return new Engine();
+		}
+
+		public static void ExecuteScript(ref Engine engine, string scriptPath, Dictionary<string, object> parameters = null)
+		{
+			var scriptText = File.ReadAllText(appPath + "/Scripts/" + scriptPath);
+			ExecuteFunc(ref engine, scriptText, parameters);
+		}
+
+		public static void ExecuteFunc(ref Engine engine, string func, Dictionary<string, object> parameters = null)
+		{
+			if (parameters != null) {
+				foreach (var keyValue in parameters) {
+					engine.SetValue(keyValue.Key, keyValue.Value);
+				}
+			}
+
+			engine.Execute(func);
+		}
+
+		public static T GetValue<T>(ref Engine engine)
+		{
+			var result = engine.GetCompletionValue().ToObject();
+
+			if (result is T) {
+				return (T)result;
+			}
+
+			throw new ArgumentException("Expected " + typeof(T).FullName + " but got " + result.GetType().FullName);
+		}
 	}
 }
 

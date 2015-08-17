@@ -3,7 +3,7 @@ using FluentNHibernate.Conventions.Instances;
 
 namespace IdleLandsRedux.DataAccess.Conventions
 {
-	public class TableNameConvention : IClassConvention
+	internal class TableNameConvention : IClassConvention
 	{
 		//See bug CORE-1
 		public void Apply(FluentNHibernate.Conventions.Instances.IClassInstance instance)

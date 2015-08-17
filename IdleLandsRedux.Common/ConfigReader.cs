@@ -5,6 +5,12 @@ namespace IdleLandsRedux.Common
 {
 	public class ConfigReader
 	{
+		/// <summary>
+		/// Reads the setting from app.config or web.config.
+		/// </summary>
+		/// <returns>The setting.</returns>
+		/// <exception cref="Exception">Key not found in config.</exception>
+		/// <param name="key">Key.</param>
 		public static string ReadSetting(string key)
 		{
 			try
