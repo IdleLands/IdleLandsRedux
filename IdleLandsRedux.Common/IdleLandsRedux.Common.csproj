@@ -37,6 +37,8 @@
     <Compile Include="Tests\StringHelperTests.cs" />
     <Compile Include="RestrictedNumber.cs" />
     <Compile Include="RandomHelper.cs" />
+    <Compile Include="Interfaces\IRandomHelper.cs" />
+    <Compile Include="Bootstrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />
@@ -47,9 +49,19 @@
     <Reference Include="Shouldly">
       <HintPath>..\packages\Shouldly.2.5.0\lib\net40\Shouldly.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

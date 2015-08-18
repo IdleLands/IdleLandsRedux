@@ -9,20 +9,25 @@ using log4net;
 
 namespace IdleLandsRedux.Managers
 {
-	public static class MessageManager
+	public class MessageManager : IMessageManager
 	{
 		#if DEBUG
 		internal static ILog log { get; set; }
 		#endif
+		private IRandomHelper randomHelper { get; set; }
 
-		private static string GetRandomLineOfFile(string filepath)
+		public MessageManager(IRandomHelper randomHelper)
 		{
-			RandomHelper randomHelper = new RandomHelper();
-			var lines = File.ReadLines(filepath);
-			return lines.ElementAt(randomHelper.Next(lines.Count()));
+			this.randomHelper = randomHelper;
 		}
 
-		public static StringBuilder ReplaceWithLineIfContains(this StringBuilder builder, string input, string contains, string filepath)
+		private string GetRandomLineOfFile(string filepath)
+		{
+			var lines = File.ReadLines(filepath).ToList();
+			return lines[randomHelper.Next(lines.Count())];
+		}
+
+		private StringBuilder ReplaceWithLineIfContains(StringBuilder builder, string input, string contains, string filepath)
 		{
 			if (input.Contains(contains)) {
 				builder = builder.Replace(contains, GetRandomLineOfFile(filepath));
@@ -40,7 +45,7 @@ namespace IdleLandsRedux.Managers
 		/// <param name="xpGained">Xp gained.</param>
 		/// <param name="player">Player.</param>
 		/// <param name="item">Item.</param>
-		public static string ParseAndReplaceEventMessage(string eventMessage, int goldGained = 0, int xpGained = 0, Player player = null, Item item = null)
+		public string ParseAndReplaceEventMessage(string eventMessage, int goldGained = 0, int xpGained = 0, Player player = null, Item item = null)
 		{
 			StringBuilder retString = new StringBuilder(eventMessage);
 
@@ -81,8 +86,8 @@ namespace IdleLandsRedux.Managers
 				.Replace("%xp", xpGained.ToString());
 
 
-			retString = retString.ReplaceWithLineIfContains(eventMessage, "$random:deity$", "assets/strings/deity.txt")
-				.ReplaceWithLineIfContains(eventMessage, "$random:placeholder$", "assets/strings/placeholder.txt");
+			retString = ReplaceWithLineIfContains(retString, eventMessage, "$random:deity$", "assets/strings/deity.txt");
+			retString = ReplaceWithLineIfContains(retString, eventMessage, "$random:placeholder$", "assets/strings/placeholder.txt");
 
 			return retString.ToString();
 		}

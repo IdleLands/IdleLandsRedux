@@ -3,7 +3,7 @@
 namespace IdleLandsRedux.Common
 {
 	//Adapted from http://stackoverflow.com/questions/3049467/is-c-sharp-random-number-generator-thread-safe
-	public class RandomHelper
+	public class RandomHelper : IRandomHelper
 	{
 		private static readonly Random _global = new Random();
 		[ThreadStatic] private static Random _local;

@@ -16,8 +16,8 @@ namespace IdleLandsRedux
 		//Test to see if we can connect to the server specified in app.config
 		public void TestBootstrapper()
 		{
-			new Bootstrapper(log4net.LogManager.GetLogger(typeof(DatabaseConnectionTests)));
-			var session = Bootstrapper.CreateSession();
+			new DataAccess.Bootstrapper(log4net.LogManager.GetLogger(typeof(DatabaseConnectionTests)));
+			var session = DataAccess.Bootstrapper.CreateSession();
 			Assert.That(session != null);
 		}
 	}

@@ -19,6 +19,11 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <PlatformTarget>x86</PlatformTarget>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp -ru assets ${ProjectName}/bin/Debug" workingdir="${SolutionDir}" externalConsole="True" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>full</DebugType>
@@ -47,6 +52,9 @@
     <Compile Include="Managers\BattleManager.cs" />
     <Compile Include="Managers\MessageManager.cs" />
     <Compile Include="Tests\Managers\MessageManagerTests.cs" />
+    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Interfaces\Managers\IBattleManager.cs" />
+    <Compile Include="Interfaces\Managers\IMessageManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
@@ -83,6 +91,18 @@
     <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -101,6 +121,8 @@
     <Folder Include="Scripts\Classes\" />
     <Folder Include="Tests\Managers\" />
     <Folder Include="Managers\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Interfaces\Managers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IdleLandsRedux.DataAccess\IdleLandsRedux.DataAccess.csproj">

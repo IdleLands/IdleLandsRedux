@@ -11,6 +11,7 @@ using IdleLandsRedux.DataAccess;
 using IdleLandsRedux.DataAccess.Mappings;
 using IdleLandsRedux.Common;
 using IdleLandsRedux.Contracts.MQ;
+using Microsoft.Practices.Unity;
 
 namespace IdleLandsRedux
 {
@@ -52,7 +53,7 @@ namespace IdleLandsRedux
 		{
 			log.Info("Starting IdleLands");
 			var program = new Program();
-			new Bootstrapper(log);
+			new DataAccess.Bootstrapper(log);
 
 			program._stop = false;
 
