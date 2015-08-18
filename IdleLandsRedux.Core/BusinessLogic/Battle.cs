@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using IdleLandsRedux.SpecificMappings;
+using IdleLandsRedux.Core.SpecificMappings;
 
-namespace IdleLandsRedux
+namespace IdleLandsRedux.Core.BusinessLogic
 {
 	public class Battle
 	{

@@ -2,12 +2,13 @@
 using NUnit.Framework;
 using Shouldly;
 using Moq;
-using IdleLandsRedux.Managers;
+using IdleLandsRedux.Core.Managers;
 using IdleLandsRedux.DataAccess.Mappings;
+using IdleLandsRedux.Core.Interfaces.Managers;
 using IdleLandsRedux.Common;
 using Microsoft.Practices.Unity;
 
-namespace IdleLandsRedux
+namespace IdleLandsRedux.Core.Tests.Managers
 {
 	[TestFixture]
 	public class MessageManagerTests
@@ -17,7 +18,7 @@ namespace IdleLandsRedux
 		[TestFixtureSetUp]
 		public void TestSetup()
 		{
-			container = IdleLandsRedux.Bootstrapper.BootstrapUnity();
+			container = Core.Bootstrapper.BootstrapUnity();
 		}
 
 		[Test]

@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using Jint;
 
-namespace IdleLandsRedux
+namespace IdleLandsRedux.Core.Scripts
 {
 	public class ScriptHelper
 	{

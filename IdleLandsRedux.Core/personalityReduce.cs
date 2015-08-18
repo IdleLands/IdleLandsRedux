@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using IdleLandsRedux.DataAccess.Mappings;
+using IdleLandsRedux.Core.Interfaces.Reductions;
 
-namespace IdleLandsRedux
+namespace IdleLandsRedux.Core
 {
 	public class personalityReduce
 	{

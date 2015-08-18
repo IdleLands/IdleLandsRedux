@@ -13,7 +13,7 @@ using IdleLandsRedux.Common;
 using IdleLandsRedux.Contracts.MQ;
 using Microsoft.Practices.Unity;
 
-namespace IdleLandsRedux
+namespace IdleLandsRedux.Core
 {
 	public class Program
 	{

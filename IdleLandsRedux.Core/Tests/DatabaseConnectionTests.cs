@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using IdleLandsRedux.DataAccess;
 
-namespace IdleLandsRedux
+namespace IdleLandsRedux.Core.Tests
 {
 	[TestFixture]
 	public class DatabaseConnectionTests

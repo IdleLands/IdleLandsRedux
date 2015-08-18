@@ -37,14 +37,11 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="personalityReduce.cs" />
-    <Compile Include="Reduction Interfaces\ICalcDamageReduction.cs" />
-    <Compile Include="Reduction Interfaces\ICalcPhysicalAttackTargets.cs" />
     <Compile Include="Tests\ReductionTests.cs" />
     <Compile Include="Tests\DatabaseConnectionTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Mappings\SpecificCharacter.cs" />
     <Compile Include="Mappings\SpecificMonster.cs" />
-    <Compile Include="Battle.cs" />
     <Compile Include="Mappings\SpecificPlayer.cs" />
     <Compile Include="Scripts\ScriptHelper.cs" />
     <Compile Include="Tests\Scripts\ScriptHelperTests.cs" />
@@ -55,6 +52,9 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Interfaces\Managers\IBattleManager.cs" />
     <Compile Include="Interfaces\Managers\IMessageManager.cs" />
+    <Compile Include="Interfaces\Reductions\ICalcDamageReduction.cs" />
+    <Compile Include="Interfaces\Reductions\ICalcPhysicalAttackTargets.cs" />
+    <Compile Include="BusinessLogic\Battle.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
@@ -111,7 +111,6 @@
     <None Include="Scripts\Classes\BaseClass.js" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Reduction Interfaces\" />
     <Folder Include="Tests\" />
     <Folder Include="Mappings\" />
     <Folder Include="Scripts\" />
@@ -123,6 +122,7 @@
     <Folder Include="Managers\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Interfaces\Managers\" />
+    <Folder Include="BusinessLogic\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IdleLandsRedux.DataAccess\IdleLandsRedux.DataAccess.csproj">

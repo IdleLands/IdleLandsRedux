@@ -1,6 +1,7 @@
 ﻿using System;
 using IdleLandsRedux.DataAccess.Mappings;
-namespace IdleLandsRedux
+
+namespace IdleLandsRedux.Core.Interfaces.Managers
 {
 	public interface IMessageManager
 	{

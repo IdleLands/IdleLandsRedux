@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using Shouldly;
+using IdleLandsRedux.Core.Scripts;
 
-namespace IdleLandsRedux.Scripts
+namespace IdleLandsRedux.Core.Tests.Scripts
 {
 	[TestFixture]
 	public class ScriptHelperTests

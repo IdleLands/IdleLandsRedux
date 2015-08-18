@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.Practices.Unity;
 using IdleLandsRedux.Common;
-using IdleLandsRedux.Managers;
+using IdleLandsRedux.Core.Managers;
+using IdleLandsRedux.Core.Interfaces.Managers;
 
-namespace IdleLandsRedux
+namespace IdleLandsRedux.Core
 {
 	public class Bootstrapper
 	{
@@ -12,6 +13,7 @@ namespace IdleLandsRedux
 			IUnityContainer container = new UnityContainer();
 			Common.Bootstrapper.BootstrapUnity(ref container);
 			container.RegisterType<IMessageManager, MessageManager>();
+			container.RegisterType<IBattleManager, BattleManager>();
 			return container;
 		}
 	}

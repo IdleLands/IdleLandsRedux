@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IdleLandsRedux.SpecificMappings
+namespace IdleLandsRedux.Core.SpecificMappings
 {
-	public partial class SpecificPlayer : SpecificCharacter
+	public partial class SpecificMonster : SpecificCharacter
 	{
 		public override int DamageReduction()
 		{
-			return 50;
+			return -25;
 		}
 	}
 }

@@ -4,10 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using IdleLandsRedux.DataAccess.Mappings;
+using IdleLandsRedux.Core.Interfaces.Managers;
 using IdleLandsRedux.Common;
 using log4net;
 
-namespace IdleLandsRedux.Managers
+namespace IdleLandsRedux.Core.Managers
 {
 	public class MessageManager : IMessageManager
 	{

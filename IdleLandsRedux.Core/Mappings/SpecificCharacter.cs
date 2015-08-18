@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using IdleLandsRedux.DataAccess.Mappings;
+using IdleLandsRedux.Core.Interfaces.Reductions;
 
-namespace IdleLandsRedux.SpecificMappings
+namespace IdleLandsRedux.Core.SpecificMappings
 {
 	public partial class SpecificCharacter : Character, ICalcPhysicalAttackTargets, ICalcDamageReduction
 	{
