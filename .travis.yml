@@ -7,7 +7,7 @@ mono:
 before_install:
   - wget "https://raw.githubusercontent.com/Oipo/travis-mono-scripts/master/gendarme.sh"
   - sudo chmod a+x gendarme.sh
-  - ./gendarme.sh
+  - sudo ./gendarme.sh
 install:
   - nuget restore IdleLandsRedux.sln
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
