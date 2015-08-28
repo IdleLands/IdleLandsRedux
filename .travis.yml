@@ -4,9 +4,13 @@ os:
   - linux
 mono:
   - latest
+before_install:
+  - wget "https://raw.githubusercontent.com/enckse/travis-mono-scripts/master/gendarme.sh"
+  - sudo chmod a+x gendarme.sh
+  - ./gendarme.sh
 install:
   - nuget IdleLandsRedux.sln
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Release IdleLandsRedux.sln
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./MyPoject.Tests/bin/Release/MyProject.Tests.dll
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./IdleLandsRedux.Core.Tests/bin/Release/IdleLandsRedux.Core.Tests.dll
