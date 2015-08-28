@@ -9,7 +9,7 @@ before_install:
   - sudo chmod a+x gendarme.sh
   - ./gendarme.sh
 install:
-  - nuget IdleLandsRedux.sln
+  - nuget restore IdleLandsRedux.sln
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Release IdleLandsRedux.sln
