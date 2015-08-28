@@ -5,7 +5,7 @@ os:
 mono:
   - latest
 before_install:
-  - wget "https://raw.githubusercontent.com/enckse/travis-mono-scripts/master/gendarme.sh"
+  - wget "https://raw.githubusercontent.com/Oipo/travis-mono-scripts/master/gendarme.sh"
   - sudo chmod a+x gendarme.sh
   - ./gendarme.sh
 install:
