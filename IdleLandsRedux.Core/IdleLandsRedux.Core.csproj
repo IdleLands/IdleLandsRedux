@@ -37,18 +37,14 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="personalityReduce.cs" />
-    <Compile Include="Tests\ReductionTests.cs" />
-    <Compile Include="Tests\DatabaseConnectionTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Mappings\SpecificCharacter.cs" />
     <Compile Include="Mappings\SpecificMonster.cs" />
     <Compile Include="Mappings\SpecificPlayer.cs" />
     <Compile Include="Scripts\ScriptHelper.cs" />
-    <Compile Include="Tests\Scripts\ScriptHelperTests.cs" />
     <Compile Include="Config\AssemblyInfo.cs" />
     <Compile Include="Managers\BattleManager.cs" />
     <Compile Include="Managers\MessageManager.cs" />
-    <Compile Include="Tests\Managers\MessageManagerTests.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Interfaces\Managers\IBattleManager.cs" />
     <Compile Include="Interfaces\Managers\IMessageManager.cs" />
@@ -111,14 +107,11 @@
     <None Include="Scripts\Classes\BaseClass.js" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Tests\" />
     <Folder Include="Mappings\" />
     <Folder Include="Scripts\" />
     <Folder Include="Scripts\Personalities\" />
-    <Folder Include="Tests\Scripts\" />
     <Folder Include="Config\" />
     <Folder Include="Scripts\Classes\" />
-    <Folder Include="Tests\Managers\" />
     <Folder Include="Managers\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Interfaces\Managers\" />

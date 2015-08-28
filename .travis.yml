@@ -1,0 +1,12 @@
+language: csharp
+solution: IdleLandsRedux.sln
+os:
+  - linux
+mono:
+  - latest
+install:
+  - nuget IdleLandsRedux.sln
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+script:
+  - xbuild /p:Configuration=Release IdleLandsRedux.sln
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./MyPoject.Tests/bin/Release/MyProject.Tests.dll
