@@ -11,6 +11,8 @@ before_install:
 install:
   - nuget restore IdleLandsRedux.sln
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+before_script:
+  - git clone https://github.com/IdleLands/Custom-Assets IdleLandsRedux.Core.Tests/bin/Release/assets
 script:
   - xbuild /p:Configuration=Release IdleLandsRedux.sln
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./IdleLandsRedux.Core.Tests/bin/Release/IdleLandsRedux.Core.Tests.dll
