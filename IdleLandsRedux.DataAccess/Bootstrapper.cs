@@ -23,19 +23,19 @@ namespace IdleLandsRedux.DataAccess
 		public Bootstrapper(ILog _log)
 		{
 			if (_log == null)
-				throw new ArgumentNullException("log is null");
+				throw new ArgumentNullException("_log");
 
 			log = _log;
 
 			if (_sessionFactory != null) {
 				log.Error("Do not instantiate bootstrapper twice!");
-				throw new Exception("Do not instantiate bootstrapper twice!");
+				throw new InvalidOperationException("Do not instantiate bootstrapper twice!");
 			}
 			
 			_sessionFactory = CreateSessionFactory();
 			if (_sessionFactory == null) {
 				log.Error("Could not instantiate sessionFactory?");
-				throw new Exception("Could not instantiate sessionFactory?");
+				throw new InvalidOperationException("Could not instantiate sessionFactory?");
 			}
 		}
 
@@ -49,6 +49,8 @@ namespace IdleLandsRedux.DataAccess
 		{
 			if (_disposed)
 				return;
+
+			_disposed = true;
 			
 			if(_sessionFactory != null) {
 				_sessionFactory.Close();
@@ -61,7 +63,7 @@ namespace IdleLandsRedux.DataAccess
 		{
 			if (_sessionFactory == null) {
 				log.Error("Initialize bootstrapper first!");
-				throw new Exception("Initialize bootstrapper first!");
+				throw new InvalidOperationException("Initialize bootstrapper first!");
 			}
 
 			return _sessionFactory.OpenSession();
@@ -101,7 +103,7 @@ namespace IdleLandsRedux.DataAccess
 				.BuildSessionFactory();
 			} catch (Exception e) {
 				log.Error(e.Message);
-				throw e;
+				throw;
 			}
 		}
 
@@ -121,7 +123,7 @@ namespace IdleLandsRedux.DataAccess
 
 		private static void LogAutoMigration(string sql)
 		{
-			using (var file = new FileStream(DateTime.UtcNow.ToString("yyyy_MM_dd_HH_mm_") + "update.sql", FileMode.Append))
+			using (var file = new FileStream(DateTime.UtcNow.ToString("yyyy_MM_dd_HH_mm_") + "update.sql", FileMode.Append, FileAccess.Write))
 			{
 				using (var sw = new StreamWriter(file))
 				{

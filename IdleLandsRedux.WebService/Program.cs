@@ -16,11 +16,6 @@ namespace IdleLandsRedux.WebService
 		static readonly ILog log = LogManager.GetLogger(typeof(Program));
 		private static volatile bool _stop = false;
 
-		private static Type[] GetTypesInNamespace(Assembly assembly, string nameSpace)
-		{
-			return assembly.GetTypes().Where(t => String.Equals(t.Namespace, nameSpace, StringComparison.Ordinal)).ToArray();
-		}
-
 		private static void GenerateActivityThread()
 		{
 			log.Info("Starting GenerateActivityThread");
@@ -52,7 +47,7 @@ namespace IdleLandsRedux.WebService
 						transaction.Commit();
 					} catch (Exception e) {
 						log.Error(e.Message);
-						throw e;
+						throw;
 					}
 				}
 
@@ -60,7 +55,7 @@ namespace IdleLandsRedux.WebService
 			}
 		}
 
-		public static void Main(string[] args)
+		private static void Main()
 		{
 			log.Info("Starting WebService");
 

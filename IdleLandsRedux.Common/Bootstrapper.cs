@@ -1,13 +1,19 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Practices.Unity;
 
 
 namespace IdleLandsRedux.Common
 {
-	public class Bootstrapper
+	public static class Bootstrapper
 	{
-		public static void BootstrapUnity(ref IUnityContainer container)
+		[SuppressMessage("Gendarme.Rules.Correctness", "EnsureLocalDisposalRule", Justification = "This is actually an incorrect finding.")]
+		public static void BootstrapUnity(IUnityContainer container)
 		{
+			if (container == null) {
+				throw new ArgumentNullException("container");
+			}
+
 			container.RegisterType<IRandomHelper, RandomHelper>();
 		}
 	}

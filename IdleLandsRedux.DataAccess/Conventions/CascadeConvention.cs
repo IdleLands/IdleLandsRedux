@@ -9,7 +9,7 @@ namespace IdleLandsRedux.DataAccess.Conventions
 	/// convention does is to specify that many-to-one, one-to-many, and many-to-many relationships will all
 	/// have their Cascade option set to All.
 	/// </summary>
-	class CascadeConvention : IReferenceConvention, IHasManyConvention, IHasManyToManyConvention
+	internal sealed class CascadeConvention : IReferenceConvention, IHasManyConvention, IHasManyToManyConvention
 	{
 		public void Apply(IManyToOneInstance instance)
 		{

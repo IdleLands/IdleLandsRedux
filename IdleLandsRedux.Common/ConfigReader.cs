@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Configuration;
+using System.Collections.Generic;
 
 namespace IdleLandsRedux.Common
 {
-	public class ConfigReader
+	public static class ConfigReader
 	{
 		/// <summary>
 		/// Reads the setting from app.config or web.config.
@@ -19,14 +20,14 @@ namespace IdleLandsRedux.Common
 				if(appSettings[key] == null)
 				{
 					Console.WriteLine("Error reading app settings. Aborting program.");
-					throw new Exception("AppSettings in app.config not filled correctly. Missing key \"" + key + "\".");
+					throw new KeyNotFoundException("AppSettings in app.config not filled correctly. Missing key \"" + key + "\".");
 				}
 				return appSettings[key];
 			}
 			catch (ConfigurationErrorsException cex)
 			{
 				Console.WriteLine("Error reading app settings. Aborting program.");
-				throw cex;
+				throw;
 			}
 		}
 	}

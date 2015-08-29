@@ -27,6 +27,10 @@ namespace IdleLandsRedux.WebService
 
 		protected override void OnMessage (MessageEventArgs e)
 		{
+			if (e == null) {
+				throw new ArgumentNullException("e");
+			}
+
 			log.Info("Received message: " + e.Data);
 
 			if (string.IsNullOrEmpty(e.Data))
@@ -51,6 +55,7 @@ namespace IdleLandsRedux.WebService
 				else
 					transaction.Rollback();
 			}
+			session.Dispose();
 		}
 	}
 }

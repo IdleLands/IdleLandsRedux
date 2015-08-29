@@ -11,6 +11,14 @@ namespace IdleLandsRedux.WebService.Services
 	{
 		public void HandleMessage(ISession session, string message, Action<string> sendAction, ref bool commitTransaction)
 		{
+			if (session == null) {
+				throw new ArgumentNullException("session");
+			}
+
+			if (sendAction == null) {
+				throw new ArgumentNullException("sendAction");
+			}
+
 			var msg = JsonConvert.DeserializeObject<RegisterMessage>(message);
 			commitTransaction = true;
 

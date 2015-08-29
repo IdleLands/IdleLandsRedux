@@ -11,7 +11,7 @@ namespace IdleLandsRedux.Core
 		public static IUnityContainer BootstrapUnity()
 		{
 			IUnityContainer container = new UnityContainer();
-			Common.Bootstrapper.BootstrapUnity(ref container);
+			Common.Bootstrapper.BootstrapUnity(container);
 			container.RegisterType<IMessageManager, MessageManager>();
 			container.RegisterType<IBattleManager, BattleManager>();
 			return container;

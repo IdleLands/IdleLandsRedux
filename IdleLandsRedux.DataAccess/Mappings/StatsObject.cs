@@ -1,4 +1,5 @@
-﻿using IdleLandsRedux.Common;
+﻿using System;
+using IdleLandsRedux.Common;
 
 namespace IdleLandsRedux.DataAccess.Mappings
 {
@@ -31,6 +32,14 @@ namespace IdleLandsRedux.DataAccess.Mappings
 
 		public static StatsObject operator+(StatsObject a, StatsObject b)
 		{
+			if (a == null) {
+				throw new ArgumentNullException("a");
+			}
+
+			if (b == null) {
+				throw new ArgumentNullException("b");
+			}
+
 			StatsObject ret = new StatsObject();
 
 			ret.Strength = a.Strength + b.Strength;

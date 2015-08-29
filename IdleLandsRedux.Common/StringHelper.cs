@@ -27,8 +27,12 @@ namespace IdleLandsRedux.Common
 		/// <param name="input">Input. e.g. '%hisher' or 'she'</param>
 		public static string GetGenderPronoun(string gender, string input)
 		{
-			if (string.IsNullOrEmpty(gender) || string.IsNullOrEmpty(input)) {
-				throw new ArgumentNullException("GetGenderPronoun has null argument");
+			if (string.IsNullOrEmpty(gender)) {
+				throw new ArgumentNullException("gender");
+			}
+
+			if (string.IsNullOrEmpty(input)) {
+				throw new ArgumentNullException("input");
 			}
 
 			gender = gender.ToLower();
@@ -82,6 +86,9 @@ namespace IdleLandsRedux.Common
 		/// <param name="needles">Needles.</param>
 		public static bool ContainsAny(this string haystack, params string[] needles)
 		{
+			if (string.IsNullOrEmpty(haystack))
+				return false;
+
 			foreach (string needle in needles)
 			{
 				if (haystack.Contains(needle))
@@ -94,20 +101,28 @@ namespace IdleLandsRedux.Common
 		public static string Capitalize(this string @string, int offset = 0)
 		{
 			if (string.IsNullOrEmpty(@string)) {
-				throw new ArgumentNullException("Capitalize has null argument");
+				throw new ArgumentNullException("string");
 			}
 
-			return @string.Substring(0, offset) + Char.ToUpper(@string[offset]) + @string.Substring(offset + 1);
+			return @string.Substring(0, offset) + Char.ToUpper(@string[offset]).ToString() + @string.Substring(offset + 1);
 		}
 
 		public static StringBuilder ReplaceGenderPronoun(this StringBuilder builder, string gender, string input)
 		{
-			if (string.IsNullOrEmpty(gender) || string.IsNullOrEmpty(input)) {
-				throw new ArgumentNullException("ReplaceGenderPronoun has null argument");
+			if (builder == null) {
+				throw new ArgumentNullException("builder");
+			}
+
+			if (string.IsNullOrEmpty(gender)) {
+				throw new ArgumentNullException("gender");
+			}
+
+			if (string.IsNullOrEmpty(input)) {
+				throw new ArgumentNullException("input");
 			}
 
 			if (input.Length < 2) {
-				throw new ArgumentOutOfRangeException("Input length is too short. Minimum of 2.");
+				throw new ArgumentOutOfRangeException("input length is too short. Minimum of 2.");
 			}
 
 			string genderPronoun = StringHelper.GetGenderPronoun(gender, input);

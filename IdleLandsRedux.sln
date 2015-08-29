@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.DataAccess",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.WebService", "IdleLandsRedux.WebService\IdleLandsRedux.WebService.csproj", "{5792CEF9-CADD-4FD1-AC23-B7F52ADCAD6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.WebService.Test", "IdleLandsRedux.WebService.Test\IdleLandsRedux.WebService.Test.csproj", "{E2B08223-3FEA-4C9A-BE65-7941A195A1DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.WebService.Tests", "IdleLandsRedux.WebService.Test\IdleLandsRedux.WebService.Tests.csproj", "{E2B08223-3FEA-4C9A-BE65-7941A195A1DB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.Contracts", "IdleLandsRedux.Contracts\IdleLandsRedux.Contracts.csproj", "{D3A9AFD9-F3D0-488A-A9AB-40C1B75A3769}"
 EndProject

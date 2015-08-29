@@ -3,7 +3,7 @@
 namespace IdleLandsRedux.Common
 {
 	//Taken from https://github.com/seiyria/restricted-number/blob/master/RestrictedNumber.coffee
-	public class RestrictedNumber
+	public class RestrictedNumber : IEquatable<RestrictedNumber>
 	{
 		public int _maximum { get; private set; }
 		public int _minimum { get; private set; }
@@ -106,6 +106,14 @@ namespace IdleLandsRedux.Common
 		{
 			var rn = obj as RestrictedNumber;
 
+			if (rn == null)
+				return false;
+
+			return rn._current == _current && rn._maximum == _maximum && rn._minimum == _minimum;
+		}
+
+		public bool Equals(RestrictedNumber rn)
+		{
 			if (rn == null)
 				return false;
 

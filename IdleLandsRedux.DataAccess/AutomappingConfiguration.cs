@@ -4,7 +4,7 @@ using IdleLandsRedux.Common;
 
 namespace IdleLandsRedux.DataAccess
 {
-	internal class AutomappingConfiguration : DefaultAutomappingConfiguration
+	internal sealed class AutomappingConfiguration : DefaultAutomappingConfiguration
 	{
 		public override bool ShouldMap(Type type)
 		{
