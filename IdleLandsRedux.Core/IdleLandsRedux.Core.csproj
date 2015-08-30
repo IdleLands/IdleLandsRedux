@@ -116,5 +116,9 @@
       <Project>{D3A9AFD9-F3D0-488A-A9AB-40C1B75A3769}</Project>
       <Name>IdleLandsRedux.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IdleLandsRedux.GameLogic\IdleLandsRedux.GameLogic.csproj">
+      <Project>{78E7735B-F63E-4900-B196-D841ED007B7A}</Project>
+      <Name>IdleLandsRedux.GameLogic</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

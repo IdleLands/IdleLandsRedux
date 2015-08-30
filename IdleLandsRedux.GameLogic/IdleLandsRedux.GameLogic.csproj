@@ -49,7 +49,6 @@
     <Compile Include="Config\AssemblyInfo.cs" />
     <Compile Include="Actors\SendMessageActor.cs" />
     <Compile Include="Scripts\ScriptHelper.cs" />
-    <Compile Include="Actors\WorkerActor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">

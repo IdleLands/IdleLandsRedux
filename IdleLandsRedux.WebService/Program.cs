@@ -50,19 +50,6 @@ namespace IdleLandsRedux.WebService
 			using (var system = ActorSystem.Create("DispatchSystem")) {
 				var RemoteBattleActor = system.ActorOf(Props.Create(() => new BattleActor()), "remoteactor");
 
-				var list = new List<List<IdleLandsRedux.GameLogic.SpecificMappings.SpecificCharacter>>();
-				list.Add(new List<IdleLandsRedux.GameLogic.SpecificMappings.SpecificCharacter> { new IdleLandsRedux.GameLogic.SpecificMappings.SpecificCharacter { Name = "test" } });
-				var serializedList = JsonConvert.SerializeObject(list);
-				Console.WriteLine(serializedList);
-				//var list2 = JsonConvert.DeserializeObject<List<List<IdleLandsRedux.GameLogic.SpecificMappings.SpecificCharacter>>>(serializedList);
-				RemoteBattleActor.Tell(serializedList);
-
-				while (!_stop) {
-					Thread.Sleep(1000);
-				}
-
-				return;
-
 				while (!_stop) {
 					var session = Bootstrapper.CreateSession();
 					using (var transaction = session.BeginTransaction()) {
@@ -81,13 +68,18 @@ namespace IdleLandsRedux.WebService
 								session.Delete(user);
 							}
 
+							var battleList = new List<List<Character>>();
+
 							foreach (var user in users.Where(x => x.Expiration > now)) {
 								user.LastAction = now;
 								session.SaveOrUpdate(user);
-							
-
-
+								var tempList = new List<Character>();
+								tempList.Add(user.Player);
+								battleList.Add(tempList);
 							}
+
+							BattleActorMessage bam = new BattleActorMessage(battleList);
+							RemoteBattleActor.Tell(bam);
 
 							transaction.Commit();
 						} catch (Exception e) {
