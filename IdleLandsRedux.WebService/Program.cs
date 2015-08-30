@@ -2,64 +2,30 @@
 using System.Threading;
 using System.Reflection;
 using System.Linq;
+using System.Collections.Generic;
 using log4net;
 using WebSocketSharp;
 using WebSocketSharp.Server;
-using IdleLandsRedux.Contracts.MQ;
 using IdleLandsRedux.DataAccess;
 using IdleLandsRedux.DataAccess.Mappings;
+using IdleLandsRedux.GameLogic.Actors;
+using Akka.Actor;
+using Akka.Configuration;
+using Akka.Routing;
+using Newtonsoft.Json;
 
 namespace IdleLandsRedux.WebService
 {
 	public class Program
 	{
 		static readonly ILog log = LogManager.GetLogger(typeof(Program));
-		private static volatile bool _stop = false;
-
-		private static void GenerateActivityThread()
-		{
-			log.Info("Starting GenerateActivityThread");
-			var idleLandMQ = new IdleLandsMQ();
-			while (!_stop) {
-				var session = Bootstrapper.CreateSession();
-				using (var transaction = session.BeginTransaction()) {
-					DateTime now = DateTime.UtcNow;
-					Player player = null;
-					StatsObject statsObject = null;
-
-					try {
-						var users = session.QueryOver<LoggedInUser>()
-							.JoinAlias(x => x.Player, () => player, NHibernate.SqlCommand.JoinType.InnerJoin)
-							.JoinAlias(() => player.Stats, () => statsObject, NHibernate.SqlCommand.JoinType.LeftOuterJoin)
-							.Where(x => (x.LastAction == null || x.LastAction < now.AddSeconds(-10)))
-							.List();
-
-						foreach (var user in users.Where(x => x.Expiration <= now)) {
-							session.Delete(user);
-						}
-
-						foreach (var user in users.Where(x => x.Expiration > now)) {
-							user.LastAction = now;
-							session.SaveOrUpdate(user);
-							idleLandMQ.SendTask(new Task { Type = TaskType.Battle });
-						}
-
-						transaction.Commit();
-					} catch (Exception e) {
-						log.Error(e.Message);
-						throw;
-					}
-				}
-
-				Thread.Sleep(1000);
-			}
-		}
+		private static bool _stop = false;
 
 		private static void Main()
 		{
 			log.Info("Starting WebService");
 
-			new Bootstrapper(log);
+			/*new Bootstrapper(log);
 
 			var wssv = new WebSocketServer("ws://localhost:2345");
 
@@ -71,10 +37,7 @@ namespace IdleLandsRedux.WebService
 			if (!wssv.IsListening) {
 				log.Error("Service failed to start");
 				return;
-			}
-
-			var activityThread = new Thread(GenerateActivityThread);
-			activityThread.Start();
+			}*/
 
 			log.Info("WebService started");
 
@@ -84,17 +47,62 @@ namespace IdleLandsRedux.WebService
 				e.Cancel = true;
 			};
 
-			while (!_stop) {
-				System.Threading.Thread.Sleep(1000);
+			using (var system = ActorSystem.Create("DispatchSystem")) {
+				var RemoteBattleActor = system.ActorOf(Props.Create(() => new BattleActor()), "remoteactor");
+
+				var list = new List<List<IdleLandsRedux.GameLogic.SpecificMappings.SpecificCharacter>>();
+				list.Add(new List<IdleLandsRedux.GameLogic.SpecificMappings.SpecificCharacter> { new IdleLandsRedux.GameLogic.SpecificMappings.SpecificCharacter { Name = "test" } });
+				var serializedList = JsonConvert.SerializeObject(list);
+				Console.WriteLine(serializedList);
+				//var list2 = JsonConvert.DeserializeObject<List<List<IdleLandsRedux.GameLogic.SpecificMappings.SpecificCharacter>>>(serializedList);
+				RemoteBattleActor.Tell(serializedList);
+
+				while (!_stop) {
+					Thread.Sleep(1000);
+				}
+
+				return;
+
+				while (!_stop) {
+					var session = Bootstrapper.CreateSession();
+					using (var transaction = session.BeginTransaction()) {
+						DateTime now = DateTime.UtcNow;
+						Player player = null;
+						StatsObject statsObject = null;
+
+						try {
+							var users = session.QueryOver<LoggedInUser>()
+							.JoinAlias(x => x.Player, () => player, NHibernate.SqlCommand.JoinType.InnerJoin)
+							.JoinAlias(() => player.Stats, () => statsObject, NHibernate.SqlCommand.JoinType.LeftOuterJoin)
+							.Where(x => (x.LastAction == null || x.LastAction < now.AddSeconds(-10)))
+							.List();
+
+							foreach (var user in users.Where(x => x.Expiration <= now)) {
+								session.Delete(user);
+							}
+
+							foreach (var user in users.Where(x => x.Expiration > now)) {
+								user.LastAction = now;
+								session.SaveOrUpdate(user);
+							
+
+
+							}
+
+							transaction.Commit();
+						} catch (Exception e) {
+							log.Error(e.Message);
+							throw e;
+						}
+					}
+
+					System.Threading.Thread.Sleep(1000);
+				}
 			}
-
-			log.Info("Stopping IdleLands.WebService activity thread.");
-
-			activityThread.Join();
 
 			log.Info("Stopping IdleLands.WebService websocket.");
 
-			wssv.Stop();
+			//wssv.Stop();
 
 			log.Info("Quitting");
 		}

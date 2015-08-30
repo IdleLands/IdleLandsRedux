@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using IdleLandsRedux.Core.SpecificMappings;
+using IdleLandsRedux.GameLogic.SpecificMappings;
 using IdleLandsRedux.DataAccess.Mappings;
-using IdleLandsRedux.Core.Interfaces.Reductions;
+using IdleLandsRedux.GameLogic.Interfaces.Reductions;
 
-namespace IdleLandsRedux.Core.Tests
+namespace IdleLandsRedux.GameLogic.Tests
 {
 	[TestFixture]
 	public class ReductionTests

@@ -2,7 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Practices.Unity;
 
-
 namespace IdleLandsRedux.Common
 {
 	public static class Bootstrapper

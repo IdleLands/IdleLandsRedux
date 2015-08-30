@@ -43,12 +43,6 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="AsyncIO">
-      <HintPath>..\packages\AsyncIO.0.1.17.0\lib\net40\AsyncIO.dll</HintPath>
-    </Reference>
-    <Reference Include="NetMQ">
-      <HintPath>..\packages\NetMQ.3.3.0.13-alpha622\lib\net40\NetMQ.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Security">
       <HintPath>..\packages\Npgsql.2.2.5\lib\net45\Mono.Security.dll</HintPath>
     </Reference>
@@ -58,10 +52,45 @@
     <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="Akka">
+      <HintPath>..\packages\Akka.1.0.4\lib\net45\Akka.dll</HintPath>
+    </Reference>
+    <Reference Include="Akka.DI.Core">
+      <HintPath>..\packages\Akka.DI.Core.1.0.4\lib\net45\Akka.DI.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
+    <Reference Include="Akka.DI.Unity">
+      <HintPath>..\packages\Akka.DI.Unity.1.0.4\lib\net45\Akka.DI.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.ProtocolBuffers">
+      <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.521\lib\net40\Google.ProtocolBuffers.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.ProtocolBuffers.Serialization">
+      <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.521\lib\net40\Google.ProtocolBuffers.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="Helios">
+      <HintPath>..\packages\Helios.1.4.1\lib\net45\Helios.dll</HintPath>
+    </Reference>
+    <Reference Include="Akka.Remote">
+      <HintPath>..\packages\Akka.Remote.1.0.4\lib\net45\Akka.Remote.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Config\app.config" />
+    <None Include="protos\google\protobuf\csharp_options.proto" />
+    <None Include="protos\google\protobuf\descriptor.proto" />
+    <None Include="protos\tutorial\addressbook.proto" />
+    <None Include="licenses\license.txt" />
+    <None Include="licenses\protoc-license.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -70,7 +99,6 @@
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\RegisterService.cs" />
     <Compile Include="IdleLandsMainService.cs" />
-    <Compile Include="IdleLandsMQ.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IdleLandsRedux.DataAccess\IdleLandsRedux.DataAccess.csproj">
@@ -84,6 +112,10 @@
     <ProjectReference Include="..\IdleLandsRedux.Common\IdleLandsRedux.Common.csproj">
       <Project>{0ACEB47B-9486-4147-AE87-AFCF42E4AA07}</Project>
       <Name>IdleLandsRedux.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IdleLandsRedux.GameLogic\IdleLandsRedux.GameLogic.csproj">
+      <Project>{78E7735B-F63E-4900-B196-D841ED007B7A}</Project>
+      <Name>IdleLandsRedux.GameLogic</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

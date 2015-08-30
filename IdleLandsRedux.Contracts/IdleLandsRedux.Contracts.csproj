@@ -35,11 +35,6 @@
     <Compile Include="API\Message.cs" />
     <Compile Include="API\RegisterMessage.cs" />
     <Compile Include="API\ResponseMessage.cs" />
-    <Compile Include="MQ\Task.cs" />
-    <Compile Include="MQ\TaskType.cs" />
     <Compile Include="Config\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MQ\" />
   </ItemGroup>
 </Project>
