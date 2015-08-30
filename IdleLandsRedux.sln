@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.Contracts", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.Common", "IdleLandsRedux.Common\IdleLandsRedux.Common.csproj", "{0ACEB47B-9486-4147-AE87-AFCF42E4AA07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.GameLogic.Tests", "IdleLandsRedux.Core.Tests\IdleLandsRedux.GameLogic.Tests.csproj", "{464FD530-721D-48C5-8EB5-884CBF986AC8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.GameLogic.Tests", "IdleLandsRedux.GameLogic.Tests\IdleLandsRedux.GameLogic.Tests.csproj", "{464FD530-721D-48C5-8EB5-884CBF986AC8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.GameLogic", "IdleLandsRedux.GameLogic\IdleLandsRedux.GameLogic.csproj", "{78E7735B-F63E-4900-B196-D841ED007B7A}"
 EndProject
