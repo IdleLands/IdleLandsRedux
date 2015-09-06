@@ -5,8 +5,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{464FD530-721D-48C5-8EB5-884CBF986AC8}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>IdleLandsRedux.Core.Tests</RootNamespace>
-    <AssemblyName>IdleLandsRedux.Core.Tests</AssemblyName>
+    <RootNamespace>IdleLandsRedux.GameLogic.Tests</RootNamespace>
+    <AssemblyName>IdleLandsRedux.GameLogic.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
