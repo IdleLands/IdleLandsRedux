@@ -4,6 +4,7 @@ os:
   - linux
 mono:
   - latest
+#this needs sudo stuff, which slows the build, plus code analysis issues don't fail the build.
 #before_install:
 #  - wget "https://raw.githubusercontent.com/Oipo/travis-mono-scripts/master/gendarme.sh"
 #  - sudo chmod a+x gendarme.sh
