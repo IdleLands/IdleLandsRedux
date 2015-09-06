@@ -14,12 +14,12 @@ install:
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 before_script:
   - git clone https://github.com/IdleLands/Custom-Assets ./assets
+script:
+  - xbuild /p:Configuration=Release IdleLandsRedux.sln
   - ls -1
   - ls -1 assets
   - ls -l IdleLandsRedux.Common.Tests
   - ls -l IdleLandsRedux.Common.Tests/bin
   - ls -l IdleLandsRedux.Common.Tests/bin/Release
-script:
-  - xbuild /p:Configuration=Release IdleLandsRedux.sln
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./IdleLandsRedux.Common.Tests/bin/Release/IdleLandsRedux.Common.Tests.dll
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./IdleLandsRedux.GameLogic.Tests/bin/Release/IdleLandsRedux.GameLogic.Tests.dll
