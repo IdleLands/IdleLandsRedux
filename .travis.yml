@@ -16,6 +16,8 @@ before_script:
   - git clone https://github.com/IdleLands/Custom-Assets ./assets
   - ls -1
   - ls -1 assets
+  - ls -l IdleLandsRedux.Common.Tests
+  - ls -l IdleLandsRedux.Common.Tests/bin
   - ls -l IdleLandsRedux.Common.Tests/bin/Release
 script:
   - xbuild /p:Configuration=Release IdleLandsRedux.sln
