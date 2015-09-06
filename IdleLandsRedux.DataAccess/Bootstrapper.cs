@@ -39,6 +39,8 @@ namespace IdleLandsRedux.DataAccess
 			}
 		}
 
+		#region IDisposable members
+
 		public void Dispose()
 		{ 
 			Dispose(true);
@@ -58,6 +60,8 @@ namespace IdleLandsRedux.DataAccess
 				_sessionFactory = null;
 			}
 		}
+
+		#endregion
 
 		public static ISession CreateSession()
 		{

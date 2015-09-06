@@ -4,10 +4,10 @@ os:
   - linux
 mono:
   - latest
-before_install:
-  - wget "https://raw.githubusercontent.com/Oipo/travis-mono-scripts/master/gendarme.sh"
-  - sudo chmod a+x gendarme.sh
-  - sudo ./gendarme.sh
+#before_install:
+#  - wget "https://raw.githubusercontent.com/Oipo/travis-mono-scripts/master/gendarme.sh"
+#  - sudo chmod a+x gendarme.sh
+#  - sudo ./gendarme.sh
 install:
   - nuget restore IdleLandsRedux.sln
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
@@ -15,4 +15,5 @@ before_script:
   - git clone https://github.com/IdleLands/Custom-Assets IdleLandsRedux.Core.Tests/bin/Release/assets
 script:
   - xbuild /p:Configuration=Release IdleLandsRedux.sln
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./IdleLandsRedux.Core.Tests/bin/Release/IdleLandsRedux.Core.Tests.dll
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./IdleLandsRedux.Common.Tests/bin/Release/IdleLandsRedux.Common.Tests.dll
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./IdleLandsRedux.GameLogic.Tests/bin/Release/IdleLandsRedux.GameLogic.Tests.dll

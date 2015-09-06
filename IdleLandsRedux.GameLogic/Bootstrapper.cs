@@ -19,7 +19,6 @@ namespace IdleLandsRedux.GameLogic
 			IUnityContainer container = new UnityContainer();
 			Common.Bootstrapper.BootstrapUnity(container);
 			container.RegisterType<IMessageManager, MessageManager>();
-			container.RegisterType<IBattleManager, BattleManager>();
 			return container;
 		}
 	}

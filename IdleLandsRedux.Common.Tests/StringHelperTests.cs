@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using Shouldly;
 
-namespace IdleLandsRedux.Common
+namespace IdleLandsRedux.Common.Tests
 {
 	[TestFixture]
 	public class StringHelperTests

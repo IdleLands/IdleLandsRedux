@@ -34,21 +34,16 @@
     <Compile Include="ConfigReader.cs" />
     <Compile Include="Config\AssemblyInfo.cs" />
     <Compile Include="StringHelper.cs" />
-    <Compile Include="Tests\StringHelperTests.cs" />
     <Compile Include="RestrictedNumber.cs" />
     <Compile Include="RandomHelper.cs" />
     <Compile Include="Interfaces\IRandomHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="SecureRandomHelper.cs" />
+    <Compile Include="Interfaces\ISecureRandomHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />
     <Reference Include="System" />
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Shouldly">
-      <HintPath>..\packages\Shouldly.2.5.0\lib\net40\Shouldly.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
@@ -63,7 +58,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Tests\" />
     <Folder Include="Interfaces\" />
   </ItemGroup>
   <ItemGroup>

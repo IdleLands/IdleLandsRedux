@@ -10,22 +10,17 @@
   * @package Player
 */
 
-function fleePercent() {
-	return -100;
+function OnStaticBonus(basePlayerObject) {
+	var bonusObject = GetStaticBonusObject();
+
+	if(!canUse(basePlayerObject)) {
+		return basePlayerObject;
+	}
+
+	bonusObject.percentageStrength = 5;
+	return bonusObject;
 }
 
-function strPercent() {
-	return 5;
-}
-
-function combatEndXpLoss(player, baseCombatEndXpLoss) {
-	return parseInt(baseCombatEndXpLoss)*0.1;
-}
-
-function canUse(player) {
-	return player.statistics["combat self flee"] > 0;
-}
-
-function desc() {
-	return "Flee combat once";
+function canUse(basePlayerObject) {
+	return basePlayerObject.statistics["combat self flee"] > 0;
 }

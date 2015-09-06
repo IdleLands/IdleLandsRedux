@@ -36,11 +36,9 @@
     <Compile Include="Actors\BattleActor.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="BusinessLogic\Battle.cs" />
-    <Compile Include="Interfaces\Managers\IBattleManager.cs" />
     <Compile Include="Interfaces\Managers\IMessageManager.cs" />
     <Compile Include="Interfaces\Reductions\ICalcDamageReduction.cs" />
     <Compile Include="Interfaces\Reductions\ICalcPhysicalAttackTargets.cs" />
-    <Compile Include="Managers\BattleManager.cs" />
     <Compile Include="Managers\MessageManager.cs" />
     <Compile Include="Mappings\SpecificCharacter.cs" />
     <Compile Include="Mappings\SpecificMonster.cs" />
@@ -90,6 +88,7 @@
     <Reference Include="Jint">
       <HintPath>..\packages\Jint.2.5.0\lib\portable-net40+sl50+win+wpa81+wp80\Jint.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -98,8 +97,14 @@
     <None Include="protos\tutorial\addressbook.proto" />
     <None Include="licenses\license.txt" />
     <None Include="licenses\protoc-license.txt" />
-    <None Include="Scripts\Classes\Archer.js" />
-    <None Include="Scripts\Classes\BaseClass.js" />
+    <None Include="Scripts\Classes\Archer.js">
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <DeployService-TargetDirectoryId>Binaries</DeployService-TargetDirectoryId>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\Classes\BaseClass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IdleLandsRedux.Common\IdleLandsRedux.Common.csproj">

@@ -6,8 +6,21 @@ using IdleLandsRedux.GameLogic.Interfaces.Reductions;
 
 namespace IdleLandsRedux.GameLogic.SpecificMappings
 {
-	public partial class SpecificCharacter : Character, ICalcPhysicalAttackTargets, ICalcDamageReduction
+	public partial class SpecificCharacter : Character, ICalcPhysicalAttackTargets, ICalcDamageReduction, IEquatable<SpecificCharacter>
 	{
+		public SpecificCharacter() : base()
+		{
+		}
+
+		public SpecificCharacter(Character c) : base()
+		{
+			this.Id = c.Id;
+			this.Name = c.Name;
+			this.Gender = c.Gender;
+			this.Stats = c.Stats;
+			this.Equipment = c.Equipment;
+		}
+
 		public virtual int DamageReduction()
 		{
 			return 0;
@@ -32,6 +45,37 @@ namespace IdleLandsRedux.GameLogic.SpecificMappings
 
 			return ret;
 		}
+
+		#region IEquatable members
+
+		public override bool Equals(object obj)
+		{
+			var sc = obj as SpecificCharacter;
+
+			return Equals(sc);
+		}
+
+		public bool Equals(SpecificCharacter sc)
+		{
+			if (sc == null)
+				return false;
+
+			if (ReferenceEquals(sc, this))
+				return true;
+
+			return sc.Id == 0 && this.Id == 0 ? false : sc.Id == this.Id;
+		}
+
+		public override int GetHashCode()
+		{
+			int hash = 13;
+			hash = (hash * 7) + Id.GetHashCode();
+			if(!string.IsNullOrEmpty(Name))
+				hash = (hash * 7) + Name.GetHashCode();
+			return hash;
+		}
+
+		#endregion
 	}
 }
 

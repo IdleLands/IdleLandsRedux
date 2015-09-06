@@ -13,6 +13,7 @@ using Akka.Actor;
 using Akka.Configuration;
 using Akka.Routing;
 using Newtonsoft.Json;
+using NHibernate.SqlCommand;
 
 namespace IdleLandsRedux.WebService
 {
@@ -59,8 +60,8 @@ namespace IdleLandsRedux.WebService
 
 						try {
 							var users = session.QueryOver<LoggedInUser>()
-							.JoinAlias(x => x.Player, () => player, NHibernate.SqlCommand.JoinType.InnerJoin)
-							.JoinAlias(() => player.Stats, () => statsObject, NHibernate.SqlCommand.JoinType.LeftOuterJoin)
+							.JoinAlias(x => x.Player, () => player, JoinType.InnerJoin)
+							.JoinAlias(() => player.Stats, () => statsObject, JoinType.LeftOuterJoin)
 							.Where(x => (x.LastAction == null || x.LastAction < now.AddSeconds(-10)))
 							.List();
 

@@ -100,7 +100,6 @@
     <None Include="licenses\protoc-license.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Mappings\" />
     <Folder Include="Config\" />
   </ItemGroup>
   <ItemGroup>

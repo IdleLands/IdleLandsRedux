@@ -2,17 +2,19 @@
 using System.IO;
 using System.Collections.Generic;
 using Jint;
+using Jint.Native;
 
 namespace IdleLandsRedux.GameLogic.Scripts
 {
 	public class ScriptHelper
 	{
 		private static string appPath = AppDomain.CurrentDomain.BaseDirectory;
+		public static string ScriptDir = ScriptDir;
 
 		public static T ExecuteFuncAfterScript<T>(string script, string func)
 		{
 			var engine = new Engine();
-			var scriptText = File.ReadAllText(appPath + "/Scripts/" + script);
+			var scriptText = File.ReadAllText(appPath + ScriptDir + script);
 
 			engine.Execute(scriptText);
 			var result = engine.Execute(func).GetCompletionValue().ToObject();
@@ -27,7 +29,7 @@ namespace IdleLandsRedux.GameLogic.Scripts
 		public static T ExecuteFuncAfterScript<T>(string script, Dictionary<string, object> parameters, string func)
 		{
 			var engine = new Engine();
-			var scriptText = File.ReadAllText(appPath + "/Scripts/" + script);
+			var scriptText = File.ReadAllText(appPath + ScriptDir + script);
 
 			foreach (var keyValue in parameters) {
 				engine.SetValue(keyValue.Key, keyValue.Value);
@@ -48,7 +50,7 @@ namespace IdleLandsRedux.GameLogic.Scripts
 			var engine = new Engine();
 
 			foreach (string script in scripts) {
-				var scriptText = File.ReadAllText(appPath + "/Scripts/" + script);
+				var scriptText = File.ReadAllText(appPath + ScriptDir + script);
 				engine.Execute(scriptText);
 			}
 
@@ -70,7 +72,7 @@ namespace IdleLandsRedux.GameLogic.Scripts
 			}
 
 			foreach (string script in scripts) {
-				var scriptText = File.ReadAllText(appPath + "/Scripts/" + script);
+				var scriptText = File.ReadAllText(appPath + ScriptDir + script);
 				engine.Execute(scriptText);
 			}
 
@@ -98,12 +100,12 @@ namespace IdleLandsRedux.GameLogic.Scripts
 
 		public static Engine CreateScriptEngine()
 		{
-			return new Engine();
+			return new Engine(cfg => cfg.AllowDebuggerStatement().AllowClr());
 		}
 
 		public static void ExecuteScript(ref Engine engine, string scriptPath, Dictionary<string, object> parameters = null)
 		{
-			var scriptText = File.ReadAllText(appPath + "/Scripts/" + scriptPath);
+			var scriptText = File.ReadAllText(appPath + ScriptDir + scriptPath);
 			ExecuteFunc(ref engine, scriptText, parameters);
 		}
 
@@ -116,6 +118,11 @@ namespace IdleLandsRedux.GameLogic.Scripts
 			}
 
 			engine.Execute(func);
+		}
+
+		public static JsValue GetFunc(ref Engine engine, string func)
+		{
+			return engine.GetValue(func);
 		}
 
 		public static T GetValue<T>(ref Engine engine)

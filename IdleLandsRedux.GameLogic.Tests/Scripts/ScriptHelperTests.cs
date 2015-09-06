@@ -9,8 +9,10 @@ namespace IdleLandsRedux.GameLogic.Tests.Scripts
 	[TestFixture]
 	public class ScriptHelperTests
 	{
-		public ScriptHelperTests()
+		[TestFixtureSetUp]
+		public void TestSetup()
 		{
+			ScriptHelper.ScriptDir = "/TestScripts/";
 		}
 
 		[Test]
@@ -24,7 +26,6 @@ namespace IdleLandsRedux.GameLogic.Tests.Scripts
 		}
 
 		[Test]
-		//Assuming, of course, that Brave.js never changes. Which might not be so!
 		public void BravePersonalityTest()
 		{
 			ScriptHelper.ExecuteFuncAfterScript<Double>("Personalities/Brave.js", "fleePercent()").ShouldBe<Double>(-100);
