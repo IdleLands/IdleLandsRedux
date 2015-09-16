@@ -2,11 +2,15 @@
 using System.Dynamic;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using IdleLandsRedux.Common;
 using IdleLandsRedux.GameLogic.SpecificMappings;
 using IdleLandsRedux.DataAccess.Mappings;
 using IdleLandsRedux.GameLogic.Scripts;
+using IdleLandsRedux.GameLogic.BusinessLogic.Interop;
+using Jint;
 
-namespace IdleLandsRedux.GameLogic.BussinessLogic
+namespace IdleLandsRedux.GameLogic.BusinessLogic
 {
 	public class BattleException : Exception
 	{
@@ -86,19 +90,43 @@ namespace IdleLandsRedux.GameLogic.BussinessLogic
 			return null;
 		}
 
-		public ExpandoObject CalculateStats(SpecificCharacter character)
+		public StatsModifierObject CalculateStats(SpecificCharacter character)
 		{
-			var engine = ScriptHelper.CreateScriptEngine();
-			ScriptHelper.ExecuteScript(ref engine, "./Classes/BaseClass.js");
-			ScriptHelper.ExecuteScript(ref engine, string.Format("./Classes/{0}.js", character.Class));
-			return (ExpandoObject)engine.Invoke("OnStaticBonus", character).ToObject();
-		}
-	}
+			StatsModifierObject summedModifiers = new StatsModifierObject();
+			var engine = BattleInterop.CreateJSEngineWithCommonScripts(character);
+			List<string> allScripts = new List<string>();
+			List<Tuple<string, string>> allStaticFunctions = new List<Tuple<string, string>>();
+			List<Tuple<string, string>> allHookFunctions = new List<Tuple<string, string>>();
 
-	public class ReturnStatsTemp
-	{
-		public double staticHitPoints;
-		public double staticMagicPoints;
+			//init
+			allScripts.Add(string.Format("./Classes/{0}.js", character.Class));
+			allStaticFunctions.Add(new Tuple<string, string>(allScripts.Last(), string.Format("{0}_OnStaticBonus", character.Class)));
+			allHookFunctions.Add(new Tuple<string, string>(allScripts.Last(), string.Format("{0}_OnShouldModifyStaticBonusScriptFor", character.Class)));
+			if (!string.IsNullOrEmpty(character.Personalities)) {
+				foreach (string personality in character.Personalities.Split(';')) {
+					allScripts.Add(string.Format("./Personalities/{0}.js", personality));
+					allStaticFunctions.Add(new Tuple<string, string>(allScripts.Last(), string.Format("{0}_OnStaticBonus", personality)));
+					allHookFunctions.Add(new Tuple<string, string>(allScripts.Last(), string.Format("{0}_OnShouldModifyStaticBonusScriptFor", personality)));
+				}
+			}
+
+			//load all scripts
+			foreach (string function in allScripts) {
+				ScriptHelper.ExecuteScript(ref engine, function);
+			}
+
+			//Execute functions on scripts
+			foreach (var script in allStaticFunctions) {
+				var modifiers = BattleInterop.InvokeStaticBonusWithHooks(engine, script.Item2,
+					allHookFunctions.Where(x => x.Item1 != script.Item1).Select(x => x.Item2), character);
+
+				summedModifiers = BattleInterop.addObjectToStatsModifierObject(summedModifiers, modifiers);
+			}
+
+			return summedModifiers;
+		}
+
+
 	}
 }
 

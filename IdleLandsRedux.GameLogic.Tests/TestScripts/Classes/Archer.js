@@ -1,29 +1,23 @@
 ﻿/**
-  * The Archer is a physical debuff/dps class. Their Focus stat increases critical chance by up to 50%,
-  * and allows access to powerful skills. Focus increases every turn and with use of the Take Aim skill,
-  * and decreases when the Archer is damaged as well as when it is spent.
-  *
-  * @name Archer
-  * @physical
-  * @dps
-  * @hp 70+[level*10]+[con*6]
-  * @mp 30+[level*2]+[int*1]
-  * @special Focus (The Archer builds focus over time, resulting in devastating attacks if unchecked.)
-  * @itemScore agi*1.2 + dex*1.6 + str*0.3 - int
-  * @statPerLevel {str} 2
-  * @statPerLevel {dex} 4
-  * @statPerLevel {con} 2
-  * @statPerLevel {int} 1
-  * @statPerLevel {wis} 1
-  * @statPerLevel {agi} 3
-  * @minDamage 50%
-  * @category Classes
-  * @package Player
-*/
+  * Test to see if accessing player stats + returning static bonus works
+  */
 
-function OnStaticBonus(basePlayerObject) {
+function Archer_OnStaticBonus(basePlayerObject) {
+	log('Archer_OnStaticBonus: ');
 	var bonusObject = GetStaticBonusObject();
-	bonusObject.staticHitPoints = 70 + basePlayerObject.Stats.Level._current * 10 + basePlayerObject.Stats.Constitution._current * 6
-	bonusObject.staticMagicPoints = 30 + basePlayerObject.Stats.Level._current * 2 + basePlayerObject.Stats.Intelligence._current
+	bonusObject.StaticHitPoints = 70 + basePlayerObject.Stats.Level.Current * 10 + basePlayerObject.Stats.Constitution.Current * 6
+	bonusObject.StaticMagicPoints = 30 + basePlayerObject.Stats.Level.Current * 2 + basePlayerObject.Stats.Intelligence.Current
 	return bonusObject;
+}
+
+function Archer_OnDependentBonus(playerObject, cumulativeStatsObject) {
+    
+}
+
+function Archer_OnOverrulingBonus(playerObject, cumulativeStatsObject) {
+}
+
+function Archer_OnShouldModifyStaticBonusScriptFor(script, basePlayerObject) {
+	log('Archer_OnShouldModifyStaticBonusScriptFor: ' + script);
+	return null;
 }

@@ -28,22 +28,22 @@ namespace IdleLandsRedux.GameLogic.Tests.Scripts
 		[Test]
 		public void BravePersonalityTest()
 		{
-			ScriptHelper.ExecuteFuncAfterScript<Double>("Personalities/Brave.js", "fleePercent()").ShouldBe<Double>(-100);
-			ScriptHelper.ExecuteFuncAfterScript<Double>("Personalities/Brave.js", "strPercent()").ShouldBe<Double>(5);
+			ScriptHelper.ExecuteFuncAfterScript<Double>("Personalities/Brave.js", "Brave_fleePercent()").ShouldBe<Double>(-100);
+			ScriptHelper.ExecuteFuncAfterScript<Double>("Personalities/Brave.js", "Brave_strPercent()").ShouldBe<Double>(5);
 
 			Dictionary<string, object> parameters = new Dictionary<string, object>();
 			parameters.Add("player", new {statistics = new Dictionary<string, object> {
 					{ "combat self flee", 0 },
 					{ "test", 1 }
 				}});
-			ScriptHelper.ExecuteFuncAfterScript<Boolean>("Personalities/Brave.js", parameters, "canUse(player)").ShouldBe<Boolean>(false);
+			ScriptHelper.ExecuteFuncAfterScript<Boolean>("Personalities/Brave.js", parameters, "Brave_canUse(player)").ShouldBe<Boolean>(false);
 
 			parameters.Clear();
 			parameters.Add("player", new {statistics = new Dictionary<string, object> {
 					{ "combat self flee", 1 },
 					{ "test", 1 }
 				}});
-			ScriptHelper.ExecuteFuncAfterScript<Boolean>("Personalities/Brave.js", parameters, "canUse(player)").ShouldBe<Boolean>(true);
+			ScriptHelper.ExecuteFuncAfterScript<Boolean>("Personalities/Brave.js", parameters, "Brave_canUse(player)").ShouldBe<Boolean>(true);
 		}
 	}
 }

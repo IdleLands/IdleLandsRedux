@@ -47,6 +47,7 @@
     <Compile Include="Config\AssemblyInfo.cs" />
     <Compile Include="Actors\SendMessageActor.cs" />
     <Compile Include="Scripts\ScriptHelper.cs" />
+    <Compile Include="BusinessLogic\Interop\BattleInterop.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -102,7 +103,7 @@
       <DeployService-TargetDirectoryId>Binaries</DeployService-TargetDirectoryId>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Scripts\Classes\BaseClass.js">
+    <None Include="Scripts\Common.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -118,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Config\" />
+    <Folder Include="BusinessLogic\Interop\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\Personalities\Brave.js">

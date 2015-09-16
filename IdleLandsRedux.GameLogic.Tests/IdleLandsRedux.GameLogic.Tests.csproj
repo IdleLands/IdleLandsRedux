@@ -20,7 +20,7 @@
     <ConsolePause>false</ConsolePause>
     <CustomCommands>
       <CustomCommands>
-        <Command type="AfterBuild" command="create_assets_symlink.sh" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="../create_assets_symlink.sh" workingdir="${ProjectDir}" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
@@ -33,7 +33,7 @@
     <ConsolePause>false</ConsolePause>
     <CustomCommands>
       <CustomCommands>
-        <Command type="AfterBuild" command="create_assets_symlink.sh" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="../create_assets_symlink.sh" workingdir="${ProjectDir}" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
@@ -41,9 +41,6 @@
     <Reference Include="System" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Shouldly">
-      <HintPath>..\packages\Shouldly.2.5.0\lib\net40\Shouldly.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
@@ -67,13 +64,17 @@
       <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Shouldly">
+      <HintPath>..\packages\Shouldly.2.6.0\lib\net40\Shouldly.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Managers\MessageManagerTests.cs" />
     <Compile Include="Scripts\ScriptHelperTests.cs" />
     <Compile Include="ReductionTests.cs" />
     <Compile Include="Config\AssemblyInfo.cs" />
-    <Compile Include="BussinessLogic\BattleTests.cs" />
+    <Compile Include="BusinessLogic\BattleTests.cs" />
+    <Compile Include="BusinessLogic\Interop\BattleInteropTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -83,7 +84,15 @@
       <DeployService-TargetDirectoryId>Binaries</DeployService-TargetDirectoryId>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="TestScripts\Classes\BaseClass.js">
+    <None Include="TestScripts\Common.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestScripts\Personalities\Brave1.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestScripts\Classes\Archer1.js">
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <DeployService-TargetDirectoryId>Binaries</DeployService-TargetDirectoryId>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -106,9 +115,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BussinessLogic\" />
     <Folder Include="TestScripts\" />
     <Folder Include="Scripts\" />
+    <Folder Include="BusinessLogic\" />
+    <Folder Include="BusinessLogic\Interop\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestScripts\Personalities\Brave.js">

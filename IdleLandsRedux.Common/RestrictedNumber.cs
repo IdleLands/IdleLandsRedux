@@ -5,14 +5,14 @@ namespace IdleLandsRedux.Common
 	//Taken from https://github.com/seiyria/restricted-number/blob/master/RestrictedNumber.coffee
 	public class RestrictedNumber : IEquatable<RestrictedNumber>, IComparable<RestrictedNumber>, IComparable<int>
 	{
-		public int _maximum { get; private set; }
-		public int _minimum { get; private set; }
-		public int _current { get; private set; }
-		public int _remainder { get; private set; }
+		public int Maximum { get; private set; }
+		public int Minimum { get; private set; }
+		public int Current { get; private set; }
+		public int Remainder { get; private set; }
 
 		public RestrictedNumber()
 		{
-			_minimum = _maximum = _current = _remainder = 0;
+			Minimum = Maximum = Current = Remainder = 0;
 		}
 
 		public RestrictedNumber(int minimum, int maximum)
@@ -21,9 +21,9 @@ namespace IdleLandsRedux.Common
 				throw new ArgumentException("Minimum is higher than maximum");
 			}
 
-			_minimum = minimum;
-			_maximum = _current = maximum;
-			_remainder = 0;
+			Minimum = minimum;
+			Maximum = Current = maximum;
+			Remainder = 0;
 		}
 
 		public RestrictedNumber(int minimum, int maximum, int current)
@@ -32,8 +32,8 @@ namespace IdleLandsRedux.Common
 				throw new ArgumentException("Minimum is higher than maximum");
 			}
 
-			_minimum = minimum;
-			_maximum = maximum;
+			Minimum = minimum;
+			Maximum = maximum;
 			Set(current);
 		}
 
@@ -41,108 +41,108 @@ namespace IdleLandsRedux.Common
 
 		public RestrictedNumber Set(int num)
 		{
-			int num2 = Math.Min(num, _maximum);
-			num2 = Math.Max(num2, _minimum);
-			_current = num2;
-			_remainder = Math.Abs(num2 - num);
+			int num2 = Math.Min(num, Maximum);
+			num2 = Math.Max(num2, Minimum);
+			Current = num2;
+			Remainder = Math.Abs(num2 - num);
 			return this;
 		}
 
 		public RestrictedNumber Add(int num)
 		{
-			return Set(_current + num);
+			return Set(Current + num);
 		}
 
 		public RestrictedNumber Sub(int num)
 		{
-			return Set(_current - num);
+			return Set(Current - num);
 		}
 
 		public RestrictedNumber AddAndBound(int num)
 		{
-			_maximum += num;
+			Maximum += num;
 			return Add(num);
 		}
 
 		public RestrictedNumber SubAndBound(int num)
 		{
-			_minimum -= num;
+			Minimum -= num;
 			return Sub(num);
 		}
 
 		public RestrictedNumber ToMaximum()
 		{
-			return Set(_maximum);
+			return Set(Maximum);
 		}
 
 		public RestrictedNumber ToMinimum()
 		{
-			return Set(_minimum);
+			return Set(Minimum);
 		}
 
 		public RestrictedNumber SetToPercent(int perc)
 		{
-			return Set(perc * (_maximum - _minimum) / 100);
+			return Set(perc * (Maximum - Minimum) / 100);
 		}
 
 		public RestrictedNumber AddPercent(int perc)
 		{
-			return Add(perc * (_maximum - _minimum) / 100);
+			return Add(perc * (Maximum - Minimum) / 100);
 		}
 
 		public RestrictedNumber SubPercent(int perc)
 		{
-			return Sub(perc * (_maximum - _minimum) / 100);
+			return Sub(perc * (Maximum - Minimum) / 100);
 		}
 
 		//Non-chainable check functions
 
 		public int GetTotal()
 		{
-			return _current;
+			return Current;
 		}
 
 		public bool AtMax()
 		{
-			return _current == _maximum;
+			return Current == Maximum;
 		}
 
 		public bool AtMin()
 		{
-			return _current == _minimum;
+			return Current == Minimum;
 		}
 
 		public int AsPercent()
 		{
-			return (int)Math.Floor((double)_current / _maximum * 100.0f);
+			return (int)Math.Floor((double)Current / Maximum * 100.0f);
 		}
 
 		#region operator overloads
 
 		public static RestrictedNumber operator+(RestrictedNumber a, RestrictedNumber b)
 		{
-			return new RestrictedNumber(Math.Max(a._minimum, b._minimum), a._maximum + b._maximum, a._current + b._current);
+			return new RestrictedNumber(Math.Max(a.Minimum, b.Minimum), a.Maximum + b.Maximum, a.Current + b.Current);
 		}
 
 		public static RestrictedNumber operator-(RestrictedNumber a, RestrictedNumber b)
 		{
-			var newMax = Math.Abs(a._maximum - b._maximum);
-			var newMin = Math.Min(a._minimum, b._minimum);
+			var newMax = Math.Abs(a.Maximum - b.Maximum);
+			var newMin = Math.Min(a.Minimum, b.Minimum);
 
 			if (newMin > newMax)
 				newMax = newMin;
 
-			return new RestrictedNumber(newMin, newMax, a._current - b._current);
+			return new RestrictedNumber(newMin, newMax, a.Current - b.Current);
 		}
 
 		public static bool operator<(RestrictedNumber a, RestrictedNumber b)
 		{
-			return a._current < b._current;
+			return a.Current < b.Current;
 		}
 
 		public static bool operator>(RestrictedNumber a, RestrictedNumber b)
 		{
-			return a._current > b._current;
+			return a.Current > b.Current;
 		}
 
 		public static bool operator==(RestrictedNumber a, RestrictedNumber b)
@@ -153,7 +153,7 @@ namespace IdleLandsRedux.Common
 			if (object.ReferenceEquals(b, null))
 				return object.ReferenceEquals(a, null);
 
-			return a._current == b._current;
+			return a.Current == b.Current;
 		}
 
 		public static bool operator!=(RestrictedNumber a, RestrictedNumber b)
@@ -164,47 +164,47 @@ namespace IdleLandsRedux.Common
 			if (object.ReferenceEquals(b, null))
 				return !object.ReferenceEquals(a, null);
 
-			return a._current != b._current;
+			return a.Current != b.Current;
 		}
 
 		public static int operator+(int a, RestrictedNumber b)
 		{
-			return b._current + a;
+			return b.Current + a;
 		}
 
 		public static int operator-(int a, RestrictedNumber b)
 		{
-			return b._current - a;
+			return b.Current - a;
 		}
 
 		public static int operator*(int a, RestrictedNumber b)
 		{
-			return b._current * a;
+			return b.Current * a;
 		}
 
 		public static int operator/(int a, RestrictedNumber b)
 		{
-			return a / b._current;
+			return a / b.Current;
 		}
 
 		public static bool operator<(int a, RestrictedNumber b)
 		{
-			return a < b._current;
+			return a < b.Current;
 		}
 
 		public static bool operator>(int a, RestrictedNumber b)
 		{
-			return a > b._current;
+			return a > b.Current;
 		}
 
 		public static bool operator<=(int a, RestrictedNumber b)
 		{
-			return a <= b._current;
+			return a <= b.Current;
 		}
 
 		public static bool operator>=(int a, RestrictedNumber b)
 		{
-			return a >= b._current;
+			return a >= b.Current;
 		}
 
 		public static bool operator==(int a, RestrictedNumber b)
@@ -212,7 +212,7 @@ namespace IdleLandsRedux.Common
 			if (object.ReferenceEquals(b, null))
 				return false;
 			
-			return a == b._current;
+			return a == b.Current;
 		}
 
 		public static bool operator!=(int a, RestrictedNumber b)
@@ -220,47 +220,47 @@ namespace IdleLandsRedux.Common
 			if (object.ReferenceEquals(b, null))
 				return true;
 			
-			return a != b._current;
+			return a != b.Current;
 		}
 
 		public static int operator+(RestrictedNumber a, int b)
 		{
-			return a._current + b;
+			return a.Current + b;
 		}
 
 		public static int operator-(RestrictedNumber a, int b)
 		{
-			return a._current - b;
+			return a.Current - b;
 		}
 
 		public static int operator*(RestrictedNumber a, int b)
 		{
-			return a._current * b;
+			return a.Current * b;
 		}
 
 		public static int operator/(RestrictedNumber a, int b)
 		{
-			return a._current / b;
+			return a.Current / b;
 		}
 
 		public static bool operator<(RestrictedNumber a, int b)
 		{
-			return a._current < b;
+			return a.Current < b;
 		}
 
 		public static bool operator>(RestrictedNumber a, int b)
 		{
-			return a._current > b;
+			return a.Current > b;
 		}
 
 		public static bool operator<=(RestrictedNumber a, int b)
 		{
-			return a._current <= b;
+			return a.Current <= b;
 		}
 
 		public static bool operator>=(RestrictedNumber a, int b)
 		{
-			return a._current >= b;
+			return a.Current >= b;
 		}
 
 		public static bool operator==(RestrictedNumber a, int b)
@@ -268,7 +268,7 @@ namespace IdleLandsRedux.Common
 			if (object.ReferenceEquals(a, null))
 				return false;
 			
-			return a._current == b;
+			return a.Current == b;
 		}
 
 		public static bool operator!=(RestrictedNumber a, int b)
@@ -276,9 +276,10 @@ namespace IdleLandsRedux.Common
 			if (object.ReferenceEquals(a, null))
 				return true;
 			
-			return a._current != b;
+			return a.Current != b;
 		}
 
+		/// <param name="value">Value to set EVERYTHING to</param>
 		public static implicit operator RestrictedNumber(int value)
 		{
 			return new RestrictedNumber(int.MinValue, int.MaxValue, value);
@@ -303,17 +304,19 @@ namespace IdleLandsRedux.Common
 			if (ReferenceEquals(rn, this))
 				return true;
 
-			return rn._current == _current && rn._maximum == _maximum && rn._minimum == _minimum && rn._remainder == _remainder;
+			return rn.Current == Current && rn.Maximum == Maximum && rn.Minimum == Minimum && rn.Remainder == Remainder;
 		}
 
 		public override int GetHashCode()
 		{
-			int hash = 13;
-			hash = (hash * 7) + _current.GetHashCode();
-			hash = (hash * 7) + _maximum.GetHashCode();
-			hash = (hash * 7) + _minimum.GetHashCode();
-			hash = (hash * 7) + _remainder.GetHashCode();
-			return hash;
+			unchecked { // Overflow is fine, just wrap
+				int hash = 13;
+				hash = (hash * 7) + Current.GetHashCode();
+				hash = (hash * 7) + Maximum.GetHashCode();
+				hash = (hash * 7) + Minimum.GetHashCode();
+				hash = (hash * 7) + Remainder.GetHashCode();
+				return hash;
+			}
 		}
 
 		#endregion
@@ -325,18 +328,18 @@ namespace IdleLandsRedux.Common
 			if (rn == null)
 				throw new ArgumentNullException("rn");
 
-			if (this._current > rn._current)
+			if (this.Current > rn.Current)
 				return -1;
-			if (this._current == rn._current)
+			if (this.Current == rn.Current)
 				return 0;
 			return 1;
 		}
 
 		public int CompareTo(int num)
 		{
-			if (this._current > num)
+			if (this.Current > num)
 				return -1;
-			if (this._current == num)
+			if (this.Current == num)
 				return 0;
 			return 1;
 		}
@@ -345,7 +348,7 @@ namespace IdleLandsRedux.Common
 
 		public override string ToString()
 		{
-			return string.Format("[RestrictedNumber: _maximum={0}, _minimum={1}, _current={2}, _remainder={3}]", _maximum, _minimum, _current, _remainder);
+			return string.Format("[RestrictedNumber: _maximum={0}, _minimum={1}, _current={2}, _remainder={3}]", Maximum, Minimum, Current, Remainder);
 		}
 	}
 }

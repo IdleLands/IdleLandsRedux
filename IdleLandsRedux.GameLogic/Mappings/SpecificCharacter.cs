@@ -68,11 +68,13 @@ namespace IdleLandsRedux.GameLogic.SpecificMappings
 
 		public override int GetHashCode()
 		{
-			int hash = 13;
-			hash = (hash * 7) + Id.GetHashCode();
-			if(!string.IsNullOrEmpty(Name))
-				hash = (hash * 7) + Name.GetHashCode();
-			return hash;
+			unchecked { // Overflow is fine, just wrap
+				int hash = 13;
+				hash = (hash * 7) + Id.GetHashCode();
+				if (!string.IsNullOrEmpty(Name))
+					hash = (hash * 7) + Name.GetHashCode();
+				return hash;
+			}
 		}
 
 		#endregion

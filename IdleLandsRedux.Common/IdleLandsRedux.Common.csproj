@@ -40,6 +40,8 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="SecureRandomHelper.cs" />
     <Compile Include="Interfaces\ISecureRandomHelper.cs" />
+    <Compile Include="StringExtensions.cs" />
+    <Compile Include="StatsModifierObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />

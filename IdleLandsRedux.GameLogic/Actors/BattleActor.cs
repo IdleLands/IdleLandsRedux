@@ -4,7 +4,7 @@ using Akka;
 using Akka.Actor;
 using Akka.Event;
 using IdleLandsRedux.DataAccess.Mappings;
-using IdleLandsRedux.GameLogic.BussinessLogic;
+using IdleLandsRedux.GameLogic.BusinessLogic;
 using log4net;
 
 namespace IdleLandsRedux.GameLogic.Actors

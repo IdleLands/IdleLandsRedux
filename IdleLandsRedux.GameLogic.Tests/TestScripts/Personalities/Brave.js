@@ -2,14 +2,14 @@
   * Test to see if calling functions with arguments works.
   */
 
-function fleePercent() {
+function Brave_fleePercent() {
        return -100;
 }
 
-function strPercent() {
+function Brave_strPercent() {
        return 5;
 }
 
-function canUse(player) {
+function Brave_canUse(player) {
        return player.statistics["combat self flee"] > 0;
 }

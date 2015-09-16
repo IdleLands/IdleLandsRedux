@@ -14,20 +14,20 @@ namespace IdleLandsRedux.Common.Tests
 
 			rn.Add(3);
 
-			rn._current.ShouldBe(rn._maximum);
-			rn._current.ShouldBe(12);
-			rn._remainder.ShouldBe(3);
+			rn.Current.ShouldBe(rn.Maximum);
+			rn.Current.ShouldBe(12);
+			rn.Remainder.ShouldBe(3);
 
 			rn.Sub(5);
 
-			rn._current.ShouldBe(7);
-			rn._remainder.ShouldBe(0);
+			rn.Current.ShouldBe(7);
+			rn.Remainder.ShouldBe(0);
 
 			rn.Sub(6);
 
-			rn._current.ShouldBe(5);
-			rn._current.ShouldBe(rn._minimum);
-			rn._remainder.ShouldBe(4);
+			rn.Current.ShouldBe(5);
+			rn.Current.ShouldBe(rn.Minimum);
+			rn.Remainder.ShouldBe(4);
 		}
 
 		[Test]
@@ -72,10 +72,10 @@ namespace IdleLandsRedux.Common.Tests
 		{
 			RestrictedNumber rn = 5;
 
-			rn._current.ShouldBe(5);
-			rn._minimum.ShouldBe(int.MinValue);
-			rn._maximum.ShouldBe(int.MaxValue);
-			rn._remainder.ShouldBe(0);
+			rn.Current.ShouldBe(5);
+			rn.Minimum.ShouldBe(int.MinValue);
+			rn.Maximum.ShouldBe(int.MaxValue);
+			rn.Remainder.ShouldBe(0);
 
 			(rn * 5).ShouldBe(25);
 			(rn / 5).ShouldBe(1);
@@ -90,16 +90,16 @@ namespace IdleLandsRedux.Common.Tests
 			var rn2 = new RestrictedNumber(5, 12, 10);
 
 			var rn3 = rn2 + rn2;
-			rn3._current.ShouldBe(20);
-			rn3._minimum.ShouldBe(5);
-			rn3._maximum.ShouldBe(24);
-			rn3._remainder.ShouldBe(0);
+			rn3.Current.ShouldBe(20);
+			rn3.Minimum.ShouldBe(5);
+			rn3.Maximum.ShouldBe(24);
+			rn3.Remainder.ShouldBe(0);
 
 			rn3 = rn2 - rn2;
-			rn3._current.ShouldBe(5);
-			rn3._minimum.ShouldBe(5);
-			rn3._maximum.ShouldBe(5);
-			rn3._remainder.ShouldBe(5);
+			rn3.Current.ShouldBe(5);
+			rn3.Minimum.ShouldBe(5);
+			rn3.Maximum.ShouldBe(5);
+			rn3.Remainder.ShouldBe(5);
 		}
 
 		[Test]
@@ -128,6 +128,14 @@ namespace IdleLandsRedux.Common.Tests
 			rn.AsPercent().ShouldBe(50);
 			rn.Set(499).AsPercent().ShouldBe(49);
 			rn.Set(501).AsPercent().ShouldBe(50);
+		}
+
+		[Test]
+		public void HashcodeShouldNotThrowException()
+		{
+			RestrictedNumber rn = new RestrictedNumber(0, int.MaxValue, int.MaxValue);
+
+			Should.NotThrow(() => rn.GetHashCode());
 		}
 	}
 }
