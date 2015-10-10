@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using IdleLandsRedux.DataAccess.Mappings;
 using IdleLandsRedux.GameLogic.Interfaces.Reductions;
+using IdleLandsRedux.Common;
 
 namespace IdleLandsRedux.GameLogic.SpecificMappings
 {
 	public partial class SpecificCharacter : Character, ICalcPhysicalAttackTargets, ICalcDamageReduction, IEquatable<SpecificCharacter>
 	{
+		public int Special { get; set; } //For stuff like rage (barbarian), focus (archer) etc
+		public StatsModifierCollection CalculatedStats { get; set; }
+
 		public SpecificCharacter() : base()
 		{
 		}
@@ -33,17 +37,6 @@ namespace IdleLandsRedux.GameLogic.SpecificMappings
 			validTargets.Remove(tuple);
 			validTargets.Add(new Tuple<Character, int>(tuple.Item1, 200));
 			return validTargets;
-		}
-
-		public StatsObject GetTotalStats()
-		{
-			var ret = this.Stats;
-
-			foreach (var item in this.Equipment) {
-				ret += item.Stats;
-			}
-
-			return ret;
 		}
 
 		#region IEquatable members

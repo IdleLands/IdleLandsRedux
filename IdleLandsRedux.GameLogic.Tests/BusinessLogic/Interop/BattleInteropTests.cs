@@ -21,28 +21,14 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic.Interop
 			dynamic obj = new ExpandoObject();
 			obj.test = 5;
 
-			int ret = BattleInterop.CheckOnExpandoAndCast<int>(obj, "test"); //Compiler should compile this to int, but doesn't.
-			ret.ShouldBe(5); //See https://bugzilla.xamarin.com/show_bug.cgi?id=33982
+			BattleInterop battleInterop = new BattleInterop(null);
 
-			Should.Throw<NullReferenceException>(() => BattleInterop.CheckOnExpandoAndCast<int>(null, "test"));
-			Should.Throw<NullReferenceException>(() => BattleInterop.CheckOnExpandoAndCast<int>(obj, ""));
-			Should.Throw<NullReferenceException>(() => BattleInterop.CheckOnExpandoAndCast<int>(obj, null));
-		}
+			int ret = battleInterop.CheckOnExpandoAndCast<int>(obj, "test"); //Compiler should compile this to int, but doesn't. Not a bug though, feature!
+			ret.ShouldBe(5);
 
-		[Test]
-		public void addExpandoObjectToStatsModifierObjectTest()
-		{
-			dynamic obj = new ExpandoObject();
-			StatsModifierObject smo = new StatsModifierObject();
-			obj.PercentageLuck = 5d;
-
-			StatsModifierObject smo2 = BattleInterop.addObjectToStatsModifierObject(smo, obj);
-			smo2.ShouldBe(smo);
-
-			smo.PercentageLuck.ShouldBe(5d);
-
-			Should.Throw<NullReferenceException>(() => BattleInterop.addObjectToStatsModifierObject(null, obj));
-			Should.Throw<NullReferenceException>(() => BattleInterop.addObjectToStatsModifierObject(smo, null));
+			Should.Throw<NullReferenceException>(() => battleInterop.CheckOnExpandoAndCast<int>(null, "test"));
+			Should.Throw<NullReferenceException>(() => battleInterop.CheckOnExpandoAndCast<int>(obj, ""));
+			Should.Throw<NullReferenceException>(() => battleInterop.CheckOnExpandoAndCast<int>(obj, null));
 		}
 
 		[Test]
@@ -52,7 +38,8 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic.Interop
 			sc.Class = "Test;Archer";
 			sc.Personalities = "DPS;King";
 
-			var scripts = BattleInterop.GetAllScriptsOf(sc);
+			BattleInterop battleInterop = new BattleInterop(null);
+			var scripts = battleInterop.GetAllScriptsOf(sc);
 			scripts.Count.ShouldBe(4);
 			scripts[0].Item1.ShouldBe("class");
 			scripts[0].Item2.ShouldBe("Test");

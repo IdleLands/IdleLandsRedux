@@ -3,15 +3,16 @@ using System.IO;
 using System.Collections.Generic;
 using Jint;
 using Jint.Native;
+using IdleLandsRedux.GameLogic.Interfaces.Scripts;
 
 namespace IdleLandsRedux.GameLogic.Scripts
 {
-	public class ScriptHelper
+	public class ScriptHelper : IScriptHelper
 	{
 		private static string appPath = AppDomain.CurrentDomain.BaseDirectory;
-		public static string ScriptDir = ScriptDir;
+		public string ScriptDir { get; set; }
 
-		public static T ExecuteFuncAfterScript<T>(string script, string func)
+		public T ExecuteFuncAfterScript<T>(string script, string func)
 		{
 			var engine = new Engine();
 			var scriptText = File.ReadAllText(appPath + ScriptDir + script);
@@ -26,7 +27,7 @@ namespace IdleLandsRedux.GameLogic.Scripts
 			throw new ArgumentException("Expected " + typeof(T).FullName + " but got " + result.GetType().FullName);
 		}
 
-		public static T ExecuteFuncAfterScript<T>(string script, Dictionary<string, object> parameters, string func)
+		public T ExecuteFuncAfterScript<T>(string script, Dictionary<string, object> parameters, string func)
 		{
 			var engine = new Engine();
 			var scriptText = File.ReadAllText(appPath + ScriptDir + script);
@@ -45,7 +46,7 @@ namespace IdleLandsRedux.GameLogic.Scripts
 			throw new ArgumentException("Expected " + typeof(T).FullName + " but got " + result.GetType().FullName);
 		}
 
-		public static T ExecuteFuncAfterScript<T>(List<string> scripts, string func)
+		public T ExecuteFuncAfterScript<T>(List<string> scripts, string func)
 		{
 			var engine = new Engine();
 
@@ -63,7 +64,7 @@ namespace IdleLandsRedux.GameLogic.Scripts
 			throw new ArgumentException("Expected " + typeof(T).FullName + " but got " + result.GetType().FullName);
 		}
 
-		public static T ExecuteFuncAfterScript<T>(List<string> scripts, Dictionary<string, object> parameters, string func)
+		public T ExecuteFuncAfterScript<T>(List<string> scripts, Dictionary<string, object> parameters, string func)
 		{
 			var engine = new Engine();
 
@@ -85,7 +86,7 @@ namespace IdleLandsRedux.GameLogic.Scripts
 			throw new ArgumentException("Expected " + typeof(T).FullName + " but got " + result.GetType().FullName);
 		}
 
-		public static T ExecuteFunc<T>(string func)
+		public T ExecuteFunc<T>(string func)
 		{
 			var engine = new Engine();
 
@@ -98,18 +99,18 @@ namespace IdleLandsRedux.GameLogic.Scripts
 			throw new ArgumentException("Expected " + typeof(T).FullName + " but got " + result.GetType().FullName);
 		}
 
-		public static Engine CreateScriptEngine()
+		public Engine CreateScriptEngine()
 		{
 			return new Engine(cfg => cfg.AllowDebuggerStatement().AllowClr());
 		}
 
-		public static void ExecuteScript(ref Engine engine, string scriptPath, Dictionary<string, object> parameters = null)
+		public void ExecuteScript(ref Engine engine, string scriptPath, Dictionary<string, object> parameters = null)
 		{
 			var scriptText = File.ReadAllText(appPath + ScriptDir + scriptPath);
 			ExecuteFunc(ref engine, scriptText, parameters);
 		}
 
-		public static void ExecuteFunc(ref Engine engine, string func, Dictionary<string, object> parameters = null)
+		public void ExecuteFunc(ref Engine engine, string func, Dictionary<string, object> parameters = null)
 		{
 			if (parameters != null) {
 				foreach (var keyValue in parameters) {
@@ -120,12 +121,12 @@ namespace IdleLandsRedux.GameLogic.Scripts
 			engine.Execute(func);
 		}
 
-		public static JsValue GetFunc(ref Engine engine, string func)
+		public JsValue GetFunc(ref Engine engine, string func)
 		{
 			return engine.GetValue(func);
 		}
 
-		public static T GetValue<T>(ref Engine engine)
+		public T GetValue<T>(ref Engine engine)
 		{
 			var result = engine.GetCompletionValue().ToObject();
 

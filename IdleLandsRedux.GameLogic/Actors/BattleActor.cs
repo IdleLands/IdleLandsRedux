@@ -5,7 +5,10 @@ using Akka.Actor;
 using Akka.Event;
 using IdleLandsRedux.DataAccess.Mappings;
 using IdleLandsRedux.GameLogic.BusinessLogic;
+using IdleLandsRedux.GameLogic.Interfaces.BusinessLogic.Interop;
+using IdleLandsRedux.GameLogic.Interfaces.Scripts;
 using log4net;
+using Microsoft.Practices.Unity;
 
 namespace IdleLandsRedux.GameLogic.Actors
 {
@@ -34,7 +37,10 @@ namespace IdleLandsRedux.GameLogic.Actors
 
 		private void HandleBattle(BattleActorMessage message)
 		{
-			Battle battle = new Battle(message.teams);
+			var container = GameLogic.Bootstrapper.BootstrapUnity();
+			IBattleInterop battleInterop = container.Resolve<IBattleInterop>();
+			IScriptHelper scriptHelper = container.Resolve<IScriptHelper>();
+			Battle battle = new Battle(message.teams, battleInterop, scriptHelper);
 
 			while (battle.MoreThanOneTeamAlive()) { 
 				

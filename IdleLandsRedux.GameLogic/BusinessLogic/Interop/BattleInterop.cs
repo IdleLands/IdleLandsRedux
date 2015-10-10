@@ -5,27 +5,31 @@ using System.Reflection;
 using IdleLandsRedux.Common;
 using IdleLandsRedux.GameLogic.Scripts;
 using IdleLandsRedux.GameLogic.SpecificMappings;
+using IdleLandsRedux.GameLogic.Interfaces.BusinessLogic.Interop;
+using IdleLandsRedux.GameLogic.Interfaces.Scripts;
 using IdleLandsRedux.DataAccess.Mappings;
 using Jint;
 
 namespace IdleLandsRedux.GameLogic.BusinessLogic.Interop
 {
-	//TODO make this into a dependency injection class, for unit testing Battle.cs better.
-	public class BattleInterop
+	public class BattleInterop : IBattleInterop
 	{
-		public BattleInterop()
+		private IScriptHelper ScriptHelper { get; set; }
+
+		public BattleInterop(IScriptHelper scriptHelper)
 		{
+			ScriptHelper = scriptHelper;
 		}
 
-		public static Engine CreateJSEngineWithCommonScripts(SpecificCharacter character)
+		public Engine CreateJSEngineWithCommonScripts(SpecificCharacter character)
 		{
 			var engine = ScriptHelper.CreateScriptEngine();
 			ScriptHelper.ExecuteScript(ref engine, "./Common.js");
-			engine.SetValue("_GetDefaultBonusObject", new Func<StatsModifierObject>(() => {
-				return new StatsModifierObject();
+			engine.SetValue("_GetDefaultBonusObject", new Func<StatsModifierCollection>(() => {
+				return new StatsModifierCollection();
 			}));
-			engine.SetValue("_GetDefaultMultiplyBonusObject", new Func<StatsModifierObject>(() => {
-				StatsModifierObject smo = 1d;
+			engine.SetValue("_GetDefaultMultiplyBonusObject", new Func<StatsModifierCollection>(() => {
+				StatsModifierCollection smo = 1d;
 				return smo;
 			}));
 			engine.SetValue("_HasPersonalitySet", new Func<string, bool>((personalityName) => {
@@ -37,7 +41,7 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic.Interop
 			return engine;
 		}
 
-		public static T CheckOnExpandoAndCast<T>(ExpandoObject expando, string property) where T : struct
+		public T CheckOnExpandoAndCast<T>(ExpandoObject expando, string property) where T : struct
 		{
 			if (string.IsNullOrEmpty(property))
 				throw new NullReferenceException("property");
@@ -53,7 +57,7 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic.Interop
 			return default(T);
 		}
 
-		public static StatsModifierObject addObjectToStatsModifierObject(StatsModifierObject stats, object obj)
+		public StatsModifierCollection addObjectToStatsModifierObject(StatsModifierCollection stats, object obj)
 		{
 			if (stats == null)
 				throw new NullReferenceException("stats");
@@ -61,15 +65,9 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic.Interop
 			if (obj == null)
 				throw new NullReferenceException("obj");
 
-			ExpandoObject expando = obj as ExpandoObject;
-			StatsModifierObject statsObject = obj as StatsModifierObject;
+			StatsModifierCollection statsObject = obj as StatsModifierCollection;
 
-			if (expando != null) {
-				foreach (PropertyInfo info in stats.GetProperties()) {
-					double oldVal = (double)info.GetValue(stats);
-					info.SetValue(stats, CheckOnExpandoAndCast<double>(expando, info.Name) + oldVal);
-				}
-			} else if (statsObject != null) {
+			if (statsObject != null) {
 				stats += statsObject;
 			} else {
 				throw new ArgumentException("Obj is not of a known type.");
@@ -78,7 +76,7 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic.Interop
 			return stats;
 		}
 
-		public static List<Tuple<string, string>> GetAllScriptsOf(SpecificCharacter character)
+		public List<Tuple<string, string>> GetAllScriptsOf(SpecificCharacter character)
 		{
 			if (character == null)
 				throw new NullReferenceException("character");
@@ -96,7 +94,8 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic.Interop
 			return ret;
 		}
 
-		public static StatsModifierObject InvokeStaticBonusWithHooks(Engine engine, string function, IEnumerable<string> hookFunctions, SpecificCharacter character)
+		public StatsModifierCollection InvokeFunctionWithHooks(Engine engine, string function, IEnumerable<string> hookFunctions,
+			SpecificCharacter character, StatsModifierCollection cumulativeStatsObject)
 		{
 			if (engine == null)
 				throw new NullReferenceException("engine");
@@ -110,11 +109,11 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic.Interop
 			if (character == null)
 				throw new NullReferenceException("character");
 
-			StatsModifierObject summedMultiplierObject = 1d;
+			StatsModifierCollection summedMultiplierObject = 1d;
 
 			foreach (string hookFunction in hookFunctions) {
 				string filename = function.Substring(0, function.IndexOf("_"));
-				StatsModifierObject modifier = (StatsModifierObject)engine.Invoke(hookFunction, filename, character).ToObject();
+				StatsModifierCollection modifier = (StatsModifierCollection)engine.Invoke(hookFunction, filename, character).ToObject();
 
 				if (modifier == null)
 					continue;
@@ -122,12 +121,31 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic.Interop
 				summedMultiplierObject *= modifier;
 			}
 
-			StatsModifierObject originalStats = (StatsModifierObject)engine.Invoke(function, character).ToObject();
+			StatsModifierCollection originalStats = (StatsModifierCollection)engine.Invoke(function, character, cumulativeStatsObject).ToObject();
 
 			if(originalStats == null)
 				throw new ArgumentException("Script did not return proper result.");
 
 			originalStats *= summedMultiplierObject;
+
+			return originalStats;
+		}
+
+		public StatsModifierCollection InvokeFunction(Engine engine, string function, SpecificCharacter character, StatsModifierCollection cumulativeStatsObject)
+		{
+			if (engine == null)
+				throw new NullReferenceException("engine");
+
+			if (string.IsNullOrEmpty(function))
+				throw new NullReferenceException("function");
+
+			if (character == null)
+				throw new NullReferenceException("character");
+
+			StatsModifierCollection originalStats = (StatsModifierCollection)engine.Invoke(function, character, cumulativeStatsObject).ToObject();
+
+			if(originalStats == null)
+				throw new ArgumentException("Script did not return proper result.");
 
 			return originalStats;
 		}

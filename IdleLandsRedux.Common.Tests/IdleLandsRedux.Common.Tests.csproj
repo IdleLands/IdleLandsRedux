@@ -42,6 +42,8 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="Shouldly">
       <HintPath>..\packages\Shouldly.2.6.0\lib\net40\Shouldly.dll</HintPath>
     </Reference>
@@ -49,7 +51,9 @@
   <ItemGroup>
     <Compile Include="StringHelperTests.cs" />
     <Compile Include="RestrictedNumberTests.cs" />
+    <Compile Include="StatsModifierCollectionTests.cs" />
     <Compile Include="StatsModifierObjectTests.cs" />
+    <Compile Include="DoubleExtensionsTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

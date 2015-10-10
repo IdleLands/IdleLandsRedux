@@ -4,24 +4,33 @@
 
 function Archer1_OnStaticBonus(basePlayerObject) {
 	log('Archer1_OnStaticBonus: ');
-	var bonusObject = GetStaticBonusObject();
-	bonusObject.StaticHitPoints = 70 + basePlayerObject.Stats.Level.Current * 10 + basePlayerObject.Stats.Constitution.Current * 6
-	bonusObject.StaticMagicPoints = 30 + basePlayerObject.Stats.Level.Current * 2 + basePlayerObject.Stats.Intelligence.Current
+	var bonusObject = GetDefaultBonusObject();
+	bonusObject.HitPoints.Value = 70 + basePlayerObject.Stats.Level.Current * 10 + basePlayerObject.Stats.Constitution.Current * 6
+	bonusObject.MagicPoints.Value = 30 + basePlayerObject.Stats.Level.Current * 2 + basePlayerObject.Stats.Intelligence.Current
 	return bonusObject;
 }
 
 function Archer1_OnDependentBonus(playerObject, cumulativeStatsObject) {
+	log('Archer1_OnDependentBonus: ');
+	return GetDefaultBonusObject();
 }
 
 function Archer1_OnOverrulingBonus(playerObject, cumulativeStatsObject) {
+	log('Archer1_OnOverrulingBonus: ');
+	return GetDefaultBonusObject();
 }
 
 function Archer1_OnShouldModifyStaticBonusScriptFor(script, basePlayerObject) {
 	log('Archer1_OnShouldModifyStaticBonusScriptFor: ' + script);
 	if(script == "Brave1") {
-		var obj = GetDefaultMultiplyOtherScriptBonusObject();
-		obj.StaticHitPoints = 2;
+		var obj = GetDefaultMultiplyBonusObject();
+		obj.HitPoints.Value = 2;
 		return obj;
 	}
-	return null;
+	return GetDefaultMultiplyBonusObject();
+}
+
+function Archer1_OnShouldModifyDependentBonusScriptFor(script, basePlayerObject) {
+	log('Archer1_OnShouldModifyDependentBonusScriptFor: ' + script);
+	return GetDefaultMultiplyBonusObject();
 }

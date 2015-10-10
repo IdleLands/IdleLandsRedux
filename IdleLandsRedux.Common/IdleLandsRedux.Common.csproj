@@ -41,7 +41,9 @@
     <Compile Include="SecureRandomHelper.cs" />
     <Compile Include="Interfaces\ISecureRandomHelper.cs" />
     <Compile Include="StringExtensions.cs" />
+    <Compile Include="StatsModifierCollection.cs" />
     <Compile Include="StatsModifierObject.cs" />
+    <Compile Include="DoubleExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />

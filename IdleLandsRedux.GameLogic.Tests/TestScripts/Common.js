@@ -1,13 +1,5 @@
 ﻿// pure JS stuff
 
-function GetStaticBonusObject() {
-	return GetDefaultBonusObject();
-}
-
-function GetDefaultMultiplyOtherScriptBonusObject() {
-	return GetDefaultMultiplyBonusObject();
-}
-
 //Internal function exposure
 
 function HasPersonalitySet(personalityName) {

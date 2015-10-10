@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using Shouldly;
 using System;
+using System.Linq;
+using System.Reflection;
 
 namespace IdleLandsRedux.Common.Tests
 {
@@ -8,45 +10,70 @@ namespace IdleLandsRedux.Common.Tests
 	public class StatsModifierObjectTests
 	{
 		[Test]
-		public void ShouldHaveFields()
+		public void TotalTest()
 		{
 			StatsModifierObject smo = new StatsModifierObject();
 
-			var fields = smo.GetProperties();
-			fields.ShouldNotBeNull();
-			fields.Length.ShouldBeGreaterThan(0);
+			smo.Value = 10;
+
+			smo.Total.ShouldBe(10d);
+
+			smo.Percent = 10;
+
+			smo.Total.ShouldBe(11d);
+
+			smo.Percent = -10;
+
+			smo.Total.ShouldBe(9d);
+
+			smo.Value = -10;
+
+			smo.Total.ShouldBe(-9d);
 		}
 
 		[Test]
-		public void ShouldAddTest()
-		{
-			StatsModifierObject smo = new StatsModifierObject();
-			StatsModifierObject smo2 = new StatsModifierObject();
-
-			smo.PercentageLuck = 5;
-			smo2.PercentageLuck = 5;
-			smo2.StaticWisdom = 50;
-
-			smo += smo2;
-
-			smo.PercentageLuck.ShouldBe(10);
-			smo.StaticWisdom.ShouldBe(50);
-		}
-
-		[Test]
-		public void ShouldMultiplyTests()
+		public void OperatorTests()
 		{
 			StatsModifierObject smo1 = new StatsModifierObject();
-			smo1.PercentageLuck = 10;
-			StatsModifierObject smo2 = 1.5d;
+			StatsModifierObject smo2 = new StatsModifierObject();
 
-			foreach (var info in smo2.GetProperties()) {
-				((double)info.GetValue(smo2)).ShouldBe(1.5d);
-			}
+			smo1.Value = 10;
+			smo1.Percent = 5;
+			smo2.Value = 10;
+			smo2.Percent = 8;
 
-			smo1 *= smo2;
+			(smo1 + smo2).Value.ShouldBe(20d);
+			(smo1 + smo2).Percent.ShouldBe(13d);
+			(smo1 - smo2).Value.ShouldBe(0d);
+			(smo1 - smo2).Percent.ShouldBe(-3d);
+			(smo1 * smo2).Value.ShouldBe(100d);
+			(smo1 * smo2).Percent.AlmostEqual2sComplement(13.4d, 5).ShouldBe(true);
+			(smo1 / smo2).Value.ShouldBe(1d);
+			(smo1 / smo2).Percent.AlmostEqual2sComplement(1.05d/1.08d*100d-100d, 50).ShouldBe(true);
 
-			smo1.PercentageLuck.ShouldBe(15d);
+			(smo1 + 5d).Value.ShouldBe(15d);
+			(smo1 + 5d).Percent.ShouldBe(5d);
+			(smo1 - 5d).Value.ShouldBe(5d);
+			(smo1 - 5d).Percent.ShouldBe(5d);
+			(smo1 * 5d).Value.ShouldBe(50d);
+			(smo1 * 5d).Percent.ShouldBe(5d);
+			(smo1 / 5d).Value.ShouldBe(2d);
+			(smo1 / 5d).Percent.ShouldBe(5d);
+
+			(100d + smo1).Value.ShouldBe(110d);
+			(100d + smo1).Percent.ShouldBe(5d);
+			(100d - smo1).Value.ShouldBe(90d);
+			(100d - smo1).Percent.ShouldBe(5d);
+			(100d * smo1).Value.ShouldBe(1000d);
+			(100d * smo1).Percent.ShouldBe(5d);
+			(100d / smo1).Value.ShouldBe(10d);
+			(100d / smo1).Percent.ShouldBe(5d);
+
+			//Checking if original values are not altered
+			smo1.Value.ShouldBe(10);
+			smo1.Percent.ShouldBe(5);
+			smo2.Value.ShouldBe(10);
+			smo2.Percent.ShouldBe(8);
 		}
 	}
 }
