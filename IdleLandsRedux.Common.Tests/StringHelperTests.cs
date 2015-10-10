@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using Shouldly;
+using FluentAssertions;
 
 namespace IdleLandsRedux.Common.Tests
 {
@@ -11,10 +11,10 @@ namespace IdleLandsRedux.Common.Tests
 		public void SanitizeTest()
 		{
 			var ret = StringHelper.SanitizeString("Thi$ is_ (a) test; for the 4th.");
-			ret.ShouldBe("Thi is a test for the 4th");
+			ret.Should().Be("Thi is a test for the 4th");
 
 			ret = StringHelper.SanitizeString("Thi$ is_ (a) test; for the 4th.", true);
-			ret.ShouldBe("Thi is_ a test; for the 4th.");
+			ret.Should().Be("Thi is_ a test; for the 4th.");
 		}
 	}
 }

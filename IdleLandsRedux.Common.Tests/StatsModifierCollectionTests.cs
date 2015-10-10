@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Shouldly;
+using FluentAssertions;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -15,9 +15,9 @@ namespace IdleLandsRedux.Common.Tests
 			StatsModifierCollection smo = new StatsModifierCollection();
 
 			var fields = smo.GetProperties();
-			fields.ShouldNotBeNull();
-			fields.Length.ShouldBeGreaterThan(0);
-			fields.Where(x => x.Name == "AllowValueModification").ShouldBeEmpty();
+			fields.Should().NotBeNull();
+			fields.Length.Should().BeGreaterThan(0);
+			fields.Where(x => x.Name == "AllowValueModification").Should().BeEmpty();
 		}
 
 		[Test]
@@ -32,8 +32,8 @@ namespace IdleLandsRedux.Common.Tests
 
 			smc1 += smc2;
 
-			smc1.Luck.Percent.ShouldBe(10);
-			smc1.Wisdom.Value.ShouldBe(50);
+			smc1.Luck.Percent.Should().Be(10);
+			smc1.Wisdom.Value.Should().Be(50);
 		}
 
 		[Test]
@@ -44,12 +44,12 @@ namespace IdleLandsRedux.Common.Tests
 			StatsModifierCollection smo2 = 1.5d;
 
 			foreach (var info in smo2.GetProperties()) {
-				((StatsModifierObject)info.GetValue(smo2)).Value.ShouldBe(1.5d);
+				((StatsModifierObject)info.GetValue(smo2)).Value.Should().Be(1.5d);
 			}
 
 			smo1 *= smo2;
 
-			smo1.Luck.Value.ShouldBe(15d);
+			smo1.Luck.Value.Should().Be(15d);
 		}
 
 		[Test]
@@ -71,7 +71,7 @@ namespace IdleLandsRedux.Common.Tests
 						Console.WriteLine(property.Name);
 					}
 				}
-				success.ShouldBe(true);
+				success.Should().Be(true);
 			}
 		}
 
@@ -85,10 +85,10 @@ namespace IdleLandsRedux.Common.Tests
 				smc1 = 1;
 				property1.SetValue(smc1, smo);
 
-				((StatsModifierObject)property1.GetValue(smc1)).Value.ShouldBe(2d);
+				((StatsModifierObject)property1.GetValue(smc1)).Value.Should().Be(2d);
 
 				foreach (var property2 in smc1.GetProperties().Where(x => x.Name != property1.Name)) {
-					((StatsModifierObject)property2.GetValue(smc1)).Value.ShouldBe(1d);
+					((StatsModifierObject)property2.GetValue(smc1)).Value.Should().Be(1d);
 				}
 			}
 		}

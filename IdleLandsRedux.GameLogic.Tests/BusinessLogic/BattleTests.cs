@@ -10,7 +10,7 @@ using IdleLandsRedux.GameLogic.Interfaces.BusinessLogic.Interop;
 using IdleLandsRedux.GameLogic.BusinessLogic.Interop;
 using IdleLandsRedux.Common;
 using NUnit.Framework;
-using Shouldly;
+using FluentAssertions;
 using Microsoft.Practices.Unity;
 using Moq;
 
@@ -49,9 +49,9 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic
 			};
 
 			StatsModifierCollection ret = battle.CalculateStats(ch);
-			ret.HitPoints.Total.ShouldBe(142);
-			ret.MagicPoints.Total.ShouldBe(35);
-			ret.Strength.Percent.ShouldBe(5);
+			ret.HitPoints.Total.Should().Be(142);
+			ret.MagicPoints.Total.Should().Be(35);
+			ret.Strength.Percent.Should().Be(5);
 		}
 
 		[Test]
@@ -71,9 +71,9 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic
 			};
 
 			StatsModifierCollection ret = battle.CalculateStats(ch);
-			ret.HitPoints.Total.ShouldBe(192);
-			ret.MagicPoints.Total.ShouldBe(35);
-			ret.Strength.Percent.ShouldBe(5);
+			ret.HitPoints.Total.Should().Be(192);
+			ret.MagicPoints.Total.Should().Be(35);
+			ret.Strength.Percent.Should().Be(5);
 		}
 
 		[Test]
@@ -93,8 +93,8 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic
 			};
 
 			StatsModifierCollection ret = battle.CalculateStats(ch);
-			ret.HitPoints.Total.ShouldBe(1400);
-			ret.MagicPoints.Percent.ShouldBe(180);
+			ret.HitPoints.Total.Should().Be(1400);
+			ret.MagicPoints.Percent.Should().Be(180);
 		}
 
 		[Test]
@@ -130,7 +130,7 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic
 
 			StatsModifierCollection ret = battle.CalculateStats(ch);
 
-			ret.Agility.Percent.ShouldBe(40);
+			ret.Agility.Percent.Should().Be(40);
 
 			mockBattleInterop.Verify(x => x.CreateJSEngineWithCommonScripts(It.IsAny<SpecificCharacter>()), Times.Exactly(1));
 			mockBattleInterop.Verify(x => x.InvokeFunctionWithHooks(mockEngine.Object, It.IsAny<string>(), It.IsAny<IEnumerable<string>>(),

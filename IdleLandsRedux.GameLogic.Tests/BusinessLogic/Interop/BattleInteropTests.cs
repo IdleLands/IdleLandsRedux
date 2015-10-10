@@ -8,7 +8,7 @@ using IdleLandsRedux.GameLogic.SpecificMappings;
 using IdleLandsRedux.GameLogic.Scripts;
 using IdleLandsRedux.Common;
 using NUnit.Framework;
-using Shouldly;
+using FluentAssertions;
 
 namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic.Interop
 {
@@ -24,11 +24,15 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic.Interop
 			BattleInterop battleInterop = new BattleInterop(null);
 
 			int ret = battleInterop.CheckOnExpandoAndCast<int>(obj, "test"); //Compiler should compile this to int, but doesn't. Not a bug though, feature!
-			ret.ShouldBe(5);
+			ret.Should().Be(5);
 
-			Should.Throw<NullReferenceException>(() => battleInterop.CheckOnExpandoAndCast<int>(null, "test"));
-			Should.Throw<NullReferenceException>(() => battleInterop.CheckOnExpandoAndCast<int>(obj, ""));
-			Should.Throw<NullReferenceException>(() => battleInterop.CheckOnExpandoAndCast<int>(obj, null));
+			Action action = () => battleInterop.CheckOnExpandoAndCast<int>(null, "test");
+			Action action2 = () => battleInterop.CheckOnExpandoAndCast<int>(obj, "");
+			Action action3 = () => battleInterop.CheckOnExpandoAndCast<int>(obj, null);
+
+			action.ShouldThrow<NullReferenceException>();
+			action2.ShouldThrow<NullReferenceException>();
+			action3.ShouldThrow<NullReferenceException>();
 		}
 
 		[Test]
@@ -40,15 +44,15 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic.Interop
 
 			BattleInterop battleInterop = new BattleInterop(null);
 			var scripts = battleInterop.GetAllScriptsOf(sc);
-			scripts.Count.ShouldBe(4);
-			scripts[0].Item1.ShouldBe("class");
-			scripts[0].Item2.ShouldBe("Test");
-			scripts[1].Item1.ShouldBe("class");
-			scripts[1].Item2.ShouldBe("Archer");
-			scripts[2].Item1.ShouldBe("personality");
-			scripts[2].Item2.ShouldBe("DPS");
-			scripts[3].Item1.ShouldBe("personality");
-			scripts[3].Item2.ShouldBe("King");
+			scripts.Count.Should().Be(4);
+			scripts[0].Item1.Should().Be("class");
+			scripts[0].Item2.Should().Be("Test");
+			scripts[1].Item1.Should().Be("class");
+			scripts[1].Item2.Should().Be("Archer");
+			scripts[2].Item1.Should().Be("personality");
+			scripts[2].Item2.Should().Be("DPS");
+			scripts[3].Item1.Should().Be("personality");
+			scripts[3].Item2.Should().Be("King");
 		}
 	}
 }
