@@ -5,8 +5,8 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{4B7A153F-2884-4A6A-B262-30BBE75D88F7}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>IdleLandsRedux.GameLogic.DataEntities.Test</RootNamespace>
-    <AssemblyName>IdleLandsRedux.GameLogic.DataEntities.Test</AssemblyName>
+    <RootNamespace>IdleLandsRedux.GameLogic.DataEntities.Tests</RootNamespace>
+    <AssemblyName>IdleLandsRedux.GameLogic.DataEntities.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.DataAccess",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.WebService", "IdleLandsRedux.WebService\IdleLandsRedux.WebService.csproj", "{5792CEF9-CADD-4FD1-AC23-B7F52ADCAD6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.WebService.Tests", "IdleLandsRedux.WebService.Test\IdleLandsRedux.WebService.Tests.csproj", "{E2B08223-3FEA-4C9A-BE65-7941A195A1DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.WebService.Tests", "IdleLandsRedux.WebService.Tests\IdleLandsRedux.WebService.Tests.csproj", "{E2B08223-3FEA-4C9A-BE65-7941A195A1DB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.Contracts", "IdleLandsRedux.Contracts\IdleLandsRedux.Contracts.csproj", "{D3A9AFD9-F3D0-488A-A9AB-40C1B75A3769}"
 EndProject
@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.InteropPlugi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.GameLogic.DataEntities", "IdleLandsRedux.GameLogic.DataEntities\IdleLandsRedux.GameLogic.DataEntities.csproj", "{D085BD86-9103-49A4-8A5F-A6F7B78DA2F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.GameLogic.DataEntities.Test", "IdleLandsRedux.GameLogic.DataEntities.Test\IdleLandsRedux.GameLogic.DataEntities.Test.csproj", "{4B7A153F-2884-4A6A-B262-30BBE75D88F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.GameLogic.DataEntities.Tests", "IdleLandsRedux.GameLogic.DataEntities.Tests\IdleLandsRedux.GameLogic.DataEntities.Tests.csproj", "{4B7A153F-2884-4A6A-B262-30BBE75D88F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.InteropPlugins.Tests", "IdleLandsRedux.InteropPlugins.Tests\IdleLandsRedux.InteropPlugins.Tests.csproj", "{9717748D-1171-4E36-AC26-48A841813A98}"
 EndProject
