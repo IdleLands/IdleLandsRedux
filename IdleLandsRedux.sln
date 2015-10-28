@@ -19,6 +19,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.GameLogic", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.Common.Tests", "IdleLandsRedux.Common.Tests\IdleLandsRedux.Common.Tests.csproj", "{5E34FF81-D3B7-436E-AD56-B292CA37F02B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.InteropPlugins", "IdleLandsRedux.InteropPlugins\IdleLandsRedux.InteropPlugins.csproj", "{26378EC9-139C-4EB3-A961-948FCF8BBEDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.GameLogic.DataEntities", "IdleLandsRedux.GameLogic.DataEntities\IdleLandsRedux.GameLogic.DataEntities.csproj", "{D085BD86-9103-49A4-8A5F-A6F7B78DA2F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.GameLogic.DataEntities.Test", "IdleLandsRedux.GameLogic.DataEntities.Test\IdleLandsRedux.GameLogic.DataEntities.Test.csproj", "{4B7A153F-2884-4A6A-B262-30BBE75D88F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.InteropPlugins.Tests", "IdleLandsRedux.InteropPlugins.Tests\IdleLandsRedux.InteropPlugins.Tests.csproj", "{9717748D-1171-4E36-AC26-48A841813A98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -29,10 +37,18 @@ Global
 		{0ACEB47B-9486-4147-AE87-AFCF42E4AA07}.Debug|x86.Build.0 = Debug|x86
 		{0ACEB47B-9486-4147-AE87-AFCF42E4AA07}.Release|x86.ActiveCfg = Release|x86
 		{0ACEB47B-9486-4147-AE87-AFCF42E4AA07}.Release|x86.Build.0 = Release|x86
+		{26378EC9-139C-4EB3-A961-948FCF8BBEDC}.Debug|x86.ActiveCfg = Debug|x86
+		{26378EC9-139C-4EB3-A961-948FCF8BBEDC}.Debug|x86.Build.0 = Debug|x86
+		{26378EC9-139C-4EB3-A961-948FCF8BBEDC}.Release|x86.ActiveCfg = Release|x86
+		{26378EC9-139C-4EB3-A961-948FCF8BBEDC}.Release|x86.Build.0 = Release|x86
 		{464FD530-721D-48C5-8EB5-884CBF986AC8}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{464FD530-721D-48C5-8EB5-884CBF986AC8}.Debug|x86.Build.0 = Debug|Any CPU
 		{464FD530-721D-48C5-8EB5-884CBF986AC8}.Release|x86.ActiveCfg = Release|Any CPU
 		{464FD530-721D-48C5-8EB5-884CBF986AC8}.Release|x86.Build.0 = Release|Any CPU
+		{4B7A153F-2884-4A6A-B262-30BBE75D88F7}.Debug|x86.ActiveCfg = Debug|x86
+		{4B7A153F-2884-4A6A-B262-30BBE75D88F7}.Debug|x86.Build.0 = Debug|x86
+		{4B7A153F-2884-4A6A-B262-30BBE75D88F7}.Release|x86.ActiveCfg = Release|x86
+		{4B7A153F-2884-4A6A-B262-30BBE75D88F7}.Release|x86.Build.0 = Release|x86
 		{5792CEF9-CADD-4FD1-AC23-B7F52ADCAD6F}.Debug|x86.ActiveCfg = Debug|x86
 		{5792CEF9-CADD-4FD1-AC23-B7F52ADCAD6F}.Debug|x86.Build.0 = Debug|x86
 		{5792CEF9-CADD-4FD1-AC23-B7F52ADCAD6F}.Release|x86.ActiveCfg = Release|x86
@@ -49,6 +65,14 @@ Global
 		{8FFC8695-7D01-47BB-8AE3-DB853C8FEF13}.Debug|x86.Build.0 = Debug|x86
 		{8FFC8695-7D01-47BB-8AE3-DB853C8FEF13}.Release|x86.ActiveCfg = Release|x86
 		{8FFC8695-7D01-47BB-8AE3-DB853C8FEF13}.Release|x86.Build.0 = Release|x86
+		{9717748D-1171-4E36-AC26-48A841813A98}.Debug|x86.ActiveCfg = Debug|x86
+		{9717748D-1171-4E36-AC26-48A841813A98}.Debug|x86.Build.0 = Debug|x86
+		{9717748D-1171-4E36-AC26-48A841813A98}.Release|x86.ActiveCfg = Release|x86
+		{9717748D-1171-4E36-AC26-48A841813A98}.Release|x86.Build.0 = Release|x86
+		{D085BD86-9103-49A4-8A5F-A6F7B78DA2F1}.Debug|x86.ActiveCfg = Debug|x86
+		{D085BD86-9103-49A4-8A5F-A6F7B78DA2F1}.Debug|x86.Build.0 = Debug|x86
+		{D085BD86-9103-49A4-8A5F-A6F7B78DA2F1}.Release|x86.ActiveCfg = Release|x86
+		{D085BD86-9103-49A4-8A5F-A6F7B78DA2F1}.Release|x86.Build.0 = Release|x86
 		{D3A9AFD9-F3D0-488A-A9AB-40C1B75A3769}.Debug|x86.ActiveCfg = Debug|x86
 		{D3A9AFD9-F3D0-488A-A9AB-40C1B75A3769}.Debug|x86.Build.0 = Debug|x86
 		{D3A9AFD9-F3D0-488A-A9AB-40C1B75A3769}.Release|x86.ActiveCfg = Release|x86

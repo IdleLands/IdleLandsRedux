@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IdleLandsRedux.GameLogic.Interfaces.Reductions
+namespace IdleLandsRedux.GameLogic.DataEntities.Interfaces.Reductions
 {
 	public interface ICalcDamageReduction
 	{

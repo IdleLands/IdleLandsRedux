@@ -3,11 +3,9 @@ using System.Dynamic;
 using System.Collections.Generic;
 using IdleLandsRedux.GameLogic.BusinessLogic;
 using IdleLandsRedux.DataAccess.Mappings;
-using IdleLandsRedux.GameLogic.SpecificMappings;
-using IdleLandsRedux.GameLogic.Scripts;
-using IdleLandsRedux.GameLogic.Interfaces.Scripts;
-using IdleLandsRedux.GameLogic.Interfaces.BusinessLogic.Interop;
-using IdleLandsRedux.GameLogic.BusinessLogic.Interop;
+using IdleLandsRedux.GameLogic.DataEntities;
+using IdleLandsRedux.InteropPlugins;
+using IdleLandsRedux.InteropPlugins.JSPlugin;
 using IdleLandsRedux.Common;
 using NUnit.Framework;
 using FluentAssertions;
@@ -19,23 +17,24 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic
 	[TestFixture]
 	public class BattleTests
 	{
-		private IScriptHelper scriptHelper { get; set; }
-		private IBattleInterop battleInterop { get; set; }
+		private IJSScriptHelper scriptHelper { get; set; }
+		private IPlugin pluginInterop { get; set; }
 		private IUnityContainer container { get; set; }
 
 		[TestFixtureSetUp]
 		public void TestSetup()
 		{
-			container = GameLogic.Bootstrapper.BootstrapUnity();
-			scriptHelper = container.Resolve<IScriptHelper>();
+			container = new UnityContainer();
+			InteropPlugins.Bootstrapper.BootstrapUnity(container);
+			scriptHelper = container.Resolve<IJSScriptHelper>();
 			scriptHelper.ScriptDir = "/TestScripts/";
-			battleInterop = container.Resolve<IBattleInterop>();
+			pluginInterop = new JSPlugin(scriptHelper);
 		}
 
 		[Test]
 		public void CalculateStaticStatsTest()
 		{
-			Battle battle = new Battle(new List<List<Character>>(), battleInterop, scriptHelper);
+			Battle battle = new Battle(new List<List<Character>>(), pluginInterop, scriptHelper);
 
 			SpecificCharacter ch = new SpecificCharacter {
 				Name = "test",
@@ -57,7 +56,7 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic
 		[Test]
 		public void CalculateStaticStatsWithHooksTest()
 		{
-			Battle battle = new Battle(new List<List<Character>>(), battleInterop, scriptHelper);
+			Battle battle = new Battle(new List<List<Character>>(), pluginInterop, scriptHelper);
 
 			SpecificCharacter ch = new SpecificCharacter {
 				Name = "test",
@@ -79,7 +78,7 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic
 		[Test]
 		public void CalculateAllStats()
 		{
-			Battle battle = new Battle(new List<List<Character>>(), battleInterop, scriptHelper);
+			Battle battle = new Battle(new List<List<Character>>(), pluginInterop, scriptHelper);
 
 			SpecificCharacter ch = new SpecificCharacter {
 				Name = "test",
@@ -100,12 +99,13 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic
 		[Test]
 		public void MockedBattleCalculateStatsTest()
 		{
-			Mock<IBattleInterop> mockBattleInterop = new Mock<IBattleInterop>();
-			Mock<IScriptHelper> mockScriptHelper = new Mock<IScriptHelper>();
-			Mock<Jint.Engine> mockEngine = new Mock<Jint.Engine>();
-			Jint.Engine actualEngine = mockEngine.Object;
+			Mock<IPlugin> mockBattleInterop = new Mock<IPlugin>();
+			Mock<IJSScriptHelper> mockScriptHelper = new Mock<IJSScriptHelper>();
+			Mock<Jint.Engine> mockJintEngine = new Mock<Jint.Engine>();
+			Mock<JSEngine> mockEngine = new Mock<JSEngine>(mockJintEngine.Object);
+			IEngine actualEngine = mockEngine.Object;
 
-			mockBattleInterop.Setup(x => x.CreateJSEngineWithCommonScripts(It.IsAny<SpecificCharacter>())).Returns(mockEngine.Object);
+			mockBattleInterop.Setup(x => x.CreateEngineWithCommonScripts(It.IsAny<SpecificCharacter>())).Returns(mockEngine.Object);
 			mockBattleInterop.Setup(x => x.InvokeFunctionWithHooks(mockEngine.Object, It.IsAny<string>(), It.IsAny<IEnumerable<string>>(),
 				It.IsAny<SpecificCharacter>(), It.IsAny<StatsModifierCollection>())).Returns(new StatsModifierCollection { Agility = new StatsModifierObject { Percent = 5} });
 			mockBattleInterop.Setup(x => x.InvokeFunction(mockEngine.Object, It.IsAny<string>(),
@@ -132,7 +132,7 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic
 
 			ret.Agility.Percent.Should().Be(40);
 
-			mockBattleInterop.Verify(x => x.CreateJSEngineWithCommonScripts(It.IsAny<SpecificCharacter>()), Times.Exactly(1));
+			mockBattleInterop.Verify(x => x.CreateEngineWithCommonScripts(It.IsAny<SpecificCharacter>()), Times.Exactly(1));
 			mockBattleInterop.Verify(x => x.InvokeFunctionWithHooks(mockEngine.Object, It.IsAny<string>(), It.IsAny<IEnumerable<string>>(),
 				It.IsAny<SpecificCharacter>(), It.IsAny<StatsModifierCollection>()), Times.Exactly(8));
 			mockBattleInterop.Verify(x => x.addObjectToStatsModifierObject(It.IsAny<StatsModifierCollection>(), It.IsAny<StatsModifierCollection>()),

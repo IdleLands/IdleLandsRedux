@@ -78,11 +78,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Managers\MessageManagerTests.cs" />
-    <Compile Include="Scripts\ScriptHelperTests.cs" />
-    <Compile Include="ReductionTests.cs" />
     <Compile Include="Config\AssemblyInfo.cs" />
     <Compile Include="BusinessLogic\BattleTests.cs" />
-    <Compile Include="BusinessLogic\Interop\BattleInteropTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -90,9 +87,6 @@
     <None Include="TestScripts\Classes\Archer.js">
       <DeployService-Deploy>True</DeployService-Deploy>
       <DeployService-TargetDirectoryId>Binaries</DeployService-TargetDirectoryId>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestScripts\Common.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestScripts\Personalities\Brave1.js">
@@ -124,15 +118,24 @@
       <Project>{78E7735B-F63E-4900-B196-D841ED007B7A}</Project>
       <Name>IdleLandsRedux.GameLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IdleLandsRedux.GameLogic.DataEntities\IdleLandsRedux.GameLogic.DataEntities.csproj">
+      <Project>{D085BD86-9103-49A4-8A5F-A6F7B78DA2F1}</Project>
+      <Name>IdleLandsRedux.GameLogic.DataEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IdleLandsRedux.InteropPlugins\IdleLandsRedux.InteropPlugins.csproj">
+      <Project>{26378EC9-139C-4EB3-A961-948FCF8BBEDC}</Project>
+      <Name>IdleLandsRedux.InteropPlugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TestScripts\" />
-    <Folder Include="Scripts\" />
     <Folder Include="BusinessLogic\" />
-    <Folder Include="BusinessLogic\Interop\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestScripts\Personalities\Brave.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestScripts\Common.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

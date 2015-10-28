@@ -14,7 +14,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;CODE_ANALYSIS;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -37,19 +37,10 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="BusinessLogic\Battle.cs" />
     <Compile Include="Interfaces\Managers\IMessageManager.cs" />
-    <Compile Include="Interfaces\Reductions\ICalcDamageReduction.cs" />
-    <Compile Include="Interfaces\Reductions\ICalcPhysicalAttackTargets.cs" />
     <Compile Include="Managers\MessageManager.cs" />
-    <Compile Include="Mappings\SpecificCharacter.cs" />
-    <Compile Include="Mappings\SpecificMonster.cs" />
-    <Compile Include="Mappings\SpecificPlayer.cs" />
-    <Compile Include="personalityReduce.cs" />
     <Compile Include="Config\AssemblyInfo.cs" />
     <Compile Include="Actors\SendMessageActor.cs" />
-    <Compile Include="Scripts\ScriptHelper.cs" />
-    <Compile Include="BusinessLogic\Interop\BattleInterop.cs" />
-    <Compile Include="Interfaces\BusinessLogic\Interop\IBattleInterop.cs" />
-    <Compile Include="Interfaces\Scripts\IScriptHelper.cs" />
+    <Compile Include="Interfaces\BusinessLogic\IBattle.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -119,13 +110,18 @@
       <Project>{8FFC8695-7D01-47BB-8AE3-DB853C8FEF13}</Project>
       <Name>IdleLandsRedux.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IdleLandsRedux.GameLogic.DataEntities\IdleLandsRedux.GameLogic.DataEntities.csproj">
+      <Project>{D085BD86-9103-49A4-8A5F-A6F7B78DA2F1}</Project>
+      <Name>IdleLandsRedux.GameLogic.DataEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IdleLandsRedux.InteropPlugins\IdleLandsRedux.InteropPlugins.csproj">
+      <Project>{26378EC9-139C-4EB3-A961-948FCF8BBEDC}</Project>
+      <Name>IdleLandsRedux.InteropPlugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Config\" />
-    <Folder Include="BusinessLogic\Interop\" />
     <Folder Include="Interfaces\BusinessLogic\" />
-    <Folder Include="Interfaces\BusinessLogic\Interop\" />
-    <Folder Include="Interfaces\Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\Personalities\Brave.js">

@@ -4,10 +4,8 @@ using Akka.DI.Unity;
 using Microsoft.Practices.Unity;
 using IdleLandsRedux.GameLogic.Managers;
 using IdleLandsRedux.GameLogic.Interfaces.Managers;
-using IdleLandsRedux.GameLogic.Interfaces.BusinessLogic.Interop;
-using IdleLandsRedux.GameLogic.BusinessLogic.Interop;
-using IdleLandsRedux.GameLogic.Scripts;
-using IdleLandsRedux.GameLogic.Interfaces.Scripts;
+using IdleLandsRedux.GameLogic.Interfaces.BusinessLogic;
+using IdleLandsRedux.GameLogic.BusinessLogic;
 
 namespace IdleLandsRedux.GameLogic
 {
@@ -23,8 +21,7 @@ namespace IdleLandsRedux.GameLogic
 			IUnityContainer container = new UnityContainer();
 			Common.Bootstrapper.BootstrapUnity(container);
 			container.RegisterType<IMessageManager, MessageManager>();
-			container.RegisterType<IBattleInterop, BattleInterop>();
-			container.RegisterType<IScriptHelper, ScriptHelper>(new PerThreadLifetimeManager());
+			container.RegisterType<IBattle, Battle>();
 			return container;
 		}
 	}

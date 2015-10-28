@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using IdleLandsRedux.DataAccess.Mappings;
-using IdleLandsRedux.GameLogic.Interfaces.Reductions;
+using IdleLandsRedux.GameLogic.DataEntities.Interfaces.Reductions;
 
-namespace IdleLandsRedux.GameLogic
+namespace IdleLandsRedux.GameLogic.DataEntities
 {
 	public class personalityReduce
 	{

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using IdleLandsRedux.DataAccess.Mappings;
-using IdleLandsRedux.GameLogic.Interfaces.Reductions;
+using IdleLandsRedux.GameLogic.DataEntities.Interfaces.Reductions;
 using IdleLandsRedux.Common;
 
-namespace IdleLandsRedux.GameLogic.SpecificMappings
+namespace IdleLandsRedux.GameLogic.DataEntities
 {
 	public partial class SpecificCharacter : Character, ICalcPhysicalAttackTargets, ICalcDamageReduction, IEquatable<SpecificCharacter>
 	{

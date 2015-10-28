@@ -59,19 +59,11 @@ namespace IdleLandsRedux.Common.Tests
 			smc1.AllowValueModification = false;
 
 			foreach (var property in smc1.GetProperties()) {
-				bool success = false;
-				try {
-					StatsModifierObject smo = 2d;
-					property.SetValue(smc1, smo);
-					Console.WriteLine(property.Name);
-				} catch (Exception e) {
-					if (e.InnerException != null && e.InnerException.GetType() == typeof(DisallowedValueModificationException) && e.InnerException.Message == property.Name) {
-						success = true;
-					} else {
-						Console.WriteLine(property.Name);
-					}
-				}
-				success.Should().Be(true);
+				StatsModifierObject smo = 2d;
+
+				Action action = () => property.SetValue(smc1, smo);
+
+				action.ShouldThrow<Exception>().WithInnerException<DisallowedValueModificationException>().WithInnerMessage(property.Name);
 			}
 		}
 

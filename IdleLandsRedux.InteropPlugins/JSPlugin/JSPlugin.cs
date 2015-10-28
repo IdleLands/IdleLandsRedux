@@ -1,41 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Dynamic;
-using System.Reflection;
-using IdleLandsRedux.Common;
-using IdleLandsRedux.GameLogic.Scripts;
-using IdleLandsRedux.GameLogic.SpecificMappings;
-using IdleLandsRedux.GameLogic.Interfaces.BusinessLogic.Interop;
-using IdleLandsRedux.GameLogic.Interfaces.Scripts;
-using IdleLandsRedux.DataAccess.Mappings;
+using System.Collections.Generic;
 using Jint;
+using IdleLandsRedux.GameLogic.DataEntities;
+using IdleLandsRedux.Common;
 
-namespace IdleLandsRedux.GameLogic.BusinessLogic.Interop
+namespace IdleLandsRedux.InteropPlugins.JSPlugin
 {
-	public class BattleInterop : IBattleInterop
+	public class JSPlugin : IPlugin
 	{
-		private IScriptHelper ScriptHelper { get; set; }
+		private IJSScriptHelper ScriptHelper { get; set; }
 
-		public BattleInterop(IScriptHelper scriptHelper)
+		public JSPlugin(IJSScriptHelper scriptHelper)
 		{
 			ScriptHelper = scriptHelper;
 		}
 
-		public Engine CreateJSEngineWithCommonScripts(SpecificCharacter character)
+		public IEngine CreateEngineWithCommonScripts(SpecificCharacter character)
 		{
+			if (character == null)
+				throw new ArgumentNullException("character");
+
 			var engine = ScriptHelper.CreateScriptEngine();
+			var jsEngine = (engine as JSEngine).GetEngine();
 			ScriptHelper.ExecuteScript(ref engine, "./Common.js");
-			engine.SetValue("_GetDefaultBonusObject", new Func<StatsModifierCollection>(() => {
+			jsEngine.SetValue("_GetDefaultBonusObject", new Func<StatsModifierCollection>(() => {
 				return new StatsModifierCollection();
 			}));
-			engine.SetValue("_GetDefaultMultiplyBonusObject", new Func<StatsModifierCollection>(() => {
+			jsEngine.SetValue("_GetDefaultMultiplyBonusObject", new Func<StatsModifierCollection>(() => {
 				StatsModifierCollection smo = 1d;
 				return smo;
 			}));
-			engine.SetValue("_HasPersonalitySet", new Func<string, bool>((personalityName) => {
+			jsEngine.SetValue("_HasPersonalitySet", new Func<string, bool>((personalityName) => {
 				return character.Personalities.CultureContains(personalityName);
 			}));
-			engine.SetValue("_HasClassSet", new Func<string, bool>((className) => {
+			jsEngine.SetValue("_HasClassSet", new Func<string, bool>((className) => {
 				return character.Class == className;
 			}));
 			return engine;
@@ -44,10 +43,10 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic.Interop
 		public T CheckOnExpandoAndCast<T>(ExpandoObject expando, string property) where T : struct
 		{
 			if (string.IsNullOrEmpty(property))
-				throw new NullReferenceException("property");
+				throw new ArgumentNullException("property");
 
 			if (expando == null)
-				throw new NullReferenceException("expando");
+				throw new ArgumentNullException("expando");
 
 			IDictionary<string, object> dictExpando = (IDictionary<string, object>)expando;
 			if (dictExpando.ContainsKey(property)) {
@@ -60,10 +59,10 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic.Interop
 		public StatsModifierCollection addObjectToStatsModifierObject(StatsModifierCollection stats, object obj)
 		{
 			if (stats == null)
-				throw new NullReferenceException("stats");
+				throw new ArgumentNullException("stats");
 
 			if (obj == null)
-				throw new NullReferenceException("obj");
+				throw new ArgumentNullException("obj");
 
 			StatsModifierCollection statsObject = obj as StatsModifierCollection;
 
@@ -79,7 +78,7 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic.Interop
 		public List<Tuple<string, string>> GetAllScriptsOf(SpecificCharacter character)
 		{
 			if (character == null)
-				throw new NullReferenceException("character");
+				throw new ArgumentNullException("character");
 
 			List<Tuple<string, string>> ret = new List<Tuple<string, string>>();
 
@@ -94,26 +93,31 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic.Interop
 			return ret;
 		}
 
-		public StatsModifierCollection InvokeFunctionWithHooks(Engine engine, string function, IEnumerable<string> hookFunctions,
+		public StatsModifierCollection InvokeFunctionWithHooks(IEngine engine, string function, IEnumerable<string> hookFunctions,
 			SpecificCharacter character, StatsModifierCollection cumulativeStatsObject)
 		{
 			if (engine == null)
-				throw new NullReferenceException("engine");
+				throw new ArgumentNullException("engine");
 
 			if (string.IsNullOrEmpty(function))
-				throw new NullReferenceException("function");
+				throw new ArgumentNullException("function");
 
 			if (hookFunctions == null)
-				throw new NullReferenceException("hookFunctions");
+				throw new ArgumentNullException("hookFunctions");
 
 			if (character == null)
-				throw new NullReferenceException("character");
+				throw new ArgumentNullException("character");
+
+			if (engine.Name != "JavascriptEngine")
+				throw new ArgumentException("Expected provided engine type to be JavascriptEngine but got " + engine.Name);
+
+			Engine jsEngine = (engine as JSEngine).GetEngine();
 
 			StatsModifierCollection summedMultiplierObject = 1d;
 
 			foreach (string hookFunction in hookFunctions) {
 				string filename = function.Substring(0, function.IndexOf("_"));
-				StatsModifierCollection modifier = (StatsModifierCollection)engine.Invoke(hookFunction, filename, character).ToObject();
+				StatsModifierCollection modifier = (StatsModifierCollection)jsEngine.Invoke(hookFunction, filename, character).ToObject();
 
 				if (modifier == null)
 					continue;
@@ -121,7 +125,7 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic.Interop
 				summedMultiplierObject *= modifier;
 			}
 
-			StatsModifierCollection originalStats = (StatsModifierCollection)engine.Invoke(function, character, cumulativeStatsObject).ToObject();
+			StatsModifierCollection originalStats = (StatsModifierCollection)jsEngine.Invoke(function, character, cumulativeStatsObject).ToObject();
 
 			if(originalStats == null)
 				throw new ArgumentException("Script did not return proper result.");
@@ -131,18 +135,23 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic.Interop
 			return originalStats;
 		}
 
-		public StatsModifierCollection InvokeFunction(Engine engine, string function, SpecificCharacter character, StatsModifierCollection cumulativeStatsObject)
+		public StatsModifierCollection InvokeFunction(IEngine engine, string function, SpecificCharacter character, StatsModifierCollection cumulativeStatsObject)
 		{
 			if (engine == null)
-				throw new NullReferenceException("engine");
+				throw new ArgumentNullException("engine");
 
 			if (string.IsNullOrEmpty(function))
-				throw new NullReferenceException("function");
+				throw new ArgumentNullException("function");
 
 			if (character == null)
-				throw new NullReferenceException("character");
+				throw new ArgumentNullException("character");
 
-			StatsModifierCollection originalStats = (StatsModifierCollection)engine.Invoke(function, character, cumulativeStatsObject).ToObject();
+			if (engine.Name != "JavascriptEngine")
+				throw new ArgumentException("Expected provided engine type to be JavascriptEngine but got " + engine.Name);
+
+			Engine jsEngine = (engine as JSEngine).GetEngine();
+
+			StatsModifierCollection originalStats = (StatsModifierCollection)jsEngine.Invoke(function, character, cumulativeStatsObject).ToObject();
 
 			if(originalStats == null)
 				throw new ArgumentException("Script did not return proper result.");

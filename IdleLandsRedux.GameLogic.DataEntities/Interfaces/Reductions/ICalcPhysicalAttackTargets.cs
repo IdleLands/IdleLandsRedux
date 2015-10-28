@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using IdleLandsRedux.DataAccess.Mappings;
 
-namespace IdleLandsRedux.GameLogic.Interfaces.Reductions
+namespace IdleLandsRedux.GameLogic.DataEntities.Interfaces.Reductions
 {
 	public interface ICalcPhysicalAttackTargets
 	{

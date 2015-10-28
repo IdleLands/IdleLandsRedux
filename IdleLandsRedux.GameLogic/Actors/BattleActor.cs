@@ -5,8 +5,7 @@ using Akka.Actor;
 using Akka.Event;
 using IdleLandsRedux.DataAccess.Mappings;
 using IdleLandsRedux.GameLogic.BusinessLogic;
-using IdleLandsRedux.GameLogic.Interfaces.BusinessLogic.Interop;
-using IdleLandsRedux.GameLogic.Interfaces.Scripts;
+using IdleLandsRedux.InteropPlugins;
 using log4net;
 using Microsoft.Practices.Unity;
 
@@ -38,8 +37,8 @@ namespace IdleLandsRedux.GameLogic.Actors
 		private void HandleBattle(BattleActorMessage message)
 		{
 			var container = GameLogic.Bootstrapper.BootstrapUnity();
-			IBattleInterop battleInterop = container.Resolve<IBattleInterop>();
-			IScriptHelper scriptHelper = container.Resolve<IScriptHelper>();
+			IPlugin battleInterop = container.Resolve<IPlugin>("JavascriptPlugin");
+			IJSScriptHelper scriptHelper = container.Resolve<IJSScriptHelper>();
 			Battle battle = new Battle(message.teams, battleInterop, scriptHelper);
 
 			while (battle.MoreThanOneTeamAlive()) { 

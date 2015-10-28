@@ -4,13 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using IdleLandsRedux.Common;
-using IdleLandsRedux.GameLogic.SpecificMappings;
+using IdleLandsRedux.GameLogic.DataEntities;
 using IdleLandsRedux.DataAccess.Mappings;
-using IdleLandsRedux.GameLogic.Scripts;
-using IdleLandsRedux.GameLogic.BusinessLogic.Interop;
-using IdleLandsRedux.GameLogic.Interfaces.BusinessLogic.Interop;
-using IdleLandsRedux.GameLogic.Interfaces.Scripts;
-using Jint;
+using IdleLandsRedux.GameLogic.Interfaces.BusinessLogic;
+using IdleLandsRedux.InteropPlugins;
 
 namespace IdleLandsRedux.GameLogic.BusinessLogic
 {
@@ -25,19 +22,19 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
 		}
 	}
 
-	public class Battle
+	public class Battle : IBattle
 	{
-		private IBattleInterop BattleInterop { get; set; }
-		private IScriptHelper ScriptHelper { get; set; }
+		private IPlugin InteropPlugin { get; set; }
+		private IJSScriptHelper ScriptHelper { get; set; }
 		public Dictionary<string, List<SpecificCharacter>> _allCharactersInTeams { get; set; }
 
 		private List<SpecificCharacter> _turnOrder;
 
-		public Battle(List<List<Character>> teams, IBattleInterop battleInterop, IScriptHelper scriptHelper)
+		public Battle(List<List<Character>> teams, IPlugin interopPlugin, IJSScriptHelper scriptHelper)
 		{
-			_allCharactersInTeams = new Dictionary<string, List<SpecificCharacter>>();
-			BattleInterop = battleInterop;
-			ScriptHelper = scriptHelper;
+			this._allCharactersInTeams = new Dictionary<string, List<SpecificCharacter>>();
+			this.InteropPlugin = interopPlugin;
+			this.ScriptHelper = scriptHelper;
 		}
 
 		//Not using _characters here, since some functions don't want to include dead people. Ugh. Zombies.
@@ -101,7 +98,7 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
 		public StatsModifierCollection CalculateStats(SpecificCharacter character)
 		{
 			StatsModifierCollection summedModifiers = new StatsModifierCollection();
-			var engine = BattleInterop.CreateJSEngineWithCommonScripts(character);
+			var engine = InteropPlugin.CreateEngineWithCommonScripts(character);
 			List<string> allScripts = new List<string>();
 			List<Tuple<string, string>> allStaticFunctions = new List<Tuple<string, string>>();
 			List<Tuple<string, string>> allStaticHookFunctions = new List<Tuple<string, string>>();
@@ -137,25 +134,25 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
 
 			//Execute static functions on scripts
 			foreach (var script in allStaticFunctions) {
-				var modifiers = BattleInterop.InvokeFunctionWithHooks(engine, script.Item2,
+				var modifiers = InteropPlugin.InvokeFunctionWithHooks(engine, script.Item2,
 					allStaticHookFunctions.Where(x => x.Item1 != script.Item1).Select(x => x.Item2), character, summedModifiers);
 
-				summedModifiers = BattleInterop.addObjectToStatsModifierObject(summedModifiers, modifiers);
+				summedModifiers = InteropPlugin.addObjectToStatsModifierObject(summedModifiers, modifiers);
 			}
 
 			//dependent functions
 			foreach (var script in allDependentFunctions) {
-				var modifiers = BattleInterop.InvokeFunctionWithHooks(engine, script.Item2,
+				var modifiers = InteropPlugin.InvokeFunctionWithHooks(engine, script.Item2,
 					allDependentHookFunctions.Where(x => x.Item1 != script.Item1).Select(x => x.Item2), character, summedModifiers);
 
-				summedModifiers = BattleInterop.addObjectToStatsModifierObject(summedModifiers, modifiers);
+				summedModifiers = InteropPlugin.addObjectToStatsModifierObject(summedModifiers, modifiers);
 			}
 
 			//overruling
 			foreach (var script in allOverrulingFunctions) {
-				var modifiers = BattleInterop.InvokeFunction(engine, script.Item2, character, summedModifiers);
+				var modifiers = InteropPlugin.InvokeFunction(engine, script.Item2, character, summedModifiers);
 
-				summedModifiers = BattleInterop.addObjectToStatsModifierObject(summedModifiers, modifiers);
+				summedModifiers = InteropPlugin.addObjectToStatsModifierObject(summedModifiers, modifiers);
 			}
 
 			return summedModifiers;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IdleLandsRedux.GameLogic.SpecificMappings
+namespace IdleLandsRedux.GameLogic.DataEntities
 {
 	public partial class SpecificPlayer : SpecificCharacter
 	{

@@ -22,3 +22,5 @@ script:
   - cd ../
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./IdleLandsRedux.Common.Tests/bin/Release/IdleLandsRedux.Common.Tests.dll
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./IdleLandsRedux.GameLogic.Tests/bin/Release/IdleLandsRedux.GameLogic.Tests.dll
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./IdleLandsRedux.GameLogic.DataEntities.Tests/bin/Release/IdleLandsRedux.GameLogic.DataEntities.Tests.dll
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./IdleLandsRedux.GameLogic.InteropPlugins.Tests/bin/Release/IdleLandsRedux.InteropPlugins.Tests.dll
