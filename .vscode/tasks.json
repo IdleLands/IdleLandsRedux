@@ -1,0 +1,45 @@
+// Available variables which can be used inside of strings.
+// ${workspaceRoot}: the root folder of the team
+// ${file}: the current opened file
+// ${fileBasename}: the current opened file's basename
+// ${fileDirname}: the current opened file's dirname
+// ${fileExtname}: the current opened file's extension
+// ${cwd}: the current working directory of the spawned process
+
+
+// Uncomment the section below to use msbuild and generate problems
+// for csc, cpp, tsc and vb. The configuration assumes that msbuild
+// is available on the path and a solution file exists in the
+// workspace folder root.
+{
+	"version": "0.1.0",
+	"command": "bash",
+	"isShellCommand": true,
+	"showOutput": "always",
+	"args": ["-c"],
+	"tasks": [
+		{
+			"taskName": "build",
+			"suppressTaskName": true,
+			"args": [
+				// Ask msbuild to generate full paths for file names.
+				"mono NuGet.exe restore IdleLandsRedux.sln && xbuild /property:GenerateFullPaths=true"
+			],
+			// Show the output window only if unrecognized errors occur.
+			"showOutput": "always",
+			// Use the standard MS compiler pattern to detect errors, warnings
+			// and infos in the output.
+			"problemMatcher": "$msCompile",
+			"isBuildCommand": true
+		},
+		{
+			"taskName": "test",
+			"suppressTaskName": true,
+			"args": [
+				"mono packages/NUnit.Runners.2.6.4/tools/nunit-console.exe IdleLandsRedux.Common.Tests/bin/Debug/IdleLandsRedux.Common.Tests.dll && mono packages/NUnit.Runners.2.6.4/tools/nunit-console.exe IdleLandsRedux.GameLogic.Tests/bin/Debug/IdleLandsRedux.GameLogic.Tests.dll && mono packages/NUnit.Runners.2.6.4/tools/nunit-console.exe IdleLandsRedux.GameLogic.DataEntities.Tests/bin/Debug/IdleLandsRedux.GameLogic.DataEntities.Test.dll && mono packages/NUnit.Runners.2.6.4/tools/nunit-console.exe IdleLandsRedux.InteropPlugins.Tests/bin/Debug/IdleLandsRedux.InteropPlugins.Tests.dll"
+			],
+			"showOutput": "always",
+			"isTestCommand": true
+		}
+	]
+}

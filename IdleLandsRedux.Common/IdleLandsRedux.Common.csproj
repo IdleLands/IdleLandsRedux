@@ -40,9 +40,11 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="SecureRandomHelper.cs" />
     <Compile Include="Interfaces\ISecureRandomHelper.cs" />
+    <Compile Include="Interfaces\IEffect.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="StatsModifierCollection.cs" />
     <Compile Include="StatsModifierObject.cs" />
+    <Compile Include="TransientStatsObject.cs" />
     <Compile Include="DoubleExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

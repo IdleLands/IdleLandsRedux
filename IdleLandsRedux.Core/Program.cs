@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Threading;
-using NHibernate;
-using Newtonsoft.Json;
 using log4net;
-using IdleLandsRedux.DataAccess;
-using IdleLandsRedux.DataAccess.Mappings;
 using IdleLandsRedux.Common;
-using Microsoft.Practices.Unity;
 using Akka.Actor;
-using Akka.Configuration;
 
 namespace IdleLandsRedux.Core
 {

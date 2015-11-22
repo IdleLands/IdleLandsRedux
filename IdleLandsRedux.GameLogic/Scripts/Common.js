@@ -1,4 +1,9 @@
-﻿// pure JS stuff
+﻿/* global _HasPersonalitySet */
+/* global _HasClassSet */
+/* global _GetDefaultBonusObject */
+/* global _GetDefaultMultiplyBonusObject */
+/* global System */
+// pure JS stuff
 
 //Internal function exposure
 

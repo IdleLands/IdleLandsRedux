@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Akka;
 using Akka.Actor;
-using Akka.Event;
 using IdleLandsRedux.DataAccess.Mappings;
 using IdleLandsRedux.GameLogic.BusinessLogic;
 using IdleLandsRedux.InteropPlugins;
 using log4net;
 using Microsoft.Practices.Unity;
+using IdleLandsRedux.Common;
 
 namespace IdleLandsRedux.GameLogic.Actors
 {
@@ -39,10 +38,13 @@ namespace IdleLandsRedux.GameLogic.Actors
 			var container = GameLogic.Bootstrapper.BootstrapUnity();
 			IPlugin battleInterop = container.Resolve<IPlugin>("JavascriptPlugin");
 			IJSScriptHelper scriptHelper = container.Resolve<IJSScriptHelper>();
-			Battle battle = new Battle(message.teams, battleInterop, scriptHelper);
+			IRandomHelper randomHelper = container.Resolve<IRandomHelper>();
+			Battle battle = new Battle(message.teams, battleInterop, scriptHelper, randomHelper);
 
-			while (battle.MoreThanOneTeamAlive()) { 
-				
+			var allCharacters = battle.AllCharactersInTeams.SelectMany(x => x.Value).ToList();
+
+			while (battle.MoreThanOneTeamAlive()) {
+				battle.TakeTurn();
 			}
 
 			//

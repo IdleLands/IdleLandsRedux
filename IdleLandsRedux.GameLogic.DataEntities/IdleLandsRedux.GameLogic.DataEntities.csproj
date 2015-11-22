@@ -36,6 +36,8 @@
     <Compile Include="SpecificPlayer.cs" />
     <Compile Include="Interfaces\Reductions\ICalcDamageReduction.cs" />
     <Compile Include="Interfaces\Reductions\ICalcPhysicalAttackTargets.cs" />
+    <Compile Include="Interfaces\Effects\ISpecificEffect.cs" />
+    <Compile Include="Effects\PoisonEffect.cs" />
     <Compile Include="personalityReduce.cs" />
   </ItemGroup>
   <ItemGroup>

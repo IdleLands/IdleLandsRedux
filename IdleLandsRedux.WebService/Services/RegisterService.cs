@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using NHibernate;
 using IdleLandsRedux.Contracts.API;
-using IdleLandsRedux.DataAccess;
 using IdleLandsRedux.DataAccess.Mappings;
 
 namespace IdleLandsRedux.WebService.Services

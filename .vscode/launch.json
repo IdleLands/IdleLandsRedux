@@ -1,0 +1,23 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Launch",
+			"type": "mono",
+			"request": "launch",
+			"program": "IdleLandsRedux.WebService/bin/Debug/IdleLandsRedux.WebService.exe",
+			"args": [],
+			"cwd": ".",
+			//"runtimeExecutable": null,
+			"env": {}
+			//"externalConsole": true
+		},
+		{
+			"name": "Attach",
+			"type": "mono",
+			"request": "attach",
+			"address": "localhost",
+			"port": 5858
+		}
+	]
+}

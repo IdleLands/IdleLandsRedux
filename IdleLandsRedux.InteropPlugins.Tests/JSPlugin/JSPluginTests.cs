@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Dynamic;
-using System.Collections.Generic;
-using IdleLandsRedux.DataAccess.Mappings;
 using IdleLandsRedux.GameLogic.DataEntities;
 using IdleLandsRedux.InteropPlugins.JSPlugin;
 using NUnit.Framework;

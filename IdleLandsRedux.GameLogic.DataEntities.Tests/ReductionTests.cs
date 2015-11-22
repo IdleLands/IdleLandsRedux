@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using IdleLandsRedux.GameLogic.DataEntities;
 using IdleLandsRedux.DataAccess.Mappings;
 using IdleLandsRedux.GameLogic.DataEntities.Interfaces.Reductions;
 

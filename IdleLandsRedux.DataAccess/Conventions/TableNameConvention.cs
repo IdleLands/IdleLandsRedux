@@ -1,5 +1,4 @@
 ﻿using FluentNHibernate.Conventions;
-using FluentNHibernate.Conventions.Instances;
 
 namespace IdleLandsRedux.DataAccess.Conventions
 {

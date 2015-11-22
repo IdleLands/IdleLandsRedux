@@ -1,5 +1,4 @@
-﻿using System;
-using IdleLandsRedux.DataAccess.Mappings;
+﻿using IdleLandsRedux.DataAccess.Mappings;
 
 namespace IdleLandsRedux.GameLogic.Interfaces.Managers
 {

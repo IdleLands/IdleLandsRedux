@@ -2,7 +2,6 @@
 using System.IO;
 using System.Collections.Generic;
 using Jint;
-using Jint.Native;
 using IdleLandsRedux.InteropPlugins.JSPlugin;
 
 namespace IdleLandsRedux.InteropPlugins

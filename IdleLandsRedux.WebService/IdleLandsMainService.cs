@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Threading;
-using System.Linq;
 using System.Collections.Generic;
 using log4net;
-using NHibernate;
 using Newtonsoft.Json;
 using WebSocketSharp;
 using WebSocketSharp.Server;

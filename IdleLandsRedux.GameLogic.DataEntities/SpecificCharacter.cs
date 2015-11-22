@@ -7,70 +7,77 @@ using IdleLandsRedux.Common;
 
 namespace IdleLandsRedux.GameLogic.DataEntities
 {
-	public partial class SpecificCharacter : Character, ICalcPhysicalAttackTargets, ICalcDamageReduction, IEquatable<SpecificCharacter>
-	{
-		public int Special { get; set; } //For stuff like rage (barbarian), focus (archer) etc
-		public StatsModifierCollection CalculatedStats { get; set; }
+    public partial class SpecificCharacter : Character, ICalcPhysicalAttackTargets, ICalcDamageReduction, IEquatable<SpecificCharacter>
+    {
+        public int Special { get; set; } //For stuff like rage (barbarian), focus (archer) etc
+        public StatsModifierCollection CalculatedStats { get; set; }
+        public StatsObject TotalStats { get; set; }
+        public TransientStatsObject TransientStats { get; set; } //Accumulated damage, poison etc
 
-		public SpecificCharacter() : base()
-		{
-		}
+        public bool Dead { get; set; }
+        public bool Fled { get; set; }
+        public bool StillParticipatingInCombat { get { return !Dead && !Fled; } }
 
-		public SpecificCharacter(Character c) : base()
-		{
-			this.Id = c.Id;
-			this.Name = c.Name;
-			this.Gender = c.Gender;
-			this.Stats = c.Stats;
-			this.Equipment = c.Equipment;
-		}
+        public SpecificCharacter() : base()
+        {
+        }
 
-		public virtual int DamageReduction()
-		{
-			return 0;
-		}
+        public SpecificCharacter(Character c) : base()
+        {
+            this.Id = c.Id;
+            this.Name = c.Name;
+            this.Gender = c.Gender;
+            this.Stats = c.Stats;
+            this.Equipment = c.Equipment;
+        }
 
-		public virtual List<Tuple<Character, int>> PhysicalAttackTargets(List<Tuple<Character, int>> allEnemies)
-		{
-			var validTargets = allEnemies.Where(x => x.Item1.Id != this.Id).ToList();
-			var tuple = validTargets.OrderBy(x => x.Item1.Stats.Dexterity).First();
-			validTargets.Remove(tuple);
-			validTargets.Add(new Tuple<Character, int>(tuple.Item1, 200));
-			return validTargets;
-		}
+        public virtual int DamageReduction()
+        {
+            return 0;
+        }
 
-		#region IEquatable members
+        public virtual List<Tuple<Character, int>> PhysicalAttackTargets(List<Tuple<Character, int>> allEnemies)
+        {
+            var validTargets = allEnemies.Where(x => x.Item1.Id != this.Id).ToList();
+            var tuple = validTargets.OrderBy(x => x.Item1.Stats.Dexterity).First();
+            validTargets.Remove(tuple);
+            validTargets.Add(new Tuple<Character, int>(tuple.Item1, 200));
+            return validTargets;
+        }
 
-		public override bool Equals(object obj)
-		{
-			var sc = obj as SpecificCharacter;
+        #region IEquatable members
 
-			return Equals(sc);
-		}
+        public override bool Equals(object obj)
+        {
+            var sc = obj as SpecificCharacter;
 
-		public bool Equals(SpecificCharacter sc)
-		{
-			if (sc == null)
-				return false;
+            return Equals(sc);
+        }
 
-			if (ReferenceEquals(sc, this))
-				return true;
+        public bool Equals(SpecificCharacter sc)
+        {
+            if (sc == null)
+                return false;
 
-			return sc.Id == 0 && this.Id == 0 ? false : sc.Id == this.Id;
-		}
+            if (ReferenceEquals(sc, this))
+                return true;
 
-		public override int GetHashCode()
-		{
-			unchecked { // Overflow is fine, just wrap
-				int hash = 13;
-				hash = (hash * 7) + Id.GetHashCode();
-				if (!string.IsNullOrEmpty(Name))
-					hash = (hash * 7) + Name.GetHashCode();
-				return hash;
-			}
-		}
+            return sc.Id == 0 && this.Id == 0 ? false : sc.Id == this.Id;
+        }
 
-		#endregion
-	}
+        public override int GetHashCode()
+        {
+            unchecked
+            { // Overflow is fine, just wrap
+                int hash = 13;
+                hash = (hash * 7) + Id.GetHashCode();
+                if (!string.IsNullOrEmpty(Name))
+                    hash = (hash * 7) + Name.GetHashCode();
+                return hash;
+            }
+        }
+
+        #endregion
+    }
 }
 

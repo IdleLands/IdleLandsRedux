@@ -1,8 +1,5 @@
 ﻿using NUnit.Framework;
 using FluentAssertions;
-using System;
-using System.Linq;
-using System.Reflection;
 
 namespace IdleLandsRedux.Common.Tests
 {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace IdleLandsRedux.Common
 {
@@ -39,6 +41,11 @@ namespace IdleLandsRedux.Common
 		public double NextDouble()
 		{
 			return _local.NextDouble();
+		}
+
+		public T RandomFromList<T>(IEnumerable<T> list)
+		{
+			return list.ElementAt(this.Next(list.Count()));
 		}
 	}
 }

@@ -2,7 +2,6 @@
 using System.Text;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 using IdleLandsRedux.DataAccess.Mappings;
 using IdleLandsRedux.GameLogic.Interfaces.Managers;
 using IdleLandsRedux.Common;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace IdleLandsRedux.InteropPlugins
+﻿namespace IdleLandsRedux.InteropPlugins
 {
 	public interface IEngine
 	{

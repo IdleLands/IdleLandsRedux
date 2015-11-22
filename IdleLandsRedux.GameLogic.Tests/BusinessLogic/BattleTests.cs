@@ -1,6 +1,4 @@
-﻿using System;
-using System.Dynamic;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using IdleLandsRedux.GameLogic.BusinessLogic;
 using IdleLandsRedux.DataAccess.Mappings;
 using IdleLandsRedux.GameLogic.DataEntities;
@@ -18,6 +16,7 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic
 	public class BattleTests
 	{
 		private IJSScriptHelper scriptHelper { get; set; }
+		private IRandomHelper randomHelper { get; set; }
 		private IPlugin pluginInterop { get; set; }
 		private IUnityContainer container { get; set; }
 
@@ -25,8 +24,10 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic
 		public void TestSetup()
 		{
 			container = new UnityContainer();
+			Common.Bootstrapper.BootstrapUnity(container);
 			InteropPlugins.Bootstrapper.BootstrapUnity(container);
 			scriptHelper = container.Resolve<IJSScriptHelper>();
+			randomHelper = container.Resolve<IRandomHelper>();
 			scriptHelper.ScriptDir = "/TestScripts/";
 			pluginInterop = new JSPlugin(scriptHelper);
 		}
@@ -34,7 +35,7 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic
 		[Test]
 		public void CalculateStaticStatsTest()
 		{
-			Battle battle = new Battle(new List<List<Character>>(), pluginInterop, scriptHelper);
+			Battle battle = new Battle(new List<List<Character>>(), pluginInterop, scriptHelper, randomHelper);
 
 			SpecificCharacter ch = new SpecificCharacter {
 				Name = "test",
@@ -56,7 +57,7 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic
 		[Test]
 		public void CalculateStaticStatsWithHooksTest()
 		{
-			Battle battle = new Battle(new List<List<Character>>(), pluginInterop, scriptHelper);
+			Battle battle = new Battle(new List<List<Character>>(), pluginInterop, scriptHelper, randomHelper);
 
 			SpecificCharacter ch = new SpecificCharacter {
 				Name = "test",
@@ -78,7 +79,7 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic
 		[Test]
 		public void CalculateAllStats()
 		{
-			Battle battle = new Battle(new List<List<Character>>(), pluginInterop, scriptHelper);
+			Battle battle = new Battle(new List<List<Character>>(), pluginInterop, scriptHelper, randomHelper);
 
 			SpecificCharacter ch = new SpecificCharacter {
 				Name = "test",
@@ -101,6 +102,7 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic
 		{
 			Mock<IPlugin> mockBattleInterop = new Mock<IPlugin>();
 			Mock<IJSScriptHelper> mockScriptHelper = new Mock<IJSScriptHelper>();
+			Mock<IRandomHelper> mockRandomHelper = new Mock<IRandomHelper>();
 			Mock<Jint.Engine> mockJintEngine = new Mock<Jint.Engine>();
 			Mock<JSEngine> mockEngine = new Mock<JSEngine>(mockJintEngine.Object);
 			IEngine actualEngine = mockEngine.Object;
@@ -115,7 +117,7 @@ namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic
 
 			mockScriptHelper.Setup(x => x.ExecuteScript(ref actualEngine, It.IsAny<string>(), It.IsAny<Dictionary<string, object>>()));
 
-			Battle battle = new Battle(new List<List<Character>>(), mockBattleInterop.Object, mockScriptHelper.Object);
+			Battle battle = new Battle(new List<List<Character>>(), mockBattleInterop.Object, mockScriptHelper.Object, mockRandomHelper.Object);
 
 			SpecificCharacter ch = new SpecificCharacter {
 				Name = "test",

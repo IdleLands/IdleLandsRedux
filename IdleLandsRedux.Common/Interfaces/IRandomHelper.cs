@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace IdleLandsRedux.Common
 {
@@ -11,6 +11,8 @@ namespace IdleLandsRedux.Common
 		int Next(int min, int max);
 
 		double NextDouble();
+
+		T RandomFromList<T>(IEnumerable<T> list);
 	}
 }
 

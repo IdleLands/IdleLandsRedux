@@ -39,12 +39,12 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.4\lib\net45-full\log4net.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +66,7 @@
     <Compile Include="Config\AssemblyInfo.cs" />
     <Compile Include="Conventions\CascadeConvention.cs" />
     <Compile Include="Conventions\TableNameConvention.cs" />
+    <Compile Include="Conventions\IdConvention.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IdleLandsRedux.Common\IdleLandsRedux.Common.csproj">

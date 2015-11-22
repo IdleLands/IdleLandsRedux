@@ -1,9 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Linq;
-using System.Runtime.CompilerServices;
-
-namespace IdleLandsRedux.Common
+﻿namespace IdleLandsRedux.Common
 {
 	public class StatsModifierObject
 	{

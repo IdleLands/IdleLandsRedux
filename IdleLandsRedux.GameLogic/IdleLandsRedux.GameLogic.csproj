@@ -41,6 +41,10 @@
     <Compile Include="Config\AssemblyInfo.cs" />
     <Compile Include="Actors\SendMessageActor.cs" />
     <Compile Include="Interfaces\BusinessLogic\IBattle.cs" />
+    <Compile Include="BusinessLogic\BattleAction.cs" />
+    <Compile Include="Interfaces\BusinessLogic\BattleActions\IBattleAction.cs" />
+    <Compile Include="BusinessLogic\PhysicalAttackAction.cs" />
+    <Compile Include="BusinessLogic\DefendAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -76,12 +80,12 @@
     <Reference Include="Akka.Remote">
       <HintPath>..\packages\Akka.Remote.1.0.4\lib\net45\Akka.Remote.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="Jint">
-      <HintPath>..\packages\Jint.2.6.0\lib\portable-net40+sl50+win+WindowsPhoneApp81+wp80\Jint.dll</HintPath>
+      <HintPath>..\packages\Jint.2.7.1\lib\portable-net40+sl50+win+WindowsPhoneApp81+wp80\Jint.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.4\lib\net45-full\log4net.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +126,7 @@
   <ItemGroup>
     <Folder Include="Config\" />
     <Folder Include="Interfaces\BusinessLogic\" />
+    <Folder Include="Interfaces\BusinessLogic\BattleActions\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\Personalities\Brave.js">

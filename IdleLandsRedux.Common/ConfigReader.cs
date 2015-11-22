@@ -24,7 +24,7 @@ namespace IdleLandsRedux.Common
 				}
 				return appSettings[key];
 			}
-			catch (ConfigurationErrorsException cex)
+			catch (ConfigurationErrorsException)
 			{
 				Console.WriteLine("Error reading app settings. Aborting program.");
 				throw;

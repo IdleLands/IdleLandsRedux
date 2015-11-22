@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -18,22 +17,25 @@ namespace IdleLandsRedux.Common
 	public class StatsModifierCollection
 	{
 		//fields - stats
-		public StatsModifierObject _HitPoints = new StatsModifierObject();
-		public StatsModifierObject _MagicPoints = new StatsModifierObject();
-		public StatsModifierObject _Strength = new StatsModifierObject();
-		public StatsModifierObject _Constitution = new StatsModifierObject();
-		public StatsModifierObject _Dexterity = new StatsModifierObject();
-		public StatsModifierObject _Agility = new StatsModifierObject();
-		public StatsModifierObject _Intelligence = new StatsModifierObject();
-		public StatsModifierObject _Wisdom = new StatsModifierObject();
-		public StatsModifierObject _Luck = new StatsModifierObject();
+		protected StatsModifierObject _HitPoints = new StatsModifierObject();
+		protected StatsModifierObject _MagicPoints = new StatsModifierObject();
+		protected StatsModifierObject _Strength = new StatsModifierObject();
+		protected StatsModifierObject _Constitution = new StatsModifierObject();
+		protected StatsModifierObject _Dexterity = new StatsModifierObject();
+		protected StatsModifierObject _Agility = new StatsModifierObject();
+		protected StatsModifierObject _Intelligence = new StatsModifierObject();
+		protected StatsModifierObject _Wisdom = new StatsModifierObject();
+		protected StatsModifierObject _Luck = new StatsModifierObject();
 
-		public StatsModifierObject _ExperienceGain = new StatsModifierObject();
-		public StatsModifierObject _GoldGain = new StatsModifierObject();
-		public StatsModifierObject _PhysicalAttackChance = new StatsModifierObject();
-		public StatsModifierObject _CriticalChance = new StatsModifierObject();
-		public StatsModifierObject _MinimalDamage = new StatsModifierObject();
-		public StatsModifierObject _HpRegen = new StatsModifierObject();
+		protected StatsModifierObject _ExperienceGain = new StatsModifierObject();
+		protected StatsModifierObject _GoldGain = new StatsModifierObject();
+		protected StatsModifierObject _PhysicalAttackChance = new StatsModifierObject();
+		protected StatsModifierObject _CriticalChance = new StatsModifierObject();
+		protected StatsModifierObject _MinimalDamage = new StatsModifierObject();
+		protected StatsModifierObject _HitPointsRegen = new StatsModifierObject();
+		protected StatsModifierObject _MagicPointsRegen = new StatsModifierObject();
+		protected StatsModifierObject _FleePercent = new StatsModifierObject();
+		protected StatsModifierObject _DamageReduction = new StatsModifierObject();
 
 		//properties - stats
 		public StatsModifierObject HitPoints { get { return _HitPoints; } set { IsSetAllowed(); _HitPoints = value;  } }
@@ -41,18 +43,21 @@ namespace IdleLandsRedux.Common
 		public StatsModifierObject Strength { get { return _Strength; } set { IsSetAllowed(); _Strength = value;  } }
 		public StatsModifierObject Constitution { get { return _Constitution; } set { IsSetAllowed(); _Constitution = value;  } }
 		public StatsModifierObject Dexterity { get { return _Dexterity; } set { IsSetAllowed(); _Dexterity = value;  } }
-		public StatsModifierObject Agility  { get { return _Agility; } set { IsSetAllowed(); _Agility = value;  } }
+		public StatsModifierObject Agility { get { return _Agility; } set { IsSetAllowed(); _Agility = value;  } }
 		public StatsModifierObject Intelligence  { get { return _Intelligence; } set { IsSetAllowed(); _Intelligence = value;  } }
-		public StatsModifierObject Wisdom  { get { return _Wisdom; } set { IsSetAllowed(); _Wisdom = value;  } }
+		public StatsModifierObject Wisdom { get { return _Wisdom; } set { IsSetAllowed(); _Wisdom = value;  } }
 		public StatsModifierObject Luck { get { return _Luck; } set { IsSetAllowed(); _Luck = value;  } }
 
 		//various
-		public StatsModifierObject ExperienceGain  { get { return _ExperienceGain; } set { IsSetAllowed(); _ExperienceGain = value;  } }
+		public StatsModifierObject ExperienceGain { get { return _ExperienceGain; } set { IsSetAllowed(); _ExperienceGain = value;  } }
 		public StatsModifierObject GoldGain { get { return _GoldGain; } set { IsSetAllowed(); _GoldGain = value;  } }
 		public StatsModifierObject PhysicalAttackChance { get { return _PhysicalAttackChance; } set { IsSetAllowed(); _PhysicalAttackChance = value;  } }
 		public StatsModifierObject CriticalChance { get { return _CriticalChance; } set { IsSetAllowed(); _CriticalChance = value;  } }
-		public StatsModifierObject MinimalDamage  { get { return _MinimalDamage; } set { IsSetAllowed(); _MinimalDamage = value;  } }
-		public StatsModifierObject HpRegen  { get { return _HpRegen; } set { IsSetAllowed(); _HpRegen = value;  } }
+		public StatsModifierObject MinimalDamage { get { return _MinimalDamage; } set { IsSetAllowed(); _MinimalDamage = value;  } }
+		public StatsModifierObject HitPointsRegen { get { return _HitPointsRegen; } set { IsSetAllowed(); _HitPointsRegen = value;  } }
+		public StatsModifierObject MagicPointsRegen { get { return _MagicPointsRegen; } set { IsSetAllowed(); _MagicPointsRegen = value;  } }
+		public StatsModifierObject FleePercent { get { return _FleePercent; } set { IsSetAllowed(); _FleePercent = value;  } }
+		public StatsModifierObject DamageReduction { get { return _DamageReduction; } set { IsSetAllowed(); _DamageReduction = value;  } }
 
 		public bool AllowValueModification { get; set; } = true;
 
@@ -135,7 +140,7 @@ namespace IdleLandsRedux.Common
 
 		public override string ToString()
 		{
-			return string.Format("[StatsModifierCollection: HitPoints={0}, MagicPoints={1}, Strength={2}, Constitution={3}, Dexterity={4}, Agility={5}, Intelligence={6}, Wisdom={7}, Luck={8}, ExperienceGain={9}, GoldGain={10}, PhysicalAttackChance={11}, CriticalChance={12}, MinimalDamage={13}, HpRegen={14}, AllowValueModification={15}]", HitPoints, MagicPoints, Strength, Constitution, Dexterity, Agility, Intelligence, Wisdom, Luck, ExperienceGain, GoldGain, PhysicalAttackChance, CriticalChance, MinimalDamage, HpRegen, AllowValueModification);
+			return string.Format("[StatsModifierCollection: HitPoints={0}, MagicPoints={1}, Strength={2}, Constitution={3}, Dexterity={4}, Agility={5}, Intelligence={6}, Wisdom={7}, Luck={8}, ExperienceGain={9}, GoldGain={10}, PhysicalAttackChance={11}, CriticalChance={12}, MinimalDamage={13}, HpRegen={14}, AllowValueModification={15}]", HitPoints, MagicPoints, Strength, Constitution, Dexterity, Agility, Intelligence, Wisdom, Luck, ExperienceGain, GoldGain, PhysicalAttackChance, CriticalChance, MinimalDamage, HitPointsRegen, AllowValueModification);
 		}
 	}
 }

@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace IdleLandsRedux.Common
 {
 	public interface ISecureRandomHelper
