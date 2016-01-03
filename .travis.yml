@@ -15,8 +15,8 @@ script:
   - cd ./IdleLandsRedux.GameLogic.Tests
   - ../create_assets_symlink.sh
   - cd ../
-  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit-console.exe ./IdleLandsRedux.Common.Tests/bin/Release/IdleLandsRedux.Common.Tests.dll
-  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit-console.exe ./IdleLandsRedux.Contracts.Tests/bin/Release/IdleLandsRedux.Contracts.Tests.dll
-  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit-console.exe ./IdleLandsRedux.GameLogic.Tests/bin/Release/IdleLandsRedux.GameLogic.Tests.dll
-  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit-console.exe ./IdleLandsRedux.GameLogic.DataEntities.Tests/bin/Release/IdleLandsRedux.GameLogic.DataEntities.Tests.dll
-  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit-console.exe ./IdleLandsRedux.InteropPlugins.Tests/bin/Release/IdleLandsRedux.InteropPlugins.Tests.dll
+  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit3-console.exe ./IdleLandsRedux.Common.Tests/bin/Release/IdleLandsRedux.Common.Tests.dll
+  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit3-console.exe ./IdleLandsRedux.Contracts.Tests/bin/Release/IdleLandsRedux.Contracts.Tests.dll
+  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit3-console.exe ./IdleLandsRedux.GameLogic.Tests/bin/Release/IdleLandsRedux.GameLogic.Tests.dll
+  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit3-console.exe ./IdleLandsRedux.GameLogic.DataEntities.Tests/bin/Release/IdleLandsRedux.GameLogic.DataEntities.Tests.dll
+  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit3-console.exe ./IdleLandsRedux.InteropPlugins.Tests/bin/Release/IdleLandsRedux.InteropPlugins.Tests.dll
