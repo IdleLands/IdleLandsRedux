@@ -3,47 +3,54 @@ using System.Security.Cryptography;
 
 namespace IdleLandsRedux.Common
 {
-	/// <summary>
-	/// To be used for cryptographically secure RNG
-	/// </summary>
-	public class SecureRandomHelper : IDisposable, ISecureRandomHelper
-	{
-		private RandomNumberGenerator _rng { get; set;}
-		private bool _disposed = false;
+    /// <summary>
+    /// To be used for cryptographically secure RNG
+    /// </summary>
+    public class SecureRandomHelper : IDisposable, ISecureRandomHelper
+    {
+        private RandomNumberGenerator _rng { get; set; }
+        private bool _disposed;
 
-		public SecureRandomHelper()
-		{
-			_rng = new RNGCryptoServiceProvider();
-		}
+        public SecureRandomHelper()
+        {
+            _rng = new RNGCryptoServiceProvider();
+        }
 
-		#region IDisposable members
+        #region IDisposable members
 
-		public void Dispose()
-		{ 
-			Dispose(true);
-			GC.SuppressFinalize(this);           
-		}
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-		protected virtual void Dispose(bool disposing)
-		{
-			if (_disposed)
-				return;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
 
-			_disposed = true;
+            _disposed = true;
 
-			if(_rng != null) {
-				_rng.Dispose();
-				_rng = null;
-			}
-		}
+            if (_rng != null)
+            {
+                _rng.Dispose();
+                _rng = null;
+            }
+        }
 
-		#endregion
+        #endregion
 
-		public string GetBase64String(uint size) {
-			var bytes = new Byte[size];
-			_rng.GetBytes(bytes);
-			return Convert.ToBase64String(bytes);
-		}
-	}
+        public string GetBase64String(uint size)
+        {
+            if (_disposed)
+            {
+                throw new ObjectDisposedException(GetType().Name);
+            }
+
+            var bytes = new Byte[size];
+            _rng.GetBytes(bytes);
+            return Convert.ToBase64String(bytes);
+        }
+    }
 }
 

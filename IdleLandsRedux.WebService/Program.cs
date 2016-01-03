@@ -10,10 +10,10 @@ using NHibernate.SqlCommand;
 
 namespace IdleLandsRedux.WebService
 {
-    public class Program
+    public static class Program
     {
         static readonly ILog log = LogManager.GetLogger(typeof(Program));
-        private static bool _stop = false;
+        private static bool _stop; //defaults to false
 
         private static void Main()
         {
@@ -53,7 +53,7 @@ namespace IdleLandsRedux.WebService
 
                 while (!_stop)
                 {
-                    var session = Bootstrapper.CreateSession();
+                    using(var session = Bootstrapper.CreateSession())
                     using (var transaction = session.BeginTransaction())
                     {
                         DateTime now = DateTime.UtcNow;
@@ -73,7 +73,7 @@ namespace IdleLandsRedux.WebService
                                 session.Delete(user);
                             }
 
-                            var battleList = new List<List<Character>>();
+                            ICollection<ICollection<Character>> battleList = new List<ICollection<Character>>();
 
                             foreach (var user in users.Where(x => x.Expiration > now))
                             {
@@ -92,7 +92,7 @@ namespace IdleLandsRedux.WebService
                         catch (Exception e)
                         {
                             log.Error(e.Message);
-                            throw e;
+                            throw;
                         }
                     }
 

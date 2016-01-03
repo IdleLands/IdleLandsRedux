@@ -8,6 +8,7 @@ using NHibernate.Tool.hbm2ddl;
 using IdleLandsRedux.Common;
 using IdleLandsRedux.DataAccess.Conventions;
 using log4net;
+using System.Diagnostics.CodeAnalysis;
 
 namespace IdleLandsRedux.DataAccess
 {
@@ -15,28 +16,32 @@ namespace IdleLandsRedux.DataAccess
     {
         //One session factory for the entire process, one session per thread.
         //See http://stackoverflow.com/questions/242961/nhibernate-session-and-multithreading
-        private static ISessionFactory _sessionFactory = null;
+        private static ISessionFactory _sessionFactory;
         internal static ILog log { get; set; }
-        private bool _disposed = false;
+        private bool _disposed;
+        private static object lockObject = new object();
 
         public Bootstrapper(ILog _log)
         {
             if (_log == null)
-                throw new ArgumentNullException("_log");
+                throw new ArgumentNullException(nameof(_log));
 
             log = _log;
 
-            if (_sessionFactory != null)
+            lock(lockObject)
             {
-                log.Error("Do not instantiate bootstrapper twice!");
-                throw new InvalidOperationException("Do not instantiate bootstrapper twice!");
-            }
-
-            _sessionFactory = CreateSessionFactory();
-            if (_sessionFactory == null)
-            {
-                log.Error("Could not instantiate sessionFactory?");
-                throw new InvalidOperationException("Could not instantiate sessionFactory?");
+                if (_sessionFactory != null)
+                {
+                    log.Error("Do not instantiate bootstrapper twice!");
+                    throw new InvalidOperationException("Do not instantiate bootstrapper twice!");
+                }
+    
+                _sessionFactory = CreateSessionFactory();
+                if (_sessionFactory == null)
+                {
+                    log.Error("Could not instantiate sessionFactory?");
+                    throw new InvalidOperationException("Could not instantiate sessionFactory?");
+                }
             }
         }
 
@@ -55,11 +60,14 @@ namespace IdleLandsRedux.DataAccess
 
             _disposed = true;
 
-            if (_sessionFactory != null)
+            lock(lockObject)
             {
-                _sessionFactory.Close();
-                _sessionFactory.Dispose();
-                _sessionFactory = null;
+                if (_sessionFactory != null)
+                {
+                    _sessionFactory.Close();
+                    _sessionFactory.Dispose();
+                    _sessionFactory = null;
+                }
             }
         }
 
@@ -79,6 +87,7 @@ namespace IdleLandsRedux.DataAccess
             return _sessionFactory.OpenSession();
         }
 
+        [SuppressMessage("Gendarme.Rules.BadPractice", "PreferTryParseRule", Justification = "If field not available, program should crash at startup.")]
         private ISessionFactory CreateSessionFactory()
         {
             string host = ConfigReader.ReadSetting("Host");

@@ -1,151 +1,235 @@
-﻿namespace IdleLandsRedux.Common
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+
+namespace IdleLandsRedux.Common
 {
-	public class StatsModifierObject
-	{
-		public double Percent { get; set; }
-		public double Value { get; set; }
-		public double Total { get { return Value * (100d + Percent) / 100d; } }
+    [SuppressMessage("Gendarme.Rules.Smells", "AvoidCodeDuplicatedInSameClassRule", Justification = "This is true and accepted.")]
+    public class StatsModifierObject
+    {
+        public double Percent { get; set; }
+        public double Value { get; set; }
+        public double Total { get { return Value * (100d + Percent) / 100d; } }
 
-		#region operator overloads
+        #region operator overloads
 
-		/// <param name="value">Value only</param>
-		public static implicit operator StatsModifierObject(double value)
-		{
-			StatsModifierObject so = new StatsModifierObject();
+        /// <param name="value">Value only</param>
+        public static implicit operator StatsModifierObject(double value)
+        {
+            StatsModifierObject so = new StatsModifierObject();
 
-			so.Value = value;
+            so.Value = value;
 
-			return so;
-		}
+            return so;
+        }
 
-		public static StatsModifierObject operator*(StatsModifierObject smo1, StatsModifierObject smo2)
-		{
-			StatsModifierObject smo = new StatsModifierObject();
+        public static StatsModifierObject operator *(StatsModifierObject smo1, StatsModifierObject smo2)
+        {
+            if (smo1 == null)
+            {
+                throw new ArgumentNullException(nameof(smo1));
+            }
 
-			smo.Value = smo1.Value * smo2.Value;
-			smo.Percent = ((100d + smo1.Percent) / 100d * (100d + smo2.Percent) / 100d) * 100d - 100d;
+            if (smo2 == null)
+            {
+                throw new ArgumentNullException(nameof(smo2));
+            }
 
-			return smo;
-		}
+            StatsModifierObject smo = new StatsModifierObject();
 
-		public static StatsModifierObject operator/(StatsModifierObject smo1, StatsModifierObject smo2)
-		{
-			StatsModifierObject smo = new StatsModifierObject();
+            smo.Value = smo1.Value * smo2.Value;
+            smo.Percent = ((100d + smo1.Percent) / 100d * (100d + smo2.Percent) / 100d) * 100d - 100d;
 
-			smo.Value = smo1.Value / smo2.Value;
-			double A = (100d + smo1.Percent) / 100d;
-			double B = (100d + smo2.Percent) / 100d;
-			smo.Percent = A / B * 100d - 100d;
+            return smo;
+        }
 
-			return smo;
-		}
+        public static StatsModifierObject operator /(StatsModifierObject smo1, StatsModifierObject smo2)
+        {
+            if (smo1 == null)
+            {
+                throw new ArgumentNullException(nameof(smo1));
+            }
 
-		public static StatsModifierObject operator+(StatsModifierObject smo1, StatsModifierObject smo2)
-		{
-			StatsModifierObject smo = new StatsModifierObject();
+            if (smo2 == null)
+            {
+                throw new ArgumentNullException(nameof(smo2));
+            }
 
-			smo.Value = smo1.Value + smo2.Value;
-			smo.Percent = smo1.Percent + smo2.Percent;
+            StatsModifierObject smo = new StatsModifierObject();
 
-			return smo;
-		}
+            smo.Value = smo1.Value / smo2.Value;
+            double A = (100d + smo1.Percent) / 100d;
+            double B = (100d + smo2.Percent) / 100d;
+            smo.Percent = A / B * 100d - 100d;
 
-		public static StatsModifierObject operator-(StatsModifierObject smo1, StatsModifierObject smo2)
-		{
-			StatsModifierObject smo = new StatsModifierObject();
+            return smo;
+        }
 
-			smo.Value = smo1.Value - smo2.Value;
-			smo.Percent = smo1.Percent - smo2.Percent;
+        public static StatsModifierObject operator +(StatsModifierObject smo1, StatsModifierObject smo2)
+        {
+            if (smo1 == null)
+            {
+                throw new ArgumentNullException(nameof(smo1));
+            }
 
-			return smo;
-		}
+            if (smo2 == null)
+            {
+                throw new ArgumentNullException(nameof(smo2));
+            }
 
-		public static StatsModifierObject operator*(StatsModifierObject smo1, double smo2)
-		{
-			StatsModifierObject smo = new StatsModifierObject();
+            StatsModifierObject smo = new StatsModifierObject();
 
-			smo.Value = smo1.Value * smo2;
-			smo.Percent = smo1.Percent;
+            smo.Value = smo1.Value + smo2.Value;
+            smo.Percent = smo1.Percent + smo2.Percent;
 
-			return smo;
-		}
+            return smo;
+        }
 
-		public static StatsModifierObject operator/(StatsModifierObject smo1, double smo2)
-		{
-			StatsModifierObject smo = new StatsModifierObject();
+        public static StatsModifierObject operator -(StatsModifierObject smo1, StatsModifierObject smo2)
+        {
+            if (smo1 == null)
+            {
+                throw new ArgumentNullException(nameof(smo1));
+            }
 
-			smo.Value = smo1.Value / smo2;
-			smo.Percent = smo1.Percent;
+            if (smo2 == null)
+            {
+                throw new ArgumentNullException(nameof(smo2));
+            }
 
-			return smo;
-		}
+            StatsModifierObject smo = new StatsModifierObject();
 
-		public static StatsModifierObject operator+(StatsModifierObject smo1, double smo2)
-		{
-			StatsModifierObject smo = new StatsModifierObject();
+            smo.Value = smo1.Value - smo2.Value;
+            smo.Percent = smo1.Percent - smo2.Percent;
 
-			smo.Value = smo1.Value + smo2;
-			smo.Percent = smo1.Percent;
+            return smo;
+        }
 
-			return smo;
-		}
+        public static StatsModifierObject operator *(StatsModifierObject smo1, double smo2)
+        {
+            if (smo1 == null)
+            {
+                throw new ArgumentNullException(nameof(smo1));
+            }
 
-		public static StatsModifierObject operator-(StatsModifierObject smo1, double smo2)
-		{
-			StatsModifierObject smo = new StatsModifierObject();
+            StatsModifierObject smo = new StatsModifierObject();
 
-			smo.Value = smo1.Value - smo2;
-			smo.Percent = smo1.Percent;
+            smo.Value = smo1.Value * smo2;
+            smo.Percent = smo1.Percent;
 
-			return smo;
-		}
+            return smo;
+        }
 
-		public static StatsModifierObject operator*(double smo1, StatsModifierObject smo2)
-		{
-			StatsModifierObject smo = new StatsModifierObject();
+        public static StatsModifierObject operator /(StatsModifierObject smo1, double smo2)
+        {
+            if (smo1 == null)
+            {
+                throw new ArgumentNullException(nameof(smo1));
+            }
 
-			smo.Value = smo1 * smo2.Value;
-			smo.Percent = smo2.Percent;
+            StatsModifierObject smo = new StatsModifierObject();
 
-			return smo;
-		}
+            smo.Value = smo1.Value / smo2;
+            smo.Percent = smo1.Percent;
 
-		public static StatsModifierObject operator/(double smo1, StatsModifierObject smo2)
-		{
-			StatsModifierObject smo = new StatsModifierObject();
+            return smo;
+        }
 
-			smo.Value = smo1 / smo2.Value;
-			smo.Percent = smo2.Percent;
+        public static StatsModifierObject operator +(StatsModifierObject smo1, double smo2)
+        {
+            if (smo1 == null)
+            {
+                throw new ArgumentNullException(nameof(smo1));
+            }
 
-			return smo;
-		}
+            StatsModifierObject smo = new StatsModifierObject();
 
-		public static StatsModifierObject operator+(double smo1, StatsModifierObject smo2)
-		{
-			StatsModifierObject smo = new StatsModifierObject();
+            smo.Value = smo1.Value + smo2;
+            smo.Percent = smo1.Percent;
 
-			smo.Value = smo1 + smo2.Value;
-			smo.Percent = smo2.Percent;
+            return smo;
+        }
 
-			return smo;
-		}
+        public static StatsModifierObject operator -(StatsModifierObject smo1, double smo2)
+        {
+            if (smo1 == null)
+            {
+                throw new ArgumentNullException(nameof(smo1));
+            }
 
-		public static StatsModifierObject operator-(double smo1, StatsModifierObject smo2)
-		{
-			StatsModifierObject smo = new StatsModifierObject();
+            StatsModifierObject smo = new StatsModifierObject();
 
-			smo.Value = smo1 - smo2.Value;
-			smo.Percent = smo2.Percent;
+            smo.Value = smo1.Value - smo2;
+            smo.Percent = smo1.Percent;
 
-			return smo;
-		}
+            return smo;
+        }
 
-		#endregion
+        public static StatsModifierObject operator *(double smo1, StatsModifierObject smo2)
+        {
+            if (smo2 == null)
+            {
+                throw new ArgumentNullException(nameof(smo2));
+            }
 
-		public override string ToString()
-		{
-			return string.Format("[Percent={0}, Value={1}, Total={2}]", Percent, Value, Total);
-		}
-	}
+            StatsModifierObject smo = new StatsModifierObject();
+
+            smo.Value = smo1 * smo2.Value;
+            smo.Percent = smo2.Percent;
+
+            return smo;
+        }
+
+        public static StatsModifierObject operator /(double smo1, StatsModifierObject smo2)
+        {
+            if (smo2 == null)
+            {
+                throw new ArgumentNullException(nameof(smo2));
+            }
+
+            StatsModifierObject smo = new StatsModifierObject();
+
+            smo.Value = smo1 / smo2.Value;
+            smo.Percent = smo2.Percent;
+
+            return smo;
+        }
+
+        public static StatsModifierObject operator +(double smo1, StatsModifierObject smo2)
+        {
+            if (smo2 == null)
+            {
+                throw new ArgumentNullException(nameof(smo2));
+            }
+
+            StatsModifierObject smo = new StatsModifierObject();
+
+            smo.Value = smo1 + smo2.Value;
+            smo.Percent = smo2.Percent;
+
+            return smo;
+        }
+
+        public static StatsModifierObject operator -(double smo1, StatsModifierObject smo2)
+        {
+            if (smo2 == null)
+            {
+                throw new ArgumentNullException(nameof(smo2));
+            }
+
+            StatsModifierObject smo = new StatsModifierObject();
+
+            smo.Value = smo1 - smo2.Value;
+            smo.Percent = smo2.Percent;
+
+            return smo;
+        }
+
+        #endregion
+
+        public override string ToString()
+        {
+            return string.Format("[Percent={0}, Value={1}, Total={2}]", Percent, Value, Total);
+        }
+    }
 }
 

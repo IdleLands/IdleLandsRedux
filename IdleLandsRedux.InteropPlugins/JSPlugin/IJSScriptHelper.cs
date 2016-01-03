@@ -8,11 +8,11 @@ namespace IdleLandsRedux.InteropPlugins
 
 		T ExecuteFunc<T>(string func);
 		IEngine CreateScriptEngine();
-		void ExecuteScript(ref IEngine engine, string scriptPath, Dictionary<string, object> parameters = null);
-		void ExecuteFunc(ref IEngine engine, string func, Dictionary<string, object> parameters = null);
-		T ExecuteFunc<T>(ref IEngine engine, string func, Dictionary<string, object> parameters = null);
-		object GetFunc(ref IEngine engine, string func);
-		T GetValue<T>(ref IEngine engine);
+		void ExecuteScript(IEngine engine, string scriptPath, Dictionary<string, object> parameters = null);
+		void ExecuteFunc(IEngine engine, string func, Dictionary<string, object> parameters = null);
+		T ExecuteFunc<T>(IEngine engine, string func, Dictionary<string, object> parameters = null);
+		object GetFunc(IEngine engine, string func);
+		T GetValue<T>(IEngine engine);
 	}
 }
 

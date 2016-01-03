@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace IdleLandsRedux.Common
 {
@@ -44,6 +45,9 @@ namespace IdleLandsRedux.Common
 		}*/
 
 		//see http://www.cygnus-software.com/papers/comparingfloats/comparingfloats.htm
+		
+
+		[SuppressMessage("Gendarme.Rules.Naming", "UseCorrectCasingRule")]
 		public static bool AlmostEqual2sComplement(this double A, double B, int maxUlps)
 		{
 			if (maxUlps <= 0 || maxUlps >= 4 * 1024 * 1024) {

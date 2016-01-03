@@ -3,111 +3,123 @@ using System.IO;
 using System.Collections.Generic;
 using Jint;
 using IdleLandsRedux.InteropPlugins.JSPlugin;
+using System.Diagnostics.CodeAnalysis;
 
 namespace IdleLandsRedux.InteropPlugins
 {
-	public class JSScriptHelper : IJSScriptHelper
-	{
-		private static string appPath = AppDomain.CurrentDomain.BaseDirectory;
-		public string ScriptDir { get; set; }
+    [SuppressMessage("Gendarme.Rules.Smells", "AvoidCodeDuplicatedInSameClassRule", Justification = "Function parameter checks are hard to de-duplicate.")]
+    public class JSScriptHelper : IJSScriptHelper
+    {
+        private static string appPath = AppDomain.CurrentDomain.BaseDirectory;
+        public string ScriptDir { get; set; }
 
-		public T ExecuteFunc<T>(string func)
-		{
-			var engine = new Engine();
+        public T ExecuteFunc<T>(string func)
+        {
+            var engine = new Engine();
 
-			var result = engine.Execute(func).GetCompletionValue().ToObject();
+            var result = engine.Execute(func).GetCompletionValue().ToObject();
 
-			if (result is T) {
-				return (T)result;
-			}
+            if (result is T)
+            {
+                return (T)result;
+            }
 
-			throw new ArgumentException("Expected " + typeof(T).FullName + " but got " + result.GetType().FullName);
-		}
+            throw new ArgumentException("Expected " + typeof(T).FullName + " but got " + result.GetType().FullName);
+        }
 
-		public IEngine CreateScriptEngine()
-		{
-			return new JSEngine(new Engine(cfg => cfg.AllowDebuggerStatement().AllowClr()));
-		}
+        public IEngine CreateScriptEngine()
+        {
+            return new JSEngine(new Engine(cfg => cfg.AllowDebuggerStatement().AllowClr()));
+        }
 
-		public void ExecuteScript(ref IEngine engine, string scriptPath, Dictionary<string, object> parameters = null)
-		{
-			if (engine == null)
-				throw new NullReferenceException("engine");
+        public void ExecuteScript(IEngine engine, string scriptPath, Dictionary<string, object> parameters = null)
+        {
+            if (engine == null)
+                throw new ArgumentNullException(nameof(engine));
 
-			if (engine.Name != "JavascriptEngine")
-				throw new ArgumentException("Expected provided engine type to be JavascriptEngine but got " + engine.Name);
+            if (engine.Name != "JavascriptEngine")
+                throw new ArgumentException("Expected provided engine type to be JavascriptEngine but got " + engine.Name);
 
-			Console.WriteLine("scriptdir: " + ScriptDir);
-			var scriptText = File.ReadAllText(appPath + ScriptDir + scriptPath);
-			ExecuteFunc(ref engine, scriptText, parameters);
-		}
+            Console.WriteLine("scriptdir: " + ScriptDir);
+            var scriptText = File.ReadAllText(appPath + ScriptDir + scriptPath);
+            ExecuteFunc(engine, scriptText, parameters);
+        }
 
-		public void ExecuteFunc(ref IEngine engine, string func, Dictionary<string, object> parameters = null)
-		{
-			if (engine == null)
-				throw new NullReferenceException("engine");
+        public void ExecuteFunc(IEngine engine, string func, Dictionary<string, object> parameters = null)
+        {
+            if (engine == null)
+                throw new ArgumentNullException(nameof(engine));
 
-			if (engine.Name != "JavascriptEngine")
-				throw new ArgumentException("Expected provided engine type to be JavascriptEngine but got " + engine.Name);
+            if (engine.Name != "JavascriptEngine")
+                throw new ArgumentException("Expected provided engine type to be JavascriptEngine but got " + engine.Name);
+				
+			var jsEngine = engine as JSEngine;
 
-			if (parameters != null) {
-				foreach (var keyValue in parameters) {
-					(engine as JSEngine).GetEngine().SetValue(keyValue.Key, keyValue.Value);
-				}
-			}
+            if (parameters != null)
+            {
+                foreach (var keyValue in parameters)
+                {
+                    jsEngine.GetEngine().SetValue(keyValue.Key, keyValue.Value);
+                }
+            }
 
-			(engine as JSEngine).GetEngine().Execute(func);
-		}
+            jsEngine.GetEngine().Execute(func);
+        }
 
-		public T ExecuteFunc<T>(ref IEngine engine, string func, Dictionary<string, object> parameters = null)
-		{
-			if (engine == null)
-				throw new NullReferenceException("engine");
+        public T ExecuteFunc<T>(IEngine engine, string func, Dictionary<string, object> parameters = null)
+        {
+            if (engine == null)
+                throw new ArgumentNullException(nameof(engine));
 
-			if (engine.Name != "JavascriptEngine")
-				throw new ArgumentException("Expected provided engine type to be JavascriptEngine but got " + engine.Name);
+            if (engine.Name != "JavascriptEngine")
+                throw new ArgumentException("Expected provided engine type to be JavascriptEngine but got " + engine.Name);
 
-			if (parameters != null) {
-				foreach (var keyValue in parameters) {
-					(engine as JSEngine).GetEngine().SetValue(keyValue.Key, keyValue.Value);
-				}
-			}
+            var jsEngine = engine as JSEngine;
 
-			T ret = (T)(engine as JSEngine).GetEngine().Execute(func).GetCompletionValue().ToObject();
+            if (parameters != null)
+            {
+                foreach (var keyValue in parameters)
+                {
+                    jsEngine.GetEngine().SetValue(keyValue.Key, keyValue.Value);
+                }
+            }
 
-			if(ret == null)
-				throw new ArgumentException("Script did not return proper result.");
+            T ret = (T)jsEngine.GetEngine().Execute(func).GetCompletionValue().ToObject();
 
-			return ret;
-		}
+            if (ret == null)
+                throw new ArgumentException("Script did not return proper result.");
 
-		public object GetFunc(ref IEngine engine, string func)
-		{
-			if (engine == null)
-				throw new NullReferenceException("engine");
+            return ret;
+        }
 
-			if (engine.Name != "JavascriptEngine")
-				throw new ArgumentException("Expected provided engine type to be JavascriptEngine but got " + engine.Name);
+        public object GetFunc(IEngine engine, string func)
+        {
+            if (engine == null)
+                throw new ArgumentNullException(nameof(engine));
 
-			return (engine as JSEngine).GetEngine().GetValue(func);
-		}
+            if (engine.Name != "JavascriptEngine")
+                throw new ArgumentException("Expected provided engine type to be JavascriptEngine but got " + engine.Name);
 
-		public T GetValue<T>(ref IEngine engine)
-		{
-			if (engine == null)
-				throw new NullReferenceException("engine");
+            return (engine as JSEngine).GetEngine().GetValue(func);
+        }
 
-			if (engine.Name != "JavascriptEngine")
-				throw new ArgumentException("Expected provided engine type to be JavascriptEngine but got " + engine.Name);
-			
-			var result = (engine as JSEngine).GetEngine().GetCompletionValue().ToObject();
+        public T GetValue<T>(IEngine engine)
+        {
+            if (engine == null)
+                throw new ArgumentNullException(nameof(engine));
 
-			if (result is T) {
-				return (T)result;
-			}
+            if (engine.Name != "JavascriptEngine")
+                throw new ArgumentException("Expected provided engine type to be JavascriptEngine but got " + engine.Name);
 
-			throw new ArgumentException("Expected " + typeof(T).FullName + " but got " + result.GetType().FullName);
-		}
-	}
+            var result = (engine as JSEngine).GetEngine().GetCompletionValue().ToObject();
+
+            if (result is T)
+            {
+                return (T)result;
+            }
+
+            throw new ArgumentException("Expected " + typeof(T).FullName + " but got " + result.GetType().FullName);
+        }
+    }
 }
 

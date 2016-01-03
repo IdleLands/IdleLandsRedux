@@ -2,9 +2,11 @@
 using FluentAssertions;
 using System;
 using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 
 namespace IdleLandsRedux.Common.Tests
 {
+	[SuppressMessage("Gendarme.Rules.Performance", "UseStringEmptyRule", Justification = "FluentAssertions uses a default value, outside of our control.")]
     [TestFixture]
 	public class StatsModifierCollectionTests
 	{

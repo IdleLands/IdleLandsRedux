@@ -2,6 +2,11 @@
 {
 	public class DefendAction : BattleAction
 	{
+		public override string ActionName
+		{
+			get { return "DefendAction"; }
+		}
+		
 		public DefendAction()
 		{
 		}

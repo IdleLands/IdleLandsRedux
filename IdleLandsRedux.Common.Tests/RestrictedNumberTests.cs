@@ -1,9 +1,11 @@
 ﻿using NUnit.Framework;
 using FluentAssertions;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace IdleLandsRedux.Common.Tests
 {
+	[SuppressMessage("Gendarme.Rules.Performance", "UseStringEmptyRule", Justification = "FluentAssertions uses a default value, outside of our control.")]
 	[TestFixture]
 	public class RestrictedNumberTests
 	{

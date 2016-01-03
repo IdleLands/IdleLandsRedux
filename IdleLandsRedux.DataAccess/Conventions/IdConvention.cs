@@ -5,6 +5,8 @@ using FluentNHibernate.Conventions.Instances;
 using System.Collections.Generic;
 using NHibernate.Dialect;
 using NHibernate.Mapping;
+using System.Diagnostics.CodeAnalysis;
+using System;
 
 namespace IdleLandsRedux.DataAccess.Conventions
 {
@@ -12,11 +14,12 @@ namespace IdleLandsRedux.DataAccess.Conventions
 	/// Use the HighLow identity generation mechanism, with an entity row per table
 	/// http://www.anthonydewhirst.blogspot.co.uk/2012/02/fluent-nhibernate-solution-to-enable.html
 	/// </summary>
+	[SuppressMessage("Gendarme.Rules.Performance", "AvoidUninstantiatedInternalClassesRule", Justification = "FluentNHibernate instantiates internally.")]
 	public class CustomIdentityHiLoGeneratorConvention :IIdConvention
 	{
-		public const string NextHiValueColumnName= "NextHiValue";
-		public const string NHibernateHiLoIdentityTableName = "NHibernateHiLoIdentity";
-		public const string TableColumnName = "Entity";
+		private const string NextHiValueColumnName= "NextHiValue";
+		private const string NHibernateHiLoIdentityTableName = "NHibernateHiLoIdentity";
+		private const string TableColumnName = "Entity";
 
 		#region Implementation of IConvention<IIdentityInspector,IIdentityInstance>
 
@@ -30,6 +33,11 @@ namespace IdleLandsRedux.DataAccess.Conventions
 
 		public static void CreateHighLowScript(NHibernate.Cfg.Configuration config)
 		{
+			if (config == null)
+            {
+				throw new ArgumentNullException(nameof(config));
+            }
+			
 			var script = new StringBuilder();
 			script.AppendFormat("DELETE FROM {0};", NHibernateHiLoIdentityTableName);
 			script.AppendLine();

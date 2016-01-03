@@ -9,9 +9,12 @@ using IdleLandsRedux.InteropPlugins;
 using IdleLandsRedux.GameLogic.Interfaces.BusinessLogic.BattleActions;
 using IdleLandsRedux.GameLogic.BusinessLogic.BattleActions;
 using IdleLandsRedux.GameLogic.DataEntities.Interfaces.Effects;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 
 namespace IdleLandsRedux.GameLogic.BusinessLogic
 {
+    [Serializable]
     public class BattleException : Exception
     {
         public BattleException() : base()
@@ -20,6 +23,16 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
 
         public BattleException(string msg) : base(msg)
         {
+        }
+        
+        public BattleException(string msg, Exception inner) : base(msg, inner)
+        {
+            
+        }
+        
+        protected BattleException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+            
         }
     }
 
@@ -33,16 +46,38 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
 
         private List<IBattleAction> ActionQueue { get; set; }
 
-        public Dictionary<string, List<SpecificCharacter>> AllCharactersInTeams { get; set; }
+        public Dictionary<string, ICollection<SpecificCharacter>> AllCharactersInTeams { get; set; }
 
-        public Battle(List<List<Character>> teams, IPlugin interopPlugin, IJSScriptHelper scriptHelper, IRandomHelper randomHelper)
+        private string WinningTeam { get; set; }
+
+        public Battle(IEnumerable<IEnumerable<Character>> teams, IPlugin interopPlugin, IJSScriptHelper scriptHelper, IRandomHelper randomHelper)
         {
-            this.AllCharactersInTeams = new Dictionary<string, List<SpecificCharacter>>();
-
-            for (int i = 0; i < teams.Count; i++)
+            if(teams == null)
             {
-                var team = teams[i].Select(x => new SpecificCharacter(x)).ToList();
-                this.AllCharactersInTeams.Add("team " + i, team);
+                throw new ArgumentNullException(nameof(teams));
+            }
+            
+            if(interopPlugin == null)
+            {
+                throw new ArgumentNullException(nameof(interopPlugin));
+            }
+            
+            if(scriptHelper == null)
+            {
+                throw new ArgumentNullException(nameof(scriptHelper));
+            }
+            
+            if(randomHelper == null)
+            {
+                throw new ArgumentNullException(nameof(randomHelper));
+            }
+            
+            this.AllCharactersInTeams = new Dictionary<string, ICollection<SpecificCharacter>>();
+
+            foreach (var team in teams)
+            {
+                var teamCharacters = (ICollection<SpecificCharacter>)team.Select(x => new SpecificCharacter(x));
+                this.AllCharactersInTeams.Add("team", teamCharacters);
             }
 
             this.InteropPlugin = interopPlugin;
@@ -51,22 +86,23 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
         }
 
         //Not using _characters here, since some functions don't want to include dead people. Ugh. Zombies.
-        public void SetTurnOrder(ref List<SpecificCharacter> characters)
+        [SuppressMessage("Gendarme.Rules.Design.Generic", "DoNotExposeGenericListsRule", Justification = "I would have to write my own IList.Sort extension method using comparison stuff. Why?")]
+        public void SetTurnOrder(List<SpecificCharacter> characters)
         {
             if (characters == null)
             {
-                throw new ArgumentNullException("characters");
+                throw new ArgumentNullException(nameof(characters));
             }
 
             characters.Sort((a, b) => (a.CalculatedStats.Agility.Total * (1 + a.CalculatedStats.Agility.Total)).CompareTo(
                 b.CalculatedStats.Agility * (1 + b.CalculatedStats.Agility.Total)));
         }
 
-        public List<SpecificCharacter> GetValidTargetsFor(SpecificCharacter character)
+        public ICollection<SpecificCharacter> GetValidTargetsFor(SpecificCharacter character)
         {
             if (character == null)
             {
-                throw new ArgumentNullException("character");
+                throw new ArgumentNullException(nameof(character));
             }
 
             var ret = new List<SpecificCharacter>();
@@ -97,7 +133,7 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
             return teamsAlive > 1;
         }
 
-        public List<SpecificCharacter> GetVictoriousTeam()
+        public ICollection<SpecificCharacter> GetVictoriousTeam()
         {
             if (MoreThanOneTeamAlive())
             {
@@ -108,12 +144,18 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
             {
                 if (characters.Value.Any(c => c.Stats.HitPoints > 0))
                 {
+                    WinningTeam = characters.Key;
                     return characters.Value;
                 }
             }
 
             //Tie?
             return null;
+        }
+
+        public IEnumerable<SpecificCharacter> GetLosingTeam()
+        {
+            return AllCharactersInTeams.Where(team => team.Key != WinningTeam).SelectMany(team => team.Value);
         }
 
         public StatsModifierCollection CalculateStats(SpecificCharacter character)
@@ -128,8 +170,8 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
             List<Tuple<string, string>> allOverrulingFunctions = new List<Tuple<string, string>>();
 
             //init
-            allScripts.Add(string.Format("./Classes/{0}.js", character.Class));
-            string lastScript = allScripts.Last();
+            string lastScript = string.Format("./Classes/{0}.js", character.Class);
+            allScripts.Add(lastScript);
             allStaticFunctions.Add(new Tuple<string, string>(lastScript, OnStaticBonusString(character.Class)));
             allStaticHookFunctions.Add(new Tuple<string, string>(lastScript, OnShouldModifyStaticBonusScriptForString(character.Class)));
             allDependentFunctions.Add(new Tuple<string, string>(lastScript, OnDependentBonusString(character.Class)));
@@ -140,8 +182,8 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
             {
                 foreach (string personality in character.Personalities.Split(';'))
                 {
-                    allScripts.Add(string.Format("./Personalities/{0}.js", personality));
-                    lastScript = allScripts.Last();
+                    lastScript = string.Format("./Personalities/{0}.js", personality);
+                    allScripts.Add(lastScript);
                     allStaticFunctions.Add(new Tuple<string, string>(lastScript, OnStaticBonusString(personality)));
                     allStaticHookFunctions.Add(new Tuple<string, string>(lastScript, OnShouldModifyStaticBonusScriptForString(personality)));
                     allDependentFunctions.Add(new Tuple<string, string>(lastScript, OnDependentBonusString(personality)));
@@ -153,7 +195,7 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
             //load all scripts
             foreach (string function in allScripts)
             {
-                ScriptHelper.ExecuteScript(ref engine, function);
+                ScriptHelper.ExecuteScript(engine, function);
             }
 
             //Execute static functions on scripts
@@ -162,7 +204,7 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
                 var modifiers = InteropPlugin.InvokeFunctionWithHooks(engine, script.Item2,
                                     allStaticHookFunctions.Where(x => x.Item1 != script.Item1).Select(x => x.Item2), character, summedModifiers);
 
-                summedModifiers = InteropPlugin.addObjectToStatsModifierObject(summedModifiers, modifiers);
+                summedModifiers = InteropPlugin.AddObjectToStatsModifierObject(summedModifiers, modifiers);
             }
 
             //dependent functions
@@ -171,7 +213,7 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
                 var modifiers = InteropPlugin.InvokeFunctionWithHooks(engine, script.Item2,
                                     allDependentHookFunctions.Where(x => x.Item1 != script.Item1).Select(x => x.Item2), character, summedModifiers);
 
-                summedModifiers = InteropPlugin.addObjectToStatsModifierObject(summedModifiers, modifiers);
+                summedModifiers = InteropPlugin.AddObjectToStatsModifierObject(summedModifiers, modifiers);
             }
 
             //overruling
@@ -179,14 +221,19 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
             {
                 var modifiers = InteropPlugin.InvokeFunction(engine, script.Item2, character, summedModifiers);
 
-                summedModifiers = InteropPlugin.addObjectToStatsModifierObject(summedModifiers, modifiers);
+                summedModifiers = InteropPlugin.AddObjectToStatsModifierObject(summedModifiers, modifiers);
             }
 
             return summedModifiers;
         }
 
-        public void TakeTurn()
+        public void TakeTurn(ICollection<string> battleLog)
         {
+            if(battleLog == null)
+            {
+                throw new ArgumentNullException(nameof(battleLog));
+            }
+            
             List<SpecificCharacter> characters = AllCharactersInTeams.SelectMany(x => x.Value).Where(x => x.StillParticipatingInCombat).ToList();
 
             foreach (var character in characters)
@@ -194,7 +241,7 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
                 character.CalculatedStats = CalculateStats(character);
             }
 
-            SetTurnOrder(ref characters);
+            SetTurnOrder(characters);
 
             DetermineActions(characters);
 
@@ -202,6 +249,19 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
 
             foreach (var action in ActionQueue)
             {
+                string targets = string.Empty;
+                if (action.Targets != null)
+                {
+                    if (action.Targets.Count() == 1)
+                    {
+                        targets = action.Targets.First().Name;
+                    }
+                    else
+                    {
+                        targets = string.Join(", ", action.Targets.SkipLastN(1).Select(x => x.Name)) + " and " + action.Targets.Last().Name;
+                    }
+                }
+                battleLog.Add($"{action.Originator.Name} uses {action.ActionName} on {targets}.");
                 action.ActionExecute();
             }
 
@@ -214,14 +274,14 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
 
                     if (specificEffect == null)
                     {
-                        //log something
+                        //TODO log something
                         continue;
                     }
 
                     specificEffect.ApplyTo(character);
                 }
             }
-            
+
             //Propagate all actions to scripts here?
 
             foreach (var action in ActionQueue)
@@ -234,13 +294,13 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
                 foreach (var effect in character.TransientStats.Effects)
                 {
                     var specificEffect = effect as ISpecificEffect;
-                    
+
                     if (specificEffect == null)
                     {
-                        //log something
+                        //TODO log something
                         continue;
                     }
-                    
+
                     specificEffect.Cleanup(character);
                 }
 
@@ -248,31 +308,34 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic
             }
 
             ActionQueue.Clear();
+
+            foreach (var deadCharacter in characters.Where(character => character.TransientStats.HitPointsDrained >= character.TotalStats.HitPoints.Maximum))
+            {
+                deadCharacter.Dead = true;
+            }
         }
 
-        private void DetermineActions(List<SpecificCharacter> characters)
+        private void DetermineActions(ICollection<SpecificCharacter> characters)
         {
             foreach (var character in characters)
             {
-                character.CalculatedStats.HitPoints += character.CalculatedStats.HitPointsRegen.Value +
-                character.CalculatedStats.HitPoints.Total * character.CalculatedStats.HitPointsRegen.Percent;
-
-                character.CalculatedStats.MagicPoints += character.CalculatedStats.MagicPointsRegen.Value +
-                character.CalculatedStats.MagicPoints.Total * character.CalculatedStats.MagicPointsRegen.Percent;
-
                 if (this.RandomHelper.Next(100) <= character.CalculatedStats.FleePercent.Total)
                 {
                     character.Fled = true;
                     continue;
                 }
 
+                //Add standard regen action
+                ActionQueue.Add(new RegenAction { Originator = character });
+
+                //TODO make something SRSLY out of this.
                 IBattleAction action = null;
                 if (this.RandomHelper.Next(100) <= 50)
                 {
                     action = new PhysicalAttackAction
                     {
                         Originator = character,
-                        Targets = new List<SpecificCharacter> { this.RandomHelper.RandomFromList(characters) }
+                        Targets = new List<SpecificCharacter> { this.RandomHelper.RandomFromList(GetValidTargetsFor(character)) }
                     };
                 }
                 else

@@ -10,50 +10,50 @@ using IdleLandsRedux.DataAccess;
 
 namespace IdleLandsRedux.WebService
 {
-	public class IdleLandsMainService : WebSocketBehavior
-	{
-		static readonly ILog log = LogManager.GetLogger(typeof(Program));
-		private Dictionary<string, IService> _servicesDict;
+    public class IdleLandsMainService : WebSocketBehavior
+    {
+        static readonly ILog log = LogManager.GetLogger(typeof(Program));
+        private Dictionary<string, IService> _servicesDict;
 
-		public IdleLandsMainService()
-		{
-			_servicesDict = new Dictionary<string, IService>();
-			_servicesDict.Add("/login", new LoginService());
-			_servicesDict.Add("/register", new RegisterService());
-		}
+        public IdleLandsMainService()
+        {
+            _servicesDict = new Dictionary<string, IService>();
+            _servicesDict.Add("/login", new LoginService());
+            _servicesDict.Add("/register", new RegisterService());
+        }
 
-		protected override void OnMessage (MessageEventArgs e)
-		{
-			if (e == null) {
-				throw new ArgumentNullException("e");
-			}
+        protected override void OnMessage(MessageEventArgs e)
+        {
+            if (e == null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
 
-			log.Info("Received message: " + e.Data);
+            log.Info("Received message: " + e.Data);
 
-			if (string.IsNullOrEmpty(e.Data))
-				return;
-			
-			var msg = JsonConvert.DeserializeObject<Message>(e.Data);
+            if (string.IsNullOrEmpty(e.Data))
+                return;
 
-			if (msg == null || string.IsNullOrEmpty(msg.Path) || _servicesDict[msg.Path] == null)
-				return;
+            var msg = JsonConvert.DeserializeObject<Message>(e.Data);
 
-			var session = Bootstrapper.CreateSession();
-			using (var transaction = session.BeginTransaction()) {
-				bool commitTransaction = true;
+            if (msg == null || string.IsNullOrEmpty(msg.Path) || _servicesDict[msg.Path] == null)
+                return;
 
-				_servicesDict[msg.Path].HandleMessage(session, e.Data, (string message) => {
-					log.Info("Sending message: " + message);
-					Send(message);
-				}, ref commitTransaction);
+            using (var session = Bootstrapper.CreateSession())
+            using (var transaction = session.BeginTransaction())
+            {
+                bool commitTransaction = _servicesDict[msg.Path].HandleMessage(session, e.Data, (string message) =>
+                {
+                    log.Info("Sending message: " + message);
+                    Send(message);
+                });
 
-				if (commitTransaction)
-					transaction.Commit();
-				else
-					transaction.Rollback();
-			}
-			session.Dispose();
-		}
-	}
+                if (commitTransaction)
+                    transaction.Commit();
+                else
+                    transaction.Rollback();
+            }
+        }
+    }
 }
 

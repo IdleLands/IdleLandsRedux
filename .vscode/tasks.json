@@ -36,10 +36,21 @@
 			"taskName": "test",
 			"suppressTaskName": true,
 			"args": [
-				"mono packages/NUnit.Runners.2.6.4/tools/nunit-console.exe IdleLandsRedux.Common.Tests/bin/Debug/IdleLandsRedux.Common.Tests.dll && mono packages/NUnit.Runners.2.6.4/tools/nunit-console.exe IdleLandsRedux.GameLogic.Tests/bin/Debug/IdleLandsRedux.GameLogic.Tests.dll && mono packages/NUnit.Runners.2.6.4/tools/nunit-console.exe IdleLandsRedux.GameLogic.DataEntities.Tests/bin/Debug/IdleLandsRedux.GameLogic.DataEntities.Test.dll && mono packages/NUnit.Runners.2.6.4/tools/nunit-console.exe IdleLandsRedux.InteropPlugins.Tests/bin/Debug/IdleLandsRedux.InteropPlugins.Tests.dll"
+				"mono packages/NUnit.Console.3.0.1/tools/nunit3-console.exe IdleLandsRedux.Common.Tests/bin/Debug/IdleLandsRedux.Common.Tests.dll && mono packages/NUnit.Console.3.0.1/tools/nunit3-console.exe IdleLandsRedux.GameLogic.Tests/bin/Debug/IdleLandsRedux.GameLogic.Tests.dll && mono packages/NUnit.Console.3.0.1/tools/nunit3-console.exe IdleLandsRedux.GameLogic.DataEntities.Tests/bin/Debug/IdleLandsRedux.GameLogic.DataEntities.Tests.dll && mono packages/NUnit.Console.3.0.1/tools/nunit3-console.exe IdleLandsRedux.InteropPlugins.Tests/bin/Debug/IdleLandsRedux.InteropPlugins.Tests.dll && mono packages/NUnit.Console.3.0.1/tools/nunit3-console.exe IdleLandsRedux.Contracts.Tests/bin/Debug/IdleLandsRedux.Contracts.Tests.dll"
 			],
 			"showOutput": "always",
 			"isTestCommand": true
+		},
+		{
+			"taskName": "codeanalysis",
+			"suppressTaskName": true,
+			"args": [
+				"./run_gendarme.sh"
+			],
+			"showOutput": "always",
+			"isBuildCommand": false,
+			"isTestCommand": false,
+			"isWatching": false
 		}
 	]
 }

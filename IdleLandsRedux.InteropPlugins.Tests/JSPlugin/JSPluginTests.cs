@@ -1,35 +1,15 @@
-﻿using System;
-using System.Dynamic;
-using IdleLandsRedux.GameLogic.DataEntities;
+﻿using IdleLandsRedux.GameLogic.DataEntities;
 using IdleLandsRedux.InteropPlugins.JSPlugin;
 using NUnit.Framework;
 using FluentAssertions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace IdleLandsRedux.GameLogic.Tests.BusinessLogic.Interop
 {
+	[SuppressMessage("Gendarme.Rules.Performance", "UseStringEmptyRule", Justification = "FluentAssertions uses a default value, outside of our control.")]
 	[TestFixture]
 	public class JSPluginTests
 	{
-		[Test]
-		public void CheckOnExpandoAndCastTest()
-		{
-			dynamic obj = new ExpandoObject();
-			obj.test = 5;
-
-			JSPlugin plugin = new JSPlugin(null);
-
-			int ret = plugin.CheckOnExpandoAndCast<int>(obj, "test"); //Compiler should compile this to int, but doesn't. Not a bug though, feature!
-			ret.Should().Be(5);
-
-			Action action = () => plugin.CheckOnExpandoAndCast<int>(null, "test");
-			Action action2 = () => plugin.CheckOnExpandoAndCast<int>(obj, "");
-			Action action3 = () => plugin.CheckOnExpandoAndCast<int>(obj, null);
-
-			action.ShouldThrow<ArgumentNullException>();
-			action2.ShouldThrow<ArgumentNullException>();
-			action3.ShouldThrow<ArgumentNullException>();
-		}
-
 		[Test]
 		public void GetAllScriptsOfTest()
 		{

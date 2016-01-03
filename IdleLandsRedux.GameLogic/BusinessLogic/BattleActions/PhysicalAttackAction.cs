@@ -4,6 +4,11 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic.BattleActions
 {
     public class PhysicalAttackAction : BattleAction
     {
+        public override string ActionName
+		{
+			get { return "PhysicalAttackAction"; }
+		}
+        
         public PhysicalAttackAction()
         {
         }
@@ -20,13 +25,6 @@ namespace IdleLandsRedux.GameLogic.BusinessLogic.BattleActions
 
         public override void ActionDone()
         {
-            foreach (var target in Targets)
-            {
-                if (target.TransientStats.HitPointsDrained >= target.TotalStats.HitPoints.Maximum)
-                {
-                    target.Dead = true;
-                }
-            }
         }
     }
 }

@@ -5,13 +5,13 @@ using IdleLandsRedux.InteropPlugins.JSPlugin;
 
 namespace IdleLandsRedux.InteropPlugins
 {
-	public class Bootstrapper
+	public static class Bootstrapper
 	{
 		[SuppressMessage("Gendarme.Rules.Correctness", "EnsureLocalDisposalRule", Justification = "This is actually an incorrect finding.")]
 		public static void BootstrapUnity(IUnityContainer container)
 		{
 			if (container == null) {
-				throw new ArgumentNullException("container");
+				throw new ArgumentNullException(nameof(container));
 			}
 
 			container.RegisterType<IJSScriptHelper, JSScriptHelper>();

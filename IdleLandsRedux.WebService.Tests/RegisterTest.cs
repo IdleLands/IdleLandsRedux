@@ -1,21 +1,26 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using WebSocketSharp;
 using Newtonsoft.Json;
+using IdleLandsRedux.Contracts;
 using IdleLandsRedux.Contracts.API;
 using IdleLandsRedux.DataAccess;
 using NUnit.Framework;
+using FluentAssertions;
 
 namespace IdleLandsRedux.WebService.Test
 {
+	[SuppressMessage("Gendarme.Rules.Performance", "UseStringEmptyRule", Justification = "FluentAssertions uses a default value, outside of our control.")]
+	[SuppressMessage("Gendarme.Rules.Design", "TypesWithDisposableFieldsShouldBeDisposableRule", Justification = "Gets disposed in the test teardown.")]
 	[TestFixture]
 	public class RegisterTest
 	{
-		private Bootstrapper _bootstrapper = null;
-		private bool? correct = null;
-		private ResponseMessage response = null;
-		private WebSocket ws = null;
+		private Bootstrapper _bootstrapper;
+		private bool? correct;
+		private ResponseMessage response;
+		private WebSocket ws;
 
-		[TestFixtureSetUp]
+		[OneTimeSetUpAttribute]
 		public void TestSetup()
 		{
 			_bootstrapper = new Bootstrapper(log4net.LogManager.GetLogger(typeof(RegisterTest)));
@@ -46,7 +51,7 @@ namespace IdleLandsRedux.WebService.Test
 			ws.Connect();
 		}
 
-		[TestFixtureTearDown]
+		[OneTimeTearDownAttribute]
 		public void TestCleanup()
 		{
 			if (_bootstrapper != null) {
@@ -77,41 +82,44 @@ namespace IdleLandsRedux.WebService.Test
 			response = null;
 			correct = null;
 		}
-
-		[Test]
-		public void SimpleRegisterTest()
+		
+		private string GetRegisterMessage()
 		{
-			var msg = JsonConvert.SerializeObject(new RegisterMessage {
-				Path = "/register",
+			return JsonConvert.SerializeObject(new RegisterMessage {
+				Path = MessagePathConvertor.GetMessagePath(MessagePath.RegisterPath),
 				Password = "test",
 				Username = "test"
 			});
+		}
+
+		[SuppressMessage("Gendarme.Rules.Smells", "AvoidCodeDuplicatedInSameClassRule", Justification = "Correct usage in a test.")]
+		[Test]
+		public void SimpleRegisterTest()
+		{
+			var msg = GetRegisterMessage();
 
 			ws.Send (msg);
 
 			WaitForResponse();
-
-			Assert.That(correct.Value == true);
-			Assert.That(response.Success == true);
-			Assert.That(response.Token != null);
+			
+			
+			correct.Value.Should().Be(true);
+			response.Success.Should().Be(true);
+			response.Token.Should().NotBeNull();
 		}
 
 		[Test]
 		public void CheckDoubleRegisterTest()
 		{
-			var msg = JsonConvert.SerializeObject(new RegisterMessage {
-				Path = "/register",
-				Password = "test",
-				Username = "test"
-			});
+			var msg = GetRegisterMessage();
 
 			ws.Send (msg);
 
 			WaitForResponse();
 
-			Assert.That(correct.Value == true);
-			Assert.That(response.Success == true);
-			Assert.That(response.Token != null);
+			correct.Value.Should().Be(true);
+			response.Success.Should().Be(true);
+			response.Token.Should().NotBeNull();
 
 			ResetResponse();
 
@@ -119,10 +127,10 @@ namespace IdleLandsRedux.WebService.Test
 
 			WaitForResponse();
 
-			Assert.That(correct.Value == true);
-			Assert.That(response.Success == false);
-			Assert.That(response.Token == null);
-			Assert.That(response.Error == "Username already exists.");
+			correct.Value.Should().Be(true);
+			response.Success.Should().Be(false);
+			response.Token.Should().BeNull();
+			response.Error.Should().Be("Username already exists.");
 		}
 	}
 }

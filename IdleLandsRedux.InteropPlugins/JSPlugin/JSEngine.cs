@@ -11,7 +11,7 @@ namespace IdleLandsRedux.InteropPlugins.JSPlugin
 		public JSEngine(Engine engine)
 		{
 			if (engine == null)
-				throw new ArgumentNullException("engine");
+				throw new ArgumentNullException(nameof(engine));
 
 			_engine = engine;
 		}

@@ -41,20 +41,15 @@
     <Compile Include="Config\AssemblyInfo.cs" />
     <Compile Include="Actors\SendMessageActor.cs" />
     <Compile Include="Interfaces\BusinessLogic\IBattle.cs" />
-    <Compile Include="BusinessLogic\BattleAction.cs" />
+    <Compile Include="BusinessLogic\BattleActions\BattleAction.cs" />
     <Compile Include="Interfaces\BusinessLogic\BattleActions\IBattleAction.cs" />
-    <Compile Include="BusinessLogic\PhysicalAttackAction.cs" />
-    <Compile Include="BusinessLogic\DefendAction.cs" />
+    <Compile Include="BusinessLogic\BattleActions\PhysicalAttackAction.cs" />
+    <Compile Include="BusinessLogic\BattleActions\DefendAction.cs" />
+    <Compile Include="BusinessLogic\BattleActions\RegenAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Akka">
-      <HintPath>..\packages\Akka.1.0.4\lib\net45\Akka.dll</HintPath>
-    </Reference>
-    <Reference Include="Akka.DI.Core">
-      <HintPath>..\packages\Akka.DI.Core.1.0.4\lib\net45\Akka.DI.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
@@ -65,27 +60,33 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
-    <Reference Include="Akka.DI.Unity">
-      <HintPath>..\packages\Akka.DI.Unity.1.0.4\lib\net45\Akka.DI.Unity.dll</HintPath>
-    </Reference>
     <Reference Include="Google.ProtocolBuffers">
       <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.521\lib\net40\Google.ProtocolBuffers.dll</HintPath>
     </Reference>
     <Reference Include="Google.ProtocolBuffers.Serialization">
       <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.521\lib\net40\Google.ProtocolBuffers.Serialization.dll</HintPath>
     </Reference>
-    <Reference Include="Helios">
-      <HintPath>..\packages\Helios.1.4.1\lib\net45\Helios.dll</HintPath>
-    </Reference>
-    <Reference Include="Akka.Remote">
-      <HintPath>..\packages\Akka.Remote.1.0.4\lib\net45\Akka.Remote.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="Jint">
       <HintPath>..\packages\Jint.2.7.1\lib\portable-net40+sl50+win+WindowsPhoneApp81+wp80\Jint.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.4\lib\net45-full\log4net.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Helios">
+      <HintPath>..\packages\Helios.1.4.2\lib\net45\Helios.dll</HintPath>
+    </Reference>
+    <Reference Include="Akka">
+      <HintPath>..\packages\Akka.1.0.5\lib\net45\Akka.dll</HintPath>
+    </Reference>
+    <Reference Include="Akka.DI.Core">
+      <HintPath>..\packages\Akka.DI.Core.1.0.5\lib\net45\Akka.DI.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Akka.DI.Unity">
+      <HintPath>..\packages\Akka.DI.Unity.1.0.5\lib\net45\Akka.DI.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Akka.Remote">
+      <HintPath>..\packages\Akka.Remote.1.0.5\lib\net45\Akka.Remote.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +122,10 @@
     <ProjectReference Include="..\IdleLandsRedux.InteropPlugins\IdleLandsRedux.InteropPlugins.csproj">
       <Project>{26378EC9-139C-4EB3-A961-948FCF8BBEDC}</Project>
       <Name>IdleLandsRedux.InteropPlugins</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IdleLandsRedux.Contracts\IdleLandsRedux.Contracts.csproj">
+      <Project>{D3A9AFD9-F3D0-488A-A9AB-40C1B75A3769}</Project>
+      <Name>IdleLandsRedux.Contracts</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

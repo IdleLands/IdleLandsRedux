@@ -24,6 +24,11 @@ namespace IdleLandsRedux.GameLogic.DataEntities
 
         public SpecificCharacter(Character c) : base()
         {
+            if(c == null)
+            {
+                throw new ArgumentNullException(nameof(c));
+            }
+            
             this.Id = c.Id;
             this.Name = c.Name;
             this.Gender = c.Gender;
@@ -36,7 +41,7 @@ namespace IdleLandsRedux.GameLogic.DataEntities
             return 0;
         }
 
-        public virtual List<Tuple<Character, int>> PhysicalAttackTargets(List<Tuple<Character, int>> allEnemies)
+        public virtual ICollection<Tuple<Character, int>> PhysicalAttackTargets(ICollection<Tuple<Character, int>> allEnemies)
         {
             var validTargets = allEnemies.Where(x => x.Item1.Id != this.Id).ToList();
             var tuple = validTargets.OrderBy(x => x.Item1.Stats.Dexterity).First();

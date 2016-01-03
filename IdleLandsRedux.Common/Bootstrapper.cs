@@ -4,17 +4,18 @@ using Microsoft.Practices.Unity;
 
 namespace IdleLandsRedux.Common
 {
-	public static class Bootstrapper
-	{
-		[SuppressMessage("Gendarme.Rules.Correctness", "EnsureLocalDisposalRule", Justification = "This is actually an incorrect finding.")]
-		public static void BootstrapUnity(IUnityContainer container)
-		{
-			if (container == null) {
-				throw new ArgumentNullException("container");
-			}
+    public static class Bootstrapper
+    {
+        [SuppressMessage("Gendarme.Rules.Correctness", "EnsureLocalDisposalRule", Justification = "This is actually an incorrect finding.")]
+        public static void BootstrapUnity(IUnityContainer container)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException(nameof(container));
+            }
 
-			container.RegisterType<IRandomHelper, RandomHelper>();
-		}
-	}
+            container.RegisterType<IRandomHelper, RandomHelper>();
+        }
+    }
 }
 

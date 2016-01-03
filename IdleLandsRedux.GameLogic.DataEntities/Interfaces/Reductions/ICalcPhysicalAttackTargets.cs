@@ -8,7 +8,7 @@ namespace IdleLandsRedux.GameLogic.DataEntities.Interfaces.Reductions
 	{
 		//allEnemies = every target that you would want to kill
 		//allCombatMembers = every target in the entire battle
-		List<Tuple<Character, int>> PhysicalAttackTargets(List<Tuple<Character, int>> allEnemies);
+		ICollection<Tuple<Character, int>> PhysicalAttackTargets(ICollection<Tuple<Character, int>> allEnemies);
 	}
 }
 

@@ -24,7 +24,7 @@ namespace IdleLandsRedux.GameLogic.Managers
 		private string GetRandomLineOfFile(string filepath)
 		{
 			var lines = File.ReadLines(filepath).ToList();
-			return lines[randomHelper.Next(lines.Count())];
+			return lines[randomHelper.Next(lines.Count)];
 		}
 
 		private StringBuilder ReplaceWithLineIfContains(StringBuilder builder, string input, string contains, string filepath)
@@ -47,18 +47,23 @@ namespace IdleLandsRedux.GameLogic.Managers
 		/// <param name="item">Item.</param>
 		public string ParseAndReplaceEventMessage(string eventMessage, int goldGained = 0, int xpGained = 0, Player player = null, Item item = null)
 		{
+			if(eventMessage == null)
+			{
+				throw new ArgumentNullException(nameof(eventMessage));
+			}
+			
 			StringBuilder retString = new StringBuilder(eventMessage);
 
 			#if DEBUG
 			//Only check message and parameter validity in debug builds.
 			if(eventMessage.ToLower().ContainsAny("%heshe", "%himher", "%hisher", "%she", "%player") && player == null) {
 				log.Error("MessageManager needs a player!");
-				throw new Exception("MessageManager needs a player!");
+				throw new ArgumentException("MessageManager needs a player!");
 			}
 
 			if(eventMessage.ToLower().ContainsAny("%item") && item == null) {
 				log.Error("MessageManager needs an item!");
-				throw new Exception("MessageManager needs an item!");
+				throw new ArgumentException("MessageManager needs an item!");
 			}
 			#endif
 
@@ -86,8 +91,9 @@ namespace IdleLandsRedux.GameLogic.Managers
 				.Replace("%xp", xpGained.ToString());
 
 
-			retString = ReplaceWithLineIfContains(retString, eventMessage, "$random:deity$", "assets/strings/deity.txt");
-			retString = ReplaceWithLineIfContains(retString, eventMessage, "$random:placeholder$", "assets/strings/placeholder.txt");
+			string basePath = Path.Combine("assets", "strings");
+			retString = ReplaceWithLineIfContains(retString, eventMessage, "$random:deity$", Path.Combine(basePath, "deity.txt"));
+			retString = ReplaceWithLineIfContains(retString, eventMessage, "$random:placeholder$", Path.Combine(basePath, "placeholder.txt"));
 
 			return retString.ToString();
 		}

@@ -35,6 +35,8 @@
     <Compile Include="API\Message.cs" />
     <Compile Include="API\RegisterMessage.cs" />
     <Compile Include="API\ResponseMessage.cs" />
+    <Compile Include="API\BattleEndMessage.cs" />
+    <Compile Include="MessagePaths.cs" />
     <Compile Include="Config\AssemblyInfo.cs" />
   </ItemGroup>
 </Project>

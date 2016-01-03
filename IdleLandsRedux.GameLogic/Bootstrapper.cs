@@ -9,7 +9,7 @@ using IdleLandsRedux.GameLogic.BusinessLogic;
 
 namespace IdleLandsRedux.GameLogic
 {
-	public class Bootstrapper
+	public static class Bootstrapper
 	{
 		public static IDependencyResolver GetAkkaResolver(IUnityContainer container, ActorSystem system)
 		{

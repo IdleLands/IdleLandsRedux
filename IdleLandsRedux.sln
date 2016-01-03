@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.GameLogic.Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.InteropPlugins.Tests", "IdleLandsRedux.InteropPlugins.Tests\IdleLandsRedux.InteropPlugins.Tests.csproj", "{9717748D-1171-4E36-AC26-48A841813A98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleLandsRedux.Contracts.Tests", "IdleLandsRedux.Contracts.Tests\IdleLandsRedux.Contracts.Tests.csproj", "{738AD0A1-5BD7-494B-A5BF-E35039ABB5A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -57,6 +59,10 @@ Global
 		{5E34FF81-D3B7-436E-AD56-B292CA37F02B}.Debug|x86.Build.0 = Debug|Any CPU
 		{5E34FF81-D3B7-436E-AD56-B292CA37F02B}.Release|x86.ActiveCfg = Release|Any CPU
 		{5E34FF81-D3B7-436E-AD56-B292CA37F02B}.Release|x86.Build.0 = Release|Any CPU
+		{738AD0A1-5BD7-494B-A5BF-E35039ABB5A6}.Debug|x86.ActiveCfg = Debug|x86
+		{738AD0A1-5BD7-494B-A5BF-E35039ABB5A6}.Debug|x86.Build.0 = Debug|x86
+		{738AD0A1-5BD7-494B-A5BF-E35039ABB5A6}.Release|x86.ActiveCfg = Release|x86
+		{738AD0A1-5BD7-494B-A5BF-E35039ABB5A6}.Release|x86.Build.0 = Release|x86
 		{78E7735B-F63E-4900-B196-D841ED007B7A}.Debug|x86.ActiveCfg = Debug|x86
 		{78E7735B-F63E-4900-B196-D841ED007B7A}.Debug|x86.Build.0 = Debug|x86
 		{78E7735B-F63E-4900-B196-D841ED007B7A}.Release|x86.ActiveCfg = Release|x86

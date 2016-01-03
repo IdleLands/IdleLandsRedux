@@ -7,9 +7,13 @@ using IdleLandsRedux.DataAccess.Mappings;
 using IdleLandsRedux.GameLogic.Interfaces.Managers;
 using IdleLandsRedux.Common;
 using Microsoft.Practices.Unity;
+using System.Diagnostics.CodeAnalysis;
 
 namespace IdleLandsRedux.GameLogic.Tests.Managers
 {
+	[SuppressMessage("Gendarme.Rules.Design", "TypesWithDisposableFieldsShouldBeDisposableRule", Justification = "Gets disposed in the test teardown.")]
+	[SuppressMessage("Gendarme.Rules.Performance", "UseStringEmptyRule", Justification = "FluentAssertions uses a default value, outside of our control.")]
+	[SuppressMessage("Gendarme.Rules.Smells", "AvoidCodeDuplicatedInSameClassRule", Justification = "Function parameter checks are hard to de-duplicate.")]
 	[TestFixture]
 	public class MessageManagerTests
 	{

@@ -1,3 +1,4 @@
+using System;
 using IdleLandsRedux.GameLogic.DataEntities.Interfaces.Effects;
 
 namespace IdleLandsRedux.GameLogic.DataEntities.Effects
@@ -9,6 +10,11 @@ namespace IdleLandsRedux.GameLogic.DataEntities.Effects
 
         public void ApplyTo(SpecificCharacter character)
         {
+            if(character == null)
+            {
+                throw new ArgumentNullException(nameof(character));
+            }
+            
             if (RoundsLeft > 0)
             {
                 character.TransientStats.HitPointsDrained += Intensity;

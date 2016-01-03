@@ -1,0 +1,34 @@
+<gendarme>
+	<ruleset name="default">
+		<rules include="*" from="Gendarme.Rules.BadPractice.dll"/>
+		<rules include="*" from="Gendarme.Rules.Concurrency.dll" />
+		<!-- ProvideCorrectArgumentsToFormattingMethodsRule -> Gendarme does not detect the number of arguments correctly. -->
+		<rules include="*" exclude="ProvideCorrectArgumentsToFormattingMethodsRule" from="Gendarme.Rules.Correctness.dll"/>
+		<!-- ProvideAlternativeNamesForOperatorOverloadsRule -> only useful for non C# languages. Which we will never support. -->
+		<!-- EnsureSymmetryForOverloadedOperatorsRule -> More headache than it is worth. -->
+		<rules include="*" exclude="ProvideAlternativeNamesForOperatorOverloadsRule | EnsureSymmetryForOverloadedOperatorsRule" from="Gendarme.Rules.Design.dll"/>
+		<!-- DoNotExposeNestedGenericSignaturesRule -> This is actually necessary most of the times. -->
+		<rules include="*" exclude="DoNotExposeNestedGenericSignaturesRule" from="Gendarme.Rules.Design.Generic.dll"/>
+		<rules include="*" from="Gendarme.Rules.Design.Linq.dll"/>
+		<rules include="*" from="Gendarme.Rules.Exceptions.dll" />
+		<rules include="*" from="Gendarme.Rules.Interoperability.dll"/>
+		<!-- AvoidNonAlphanumericIdentifierRule -> personal decision. IDR makes use of this. -->
+		<!-- UsePreferredTermsRule -> personal decision. IDR makes use of some of the words such as Login. -->
+		<rules include="*" exclude="AvoidNonAlphanumericIdentifierRule | UsePreferredTermsRule" from="Gendarme.Rules.Naming.dll"/>
+		<!-- AvoidRepetitiveCallsToPropertiesRule -> if a profiler shows it's a problem, we'll tackle it. Otherwise, this is usually a premature micro optimization -->
+		<rules include="*" exclude="AvoidRepetitiveCallsToPropertiesRule" from="Gendarme.Rules.Performance.dll" />
+		<rules include="*" from="Gendarme.Rules.Portability.dll" />
+		<rules include="*" from="Gendarme.Rules.Security.dll" />
+		<rules include="*" from="Gendarme.Rules.Security.Cas.dll" />
+		<rules include="*" from="Gendarme.Rules.Serialization.dll" />
+		<rules include="*" from="Gendarme.Rules.Ui.dll" />
+		<rules include="*" from="Gendarme.Rules.Maintainability.dll"/>
+		<rules include="*" from="Gendarme.Rules.Globalization.dll"/>
+		<rules include="*" from="Gendarme.Rules.Gendarme.dll"/>
+		<rules include="*" from="Gendarme.Rules.NUnit.dll"/>
+		<!-- AvoidMessageChainsRule -> NHibernate pretty much encourages long chains. Moreover, long chains are not necessarily hard to understand. -->
+		<!-- AvoidSpeculativeGeneralityRule -> I uh...don't understand this one. -->
+		<rules include="*" exclude="AvoidMessageChainsRule | AvoidSpeculativeGeneralityRule" from="Gendarme.Rules.Smells.dll"/>
+		<!-- no rule from Gendarme.Rules.Interoperability.Com is included in this set -->
+	</ruleset>
+</gendarme>

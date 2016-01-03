@@ -56,6 +56,7 @@
     <Compile Include="JSPlugin\IJSScriptHelper.cs" />
     <Compile Include="JSPlugin\JSScriptHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Config\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IdleLandsRedux.GameLogic.DataEntities\IdleLandsRedux.GameLogic.DataEntities.csproj">

@@ -4,14 +4,9 @@ os:
   - linux
 mono:
   - latest
-#this needs sudo stuff, which slows the build, plus code analysis issues don't fail the build.
-#before_install:
-#  - wget "https://raw.githubusercontent.com/Oipo/travis-mono-scripts/master/gendarme.sh"
-#  - sudo chmod a+x gendarme.sh
-#  - sudo ./gendarme.sh
 install:
   - nuget restore IdleLandsRedux.sln
-  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+  - nuget install NUnit.Console -Version 3.0.1 -OutputDirectory testrunner
 before_script:
   - git clone https://github.com/IdleLands/Custom-Assets ./assets
 script:
@@ -20,7 +15,8 @@ script:
   - cd ./IdleLandsRedux.GameLogic.Tests
   - ../create_assets_symlink.sh
   - cd ../
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./IdleLandsRedux.Common.Tests/bin/Release/IdleLandsRedux.Common.Tests.dll
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./IdleLandsRedux.GameLogic.Tests/bin/Release/IdleLandsRedux.GameLogic.Tests.dll
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./IdleLandsRedux.GameLogic.DataEntities.Tests/bin/Release/IdleLandsRedux.GameLogic.DataEntities.Tests.dll
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./IdleLandsRedux.InteropPlugins.Tests/bin/Release/IdleLandsRedux.InteropPlugins.Tests.dll
+  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit-console.exe ./IdleLandsRedux.Common.Tests/bin/Release/IdleLandsRedux.Common.Tests.dll
+  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit-console.exe ./IdleLandsRedux.Contracts.Tests/bin/Release/IdleLandsRedux.Contracts.Tests.dll
+  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit-console.exe ./IdleLandsRedux.GameLogic.Tests/bin/Release/IdleLandsRedux.GameLogic.Tests.dll
+  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit-console.exe ./IdleLandsRedux.GameLogic.DataEntities.Tests/bin/Release/IdleLandsRedux.GameLogic.DataEntities.Tests.dll
+  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit-console.exe ./IdleLandsRedux.InteropPlugins.Tests/bin/Release/IdleLandsRedux.InteropPlugins.Tests.dll

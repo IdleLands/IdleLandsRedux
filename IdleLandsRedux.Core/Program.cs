@@ -9,7 +9,7 @@ namespace IdleLandsRedux.Core
 	public class Program
 	{
 		private static readonly ILog log = LogManager.GetLogger(typeof(Program));
-		private bool _stop = false;
+		private bool _stop;
 
 		public Program()
 		{

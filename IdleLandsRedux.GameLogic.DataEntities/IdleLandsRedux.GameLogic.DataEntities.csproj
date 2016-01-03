@@ -38,7 +38,7 @@
     <Compile Include="Interfaces\Reductions\ICalcPhysicalAttackTargets.cs" />
     <Compile Include="Interfaces\Effects\ISpecificEffect.cs" />
     <Compile Include="Effects\PoisonEffect.cs" />
-    <Compile Include="personalityReduce.cs" />
+    <Compile Include="Config\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IdleLandsRedux.DataAccess\IdleLandsRedux.DataAccess.csproj">

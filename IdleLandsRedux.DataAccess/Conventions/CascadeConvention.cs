@@ -1,4 +1,5 @@
-﻿using FluentNHibernate.Conventions;
+﻿using System.Diagnostics.CodeAnalysis;
+using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 
 namespace IdleLandsRedux.DataAccess.Conventions
@@ -9,6 +10,7 @@ namespace IdleLandsRedux.DataAccess.Conventions
 	/// convention does is to specify that many-to-one, one-to-many, and many-to-many relationships will all
 	/// have their Cascade option set to All.
 	/// </summary>
+	[SuppressMessage("Gendarme.Rules.Performance", "AvoidUninstantiatedInternalClassesRule", Justification = "FluentNHibernate instantiates internally.")]
 	internal sealed class CascadeConvention : IReferenceConvention, IHasManyConvention, IHasManyToManyConvention
 	{
 		public void Apply(IManyToOneInstance instance)

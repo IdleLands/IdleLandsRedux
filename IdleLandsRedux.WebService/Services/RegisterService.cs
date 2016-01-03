@@ -8,18 +8,18 @@ namespace IdleLandsRedux.WebService.Services
 {
 	public class RegisterService : IService
 	{
-		public void HandleMessage(ISession session, string message, Action<string> sendAction, ref bool commitTransaction)
+		public bool HandleMessage(ISession session, string message, Action<string> sendAction)
 		{
 			if (session == null) {
-				throw new ArgumentNullException("session");
+				throw new ArgumentNullException(nameof(session));
 			}
 
 			if (sendAction == null) {
-				throw new ArgumentNullException("sendAction");
+				throw new ArgumentNullException(nameof(sendAction));
 			}
 
 			var msg = JsonConvert.DeserializeObject<RegisterMessage>(message);
-			commitTransaction = true;
+			bool commitTransaction = true;
 
 			if (msg != null) {
 
@@ -30,6 +30,7 @@ namespace IdleLandsRedux.WebService.Services
 						Success = false,
 						Error = "Username already exists."
 					}));
+					return commitTransaction;
 				}
 
 				// TODO check if password is bcrypt or some shit
@@ -58,6 +59,8 @@ namespace IdleLandsRedux.WebService.Services
 					Error = "Incorrect message."
 				}));
 			}
+			
+			return commitTransaction;
 		}
 	}
 }
