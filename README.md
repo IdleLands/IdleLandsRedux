@@ -5,6 +5,10 @@ IdleLands being rewritten
 
 See https://github.com/IdleLands/IdleLandsRedux/wiki/Setup-Guide
 
+# Contributing
+
+See https://github.com/IdleLands/IdleLandsRedux/wiki/Getting-Started-For-Developers
+
 # Starting order
 
 1. run `git submodule init` to clone the dependencies
