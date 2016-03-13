@@ -7,6 +7,7 @@ See https://github.com/IdleLands/IdleLandsRedux/wiki/Setup-guide-for-windows for
 
 # Starting order
 
-1. Configure both the webservice and IdleLandsRedux through app.config.
-2. Start the webservice (this has the message queues that the Core server needs to connect to)
-3. Start IdleLandsRedux
+1. run `git submodule init` to clone the dependencies
+2. Configure both the webservice and IdleLandsRedux through app.config.
+3. Start the webservice (this has the message queues that the Core server needs to connect to)
+4. Start IdleLandsRedux
