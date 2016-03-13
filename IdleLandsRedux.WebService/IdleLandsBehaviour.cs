@@ -1,25 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using log4net;
-using Newtonsoft.Json;
 using WebSocketSharp;
 using WebSocketSharp.Server;
-using IdleLandsRedux.Contracts.API;
-using IdleLandsRedux.WebService.Services;
 using IdleLandsRedux.DataAccess;
+using Akka.Actor;
+using NHibernate;
 
 namespace IdleLandsRedux.WebService
 {
-    public class IdleLandsMainService : WebSocketBehavior
+	public abstract class IdleLandsBehaviour : WebSocketBehavior
     {
         static readonly ILog log = LogManager.GetLogger(typeof(Program));
-        private Dictionary<string, IService> _servicesDict;
+		protected IActorRef _activeUsersActor;
+		protected Inbox _inbox;
 
-        public IdleLandsMainService()
+        public IdleLandsBehaviour(IActorRef system, Inbox inbox)
         {
-            _servicesDict = new Dictionary<string, IService>();
-            _servicesDict.Add("/login", new LoginService());
-            _servicesDict.Add("/register", new RegisterService());
+            _activeUsersActor = system;
+			_inbox = inbox;
+            this.EmitOnPing = true;
         }
 
         protected override void OnMessage(MessageEventArgs e)
@@ -29,20 +28,15 @@ namespace IdleLandsRedux.WebService
                 throw new ArgumentNullException(nameof(e));
             }
 
-            log.Info("Received message: " + e.Data);
+            log.Info("Received message: \"" + e.Data + "\" of type \"" + e.Type.ToString() + "\"");
 
             if (string.IsNullOrEmpty(e.Data))
-                return;
-
-            var msg = JsonConvert.DeserializeObject<Message>(e.Data);
-
-            if (msg == null || string.IsNullOrEmpty(msg.Path) || _servicesDict[msg.Path] == null)
                 return;
 
             using (var session = Bootstrapper.CreateSession())
             using (var transaction = session.BeginTransaction())
             {
-                bool commitTransaction = _servicesDict[msg.Path].HandleMessage(session, e.Data, (string message) =>
+                bool commitTransaction = HandleMessage(session, e.Data, (string message) =>
                 {
                     log.Info("Sending message: " + message);
                     Send(message);
@@ -54,6 +48,8 @@ namespace IdleLandsRedux.WebService
                     transaction.Rollback();
             }
         }
+
+		protected abstract bool HandleMessage(ISession session, string message, Action<string> sendAction);
     }
 }
 

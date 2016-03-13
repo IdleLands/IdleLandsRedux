@@ -39,7 +39,7 @@
     <Compile Include="Interfaces\Managers\IMessageManager.cs" />
     <Compile Include="Managers\MessageManager.cs" />
     <Compile Include="Config\AssemblyInfo.cs" />
-    <Compile Include="Actors\SendMessageActor.cs" />
+    <Compile Include="Actors\ActiveUsersActor.cs" />
     <Compile Include="Interfaces\BusinessLogic\IBattle.cs" />
     <Compile Include="BusinessLogic\BattleActions\BattleAction.cs" />
     <Compile Include="Interfaces\BusinessLogic\BattleActions\IBattleAction.cs" />
@@ -60,12 +60,6 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
-    <Reference Include="Google.ProtocolBuffers">
-      <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.521\lib\net40\Google.ProtocolBuffers.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.ProtocolBuffers.Serialization">
-      <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.521\lib\net40\Google.ProtocolBuffers.Serialization.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="Jint">
       <HintPath>..\packages\Jint.2.7.1\lib\portable-net40+sl50+win+WindowsPhoneApp81+wp80\Jint.dll</HintPath>
@@ -77,25 +71,26 @@
       <HintPath>..\packages\Helios.1.4.2\lib\net45\Helios.dll</HintPath>
     </Reference>
     <Reference Include="Akka">
-      <HintPath>..\packages\Akka.1.0.5\lib\net45\Akka.dll</HintPath>
+      <HintPath>..\packages\Akka.1.0.6\lib\net45\Akka.dll</HintPath>
     </Reference>
     <Reference Include="Akka.DI.Core">
-      <HintPath>..\packages\Akka.DI.Core.1.0.5\lib\net45\Akka.DI.Core.dll</HintPath>
+      <HintPath>..\packages\Akka.DI.Core.1.0.6\lib\net45\Akka.DI.Core.dll</HintPath>
     </Reference>
     <Reference Include="Akka.DI.Unity">
-      <HintPath>..\packages\Akka.DI.Unity.1.0.5\lib\net45\Akka.DI.Unity.dll</HintPath>
+      <HintPath>..\packages\Akka.DI.Unity.1.0.6\lib\net45\Akka.DI.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.ProtocolBuffers">
+      <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.555\lib\net40\Google.ProtocolBuffers.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.ProtocolBuffers.Serialization">
+      <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.555\lib\net40\Google.ProtocolBuffers.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="Akka.Remote">
-      <HintPath>..\packages\Akka.Remote.1.0.5\lib\net45\Akka.Remote.dll</HintPath>
+      <HintPath>..\packages\Akka.Remote.1.0.6\lib\net45\Akka.Remote.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="protos\google\protobuf\csharp_options.proto" />
-    <None Include="protos\google\protobuf\descriptor.proto" />
-    <None Include="protos\tutorial\addressbook.proto" />
-    <None Include="licenses\license.txt" />
-    <None Include="licenses\protoc-license.txt" />
     <None Include="Scripts\Classes\Archer.js">
       <DeployService-Deploy>True</DeployService-Deploy>
       <DeployService-TargetDirectoryId>Binaries</DeployService-TargetDirectoryId>

@@ -3,12 +3,18 @@ using Newtonsoft.Json;
 using NHibernate;
 using IdleLandsRedux.Contracts.API;
 using IdleLandsRedux.DataAccess.Mappings;
+using Akka.Actor;
+using IdleLandsRedux.GameLogic.Actors;
 
 namespace IdleLandsRedux.WebService.Services
 {
-    public class LoginService : IService
+    public class LoginService : IdleLandsBehaviour
     {
-        public bool HandleMessage(ISession session, string message, Action<string> sendAction)
+        public LoginService(IActorRef activeUsersActor, Inbox inbox) : base(activeUsersActor, inbox)
+        {
+        }
+
+        protected override bool HandleMessage(ISession session, string message, Action<string> sendAction)
         {
             if (session == null)
             {
@@ -25,7 +31,6 @@ namespace IdleLandsRedux.WebService.Services
 
             if (msg != null)
             {
-
                 var player = session.QueryOver<Player>().Where(x => x.Name == msg.Username && x.Password == msg.Password).SingleOrDefault();
                 if (player == null)
                 {
@@ -37,9 +42,21 @@ namespace IdleLandsRedux.WebService.Services
                     return commitTransaction;
                 }
 
-                var loggedInUser = session.QueryOver<LoggedInUser>().Where(x => x.Player.Id == player.Id).SingleOrDefault();
+                var isUserLoggedInTask = _activeUsersActor.Ask(new AddUserMessage(msg.Username), TimeSpan.FromMinutes(1));
+                var response = isUserLoggedInTask.Result as AddUserMessageResponse;
 
-                if (loggedInUser != null)
+                if (response == null)
+                {
+                    //log stuff
+                    sendAction(JsonConvert.SerializeObject(new ResponseMessage
+                    {
+                        Success = false,
+                        Error = "Unknown error."
+                    }));
+                    return commitTransaction;
+                }
+
+                if (response.Code == AddUserMessageResponse.ERR_CODE.ALREADY_LOGGED_IN)
                 {
                     sendAction(JsonConvert.SerializeObject(new ResponseMessage
                     {
@@ -48,21 +65,24 @@ namespace IdleLandsRedux.WebService.Services
                     }));
                     return commitTransaction;
                 }
-
-                loggedInUser = new LoggedInUser
+                else if (response.Code == AddUserMessageResponse.ERR_CODE.SUCCESS)
                 {
-                    Player = player,
-                    Token = Guid.NewGuid().ToString(),
-                    Expiration = DateTime.UtcNow.AddMinutes(10),
-                    LastAction = null
-                };
-                session.Save(loggedInUser);
-
-                sendAction(JsonConvert.SerializeObject(new ResponseMessage
+                    sendAction(JsonConvert.SerializeObject(new ResponseMessage
+                    {
+                        Success = true,
+                        Token = response.Token
+                    }));
+                }
+                else
                 {
-                    Success = true,
-                    Token = loggedInUser.Token
-                }));
+                    //log stuff
+                    sendAction(JsonConvert.SerializeObject(new ResponseMessage
+                    {
+                        Success = false,
+                        Error = "Unknown error."
+                    }));
+                    return commitTransaction;
+                }
             }
             else
             {
@@ -74,7 +94,7 @@ namespace IdleLandsRedux.WebService.Services
                     Error = "Incorrect message."
                 }));
             }
-            
+
             return commitTransaction;
         }
     }

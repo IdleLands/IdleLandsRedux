@@ -24,7 +24,7 @@ namespace IdleLandsRedux.WebService.Test
 		public void TestSetup()
 		{
 			_bootstrapper = new Bootstrapper(log4net.LogManager.GetLogger(typeof(RegisterTest)));
-			ws = new WebSocket("ws://localhost:2345/IdleLands");
+			ws = new WebSocket("ws://localhost:2345/IdleLands/register");
 			ws.Log.Level = LogLevel.Trace;
 
 			ResetResponse();
@@ -37,7 +37,7 @@ namespace IdleLandsRedux.WebService.Test
 					correct = false;
 					return;
 				}
-
+                
 				response = JsonConvert.DeserializeObject<ResponseMessage>(e.Data);
 
 				if(response == null)
@@ -86,7 +86,6 @@ namespace IdleLandsRedux.WebService.Test
 		private string GetRegisterMessage()
 		{
 			return JsonConvert.SerializeObject(new RegisterMessage {
-				Path = MessagePathConvertor.GetMessagePath(MessagePath.RegisterPath),
 				Password = "test",
 				Username = "test"
 			});
@@ -94,6 +93,7 @@ namespace IdleLandsRedux.WebService.Test
 
 		[SuppressMessage("Gendarme.Rules.Smells", "AvoidCodeDuplicatedInSameClassRule", Justification = "Correct usage in a test.")]
 		[Test]
+        [Category("this")]
 		public void SimpleRegisterTest()
 		{
 			var msg = GetRegisterMessage();
@@ -106,6 +106,11 @@ namespace IdleLandsRedux.WebService.Test
 			correct.Value.Should().Be(true);
 			response.Success.Should().Be(true);
 			response.Token.Should().NotBeNull();
+            
+            while(true)
+            {
+                System.Threading.Thread.Sleep(100);
+            }
 		}
 
 		[Test]

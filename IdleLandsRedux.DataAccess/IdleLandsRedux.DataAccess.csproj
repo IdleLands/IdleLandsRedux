@@ -59,7 +59,6 @@
     <Compile Include="Mappings\StatsObject.cs" />
     <Compile Include="AutomappingConfiguration.cs" />
     <Compile Include="Mappings\Player.cs" />
-    <Compile Include="Mappings\LoggedInUser.cs" />
     <Compile Include="Mappings\Monster.cs" />
     <Compile Include="Mappings\Character.cs" />
     <Compile Include="Mappings\Item.cs" />

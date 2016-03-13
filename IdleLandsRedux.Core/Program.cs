@@ -19,7 +19,7 @@ namespace IdleLandsRedux.Core
 		{
 			log.Info("Starting IdleLands");
 			var program = new Program();
-			//new DataAccess.Bootstrapper(log);
+			new DataAccess.Bootstrapper(log);
 
 			Console.CancelKeyPress += (sender, e) => {
 				program._stop = true;

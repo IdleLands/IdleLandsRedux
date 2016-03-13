@@ -3,12 +3,18 @@ using Newtonsoft.Json;
 using NHibernate;
 using IdleLandsRedux.Contracts.API;
 using IdleLandsRedux.DataAccess.Mappings;
+using IdleLandsRedux.GameLogic.Actors;
+using Akka.Actor;
 
 namespace IdleLandsRedux.WebService.Services
 {
-	public class RegisterService : IService
+	public class RegisterService : IdleLandsBehaviour
 	{
-		public bool HandleMessage(ISession session, string message, Action<string> sendAction)
+		public RegisterService(IActorRef activeUsersActor, Inbox inbox) : base(activeUsersActor, inbox)
+		{
+		}
+
+		protected override bool HandleMessage(ISession session, string message, Action<string> sendAction)
 		{
 			if (session == null) {
 				throw new ArgumentNullException(nameof(session));
@@ -37,19 +43,48 @@ namespace IdleLandsRedux.WebService.Services
 
 				player = new Player { Name = msg.Username, Password = msg.Password };
 				session.Save(player);
+                
+                var isUserLoggedInTask = _activeUsersActor.Ask(new AddUserMessage(msg.Username), TimeSpan.FromMinutes(1));
+                var response = isUserLoggedInTask.Result as AddUserMessageResponse;
 
-				var loggedInUser = new LoggedInUser {
-					Player = player,
-					Token = Guid.NewGuid().ToString(),
-					Expiration = DateTime.UtcNow.AddHours(1),
-					LastAction = null
-				};
-				session.Save(loggedInUser);
+                if (response == null)
+                {
+                    //log stuff
+                    sendAction(JsonConvert.SerializeObject(new ResponseMessage
+                    {
+                        Success = false,
+                        Error = "Unknown error."
+                    }));
+                    return commitTransaction;
+                }
 
-				sendAction(JsonConvert.SerializeObject(new ResponseMessage {
-					Success = true,
-					Token = loggedInUser.Token
-				}));
+                if (response.Code == AddUserMessageResponse.ERR_CODE.ALREADY_LOGGED_IN)
+                {
+                    sendAction(JsonConvert.SerializeObject(new ResponseMessage
+                    {
+                        Success = false,
+                        Error = "Already logged in"
+                    }));
+                    return commitTransaction;
+                }
+                else if (response.Code == AddUserMessageResponse.ERR_CODE.SUCCESS)
+                {
+                    sendAction(JsonConvert.SerializeObject(new ResponseMessage
+                    {
+                        Success = true,
+                        Token = response.Token
+                    }));
+                }
+                else
+                {
+                    //log stuff
+                    sendAction(JsonConvert.SerializeObject(new ResponseMessage
+                    {
+                        Success = false,
+                        Error = "Unknown error."
+                    }));
+                    return commitTransaction;
+                }
 
 			} else {
 				commitTransaction = false;
