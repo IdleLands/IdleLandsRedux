@@ -3,7 +3,7 @@ IdleLands being rewritten
 
 # Setup
 
-See https://github.com/IdleLands/IdleLandsRedux/wiki/Setup-guide-for-windows for windows guide. Also usable for linux, but use the xamarin repository instead.
+See https://github.com/IdleLands/IdleLandsRedux/wiki/Setup-Guide
 
 # Starting order
 
